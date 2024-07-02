@@ -10,7 +10,7 @@ const SideBar = ({ size, cart, setCart }) => {
     const addItem = cart.map((cartItem) =>
       cartItem.id === item.id
         ? { ...cartItem, amount: cartItem.amount + 1 }
-        : cartItem
+        : cartItem``
     );
     setCart(addItem);
   };

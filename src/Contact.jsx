@@ -5,6 +5,7 @@ import { useRef } from "react";
 import emailjs from "@emailjs/browser";
 
 const Contact = () => {
+    
   const notify = () =>
     toast.success("Feedback was sent Successfully,Thank You!");
 

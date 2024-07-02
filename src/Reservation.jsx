@@ -5,19 +5,8 @@ const Reservation = () => {
     <div>
       <div class="flex items-center justify-evenly bg-blue-900 brightness-95   p-12">
         <div class="mx-auto  w-full max-w-[550px] ">
-          <form
-            action="https://formbold.com/s/FORM_ID"
-            // className="ml-[-50%] "
-            method="POST"
-          >
+          <form action="https://formbold.com/s/FORM_ID" method="POST">
             <div class="-mx-3 flex flex-wrap relative">
-              {/* <div class="absolute -z-10  contactimg bg-gray-300">
-                <img
-                  src="reservation.jpeg "
-                  alt=""
-                  className=" max-w-screen h-auto brightness-50"
-                />
-              </div> */}
               <div class=" w-full px-3 sm:w-1/2">
                 <div class="mb-5">
                   <label

@@ -1,113 +1,210 @@
-import { useState, useEffect } from "react";
-import { HiMenu, HiX } from "react-icons/hi";
-import { Link } from "react-scroll";
+import React , {useState , useEffect} from 'react'
+import { Link } from 'react-scroll'
+import Sidebar from '../components/Sidebar'
+import { Icon } from "@iconify/react/dist/iconify.js";
 
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-    if (!isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+const Navbar = ( {cart , setCart , size}) => {
+  const [open, setOpen] = useState(false);
+  const [Price, setPrice] = useState(0);
+  var ans = 0;
+
+  const handleAdd = (item) => {
+    const addItem = cart.map((cartItem) =>
+      cartItem.id === item.id
+        ? { ...cartItem, amount: cartItem.amount + 1 }
+        : cartItem
+    );
+    setCart(addItem);
   };
 
-  const handleLinkClick = () => {
-    setIsOpen(false);
-    document.body.style.overflow = "auto";
+  const handleRemove = (item) => {
+    const removeItem = cart.map((cartItem) =>
+      cartItem.id === item.id && cartItem.amount > 0
+        ? { ...cartItem, amount: Math.max(cartItem.amount - 1, 0) }
+        : cartItem
+    );
+    setCart(removeItem);
+  };
+
+  const handleRemoveAll = (item) => {
+    const updatedCart = cart.filter((cartItem) => cartItem.id !== item.id);
+    setCart(updatedCart);
+  };
+  const getTotalAmount = () => {
+    cart.map((item) => {
+      console.log("here is item", item);
+      ans += item.amount * item.price;
+    });
+    setPrice(ans);
   };
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      document.body.style.overflow = "auto"; // Ensure scroll is enabled when component is unmounted
-    };
-  }, []);
-
+    getTotalAmount();
+  }, [cart]);
   return (
-    <nav
-      className={`fixed z-50 w-full py-5 md:px-20 px-11 transition-all duration-300 ${isScrolled ? "bg-opacity-70 backdrop-blur-2xl shadow-lg" : ""
-        }`}
-    >
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="text-white text-2xl font-bold">
-          <Link to="home" smooth={true} duration={1000}>
-            <div className="text-2xl font-bold cursor-pointer flex items-baseline space-x-1">
-              <span className="text-blue-700 text-2xl">Nacho</span>
-              <span className="text-blue-700 text-2xl">Daddy</span>
-
-            </div>
-          </Link>
-        </div>
-        <div className="md:hidden flex justify-end w-full">
-          <button
-            onClick={toggleMenu}
-            className="text-black focus:outline-none z-20 relative"
-          >
-            {isOpen ? (
-              <HiX
-                size={32}
-                className="hover:text-[#2DD4BF] transition duration-300"
-              />
-            ) : (
-              <HiMenu
-                size={32}
-                className="hover:text-[#2DD4BF] transition duration-300"
-              />
-            )}
-          </button>
-        </div>
+    <div>
+       {open && (
         <div
-          className={`fixed inset-0 bg-blue-300 bg-opacity-90 z-10 flex flex-col items-center justify-center space-y-4 text-black transform ${isOpen ? "translate-x-0 h-screen" : "translate-x-full h-0"
-            } transition-transform duration-300 md:relative md:bg-transparent md:inset-auto md:flex md:flex-row md:space-y-0 md:space-x-4 md:translate-x-0 md:h-auto`}
-        >
-          {["Home", "Menu ", "Reservations", "Delivery"].map(
-            (item, index) => (
-              <Link
-                key={index}
-                to={item.toLowerCase().replace(" ", "-")}
-                smooth={true}
-                duration={1000}
-                onClick={handleLinkClick}
-              >
-                <div className="hover:text-blue-700 cursor-pointer pb-1 relative group">
-                  {item}
-                  <span className="absolute left-1/2 transform -translate-x-1/2 bottom-0 h-0.5 w-0 bg-blue-700 transition-all duration-500 group-hover:w-full mt-2"></span>
-                </div>
-              </Link>
-            )
-          )}
-          <Link
-            to="get-started"
-            smooth={true}
-            duration={500}
-            onClick={handleLinkClick}
-          >
-            <div className="text-blue-700 border-2 border- to-blue-700 py-2 px-4 rounded hover:bg-blue-700 hover:text-gray-900 transition cursor-pointer md:hidden">
-              Get Started
-            </div>
-          </Link>
-        </div>
-        <Link to="get-started" smooth={true} duration={500}>
-          <div className="text-blue-700 border-2 border-blue-700 py-2 px-4  hover:bg-blue-700 hover:text-gray-900 transition cursor-pointer hidden md:block">
-            Get Started
-          </div>
-        </Link>
-      </div>
-    </nav>
-  );
-};
+          className="fixed inset-0 bg-black opacity-50 z-40"
+          onClick={() => setOpen(false)}
+        />
+      )}
 
-export default Navbar;
+      <div
+        className="sidebar fixed top-0 right-0 h-screen w-64 bg-blue-400 text-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out"
+        style={{ transform: open ? "translateX(0)" : "translateX(100%)" }}
+      >
+        {open && (
+          <>
+
+<div className="flex-none px-10">
+          <div className="dropdown dropdown-end">
+            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+              
+            </div>
+          </div>
+
+        </div> 
+
+
+
+  <div className="overflow-y-auto p-4">
+              {cart.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between mb-4"
+                >
+                  <img
+                    src={item.img}
+                    className="w-16 h-16 rounded-md"
+                    alt={item.id}
+                  />
+                  <div className="flex flex-col ml-2">
+                    <p className="font-semibold">{item.id}</p>
+                    <p className="text-gray-600">${item.price}</p>
+                    <div className="flex items-center mt-1">
+                      <button
+                        className="px-2 py-1 bg-blue-500 text-white rounded-md"
+                        onClick={() => handleRemove(item)}
+                      >
+                        -
+                      </button>
+                      <p className="px-2">{item.amount}</p>
+                      <button
+                        className="px-2 py-1 bg-blue-500 text-white rounded-md"
+                        onClick={() => handleAdd(item)}
+                      >
+                        +
+                      </button>
+                      <button
+                        className="ml-2 px-2 py-1 text-white rounded-md"
+                        onClick={() => handleRemoveAll(item)}
+                      >
+                        <Icon icon="fluent-mdl2:delete" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <div className="mt-4">
+                <button
+                  className="font-bold text-xl"
+                  onClick={() => getTotalAmount()}
+                >
+                  Total price:${Price}
+                </button>
+              </div>
+              <div className="mt-4">
+                <button className="w-full py-2 bg-blue-500 text-white font-bold rounded-md">
+                  Checkout
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+        <Sidebar size={cart.length} cart={cart} setCart={setCart} />
+      <div className="navbar bg-base-100 fixed z-20">
+        <div className="navbar-start">
+          <div className="dropdown">
+            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h8m-8 6h16" />
+              </svg>
+              
+              
+            </div>
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+              <li><Link to='Product' smooth={true} duration={1000} >Home</Link></li>
+              <li><Link to='Product' smooth={true} duration={1000}>Menu</Link></li>
+              <li><Link  to='Reservation' smooth={true} duration={1000} >Reservation</Link></li>
+              <li><Link>Delivery</Link></li>
+            </ul>
+          </div>
+          <Link to='Product' smooth={true} duration={1000} className='btn hover:text-blue-700 text-xl'>Nachoo Daddy</Link>
+        </div>
+        <div className="navbar-center hidden lg:flex">
+          <ul className="menu menu-horizontal px-1">
+            <li><Link to='Product' smooth={true} duration={1000} className='hover:text-blue-700 text-xl'>Home</Link></li>
+            <li><Link to='Product' smooth={true} duration={1000} className='hover:text-blue-700 text-xl'>Menu</Link>
+            </li>
+            <li><Link to='Reservation' smooth={true}
+              duration={500} className='hover:text-blue-700  text-xl'>Reservation</Link></li>
+            <li><Link className='hover:text-blue-700 text-xl'>Delivery</Link></li>
+
+          </ul>
+
+        </div>
+        
+         <div className="flex-none px-10">
+          <div className="dropdown dropdown-end">
+            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+              <div className="indicator">
+              <span className="text-xl font-bold ">{size}</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+            </div>
+            <div
+              tabIndex={0}
+              className="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow">
+              <div className="card-body">
+                <span className="text-lg font-bold">{size}</span>
+                <span className="text-info">Subtotal: ${Price}</span>
+                <div className="card-actions">
+                  <button  onClick={() => setOpen(!open)}className="btn btn-primary btn-block">View cart</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div> 
+      </div>
+    </div>
+  )
+}
+
+export default Navbar
+      

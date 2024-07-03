@@ -1,55 +1,70 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import PreLoader from './PreLoader';
 
 function UserLocation() {
   const [showPopup, setShowPopup] = useState(true);
   const [locationName, setLocationName] = useState('');
   const [showLocationButton, setShowLocationButton] = useState(false);
   const [showLocationDetails, setShowLocationDetails] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [hover, setHover] = useState(false);
 
-  const handleAllowLocation = () => {
+  const handleAllowLocation = async () => {
+    setLoading(true);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
+          console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
 
           try {
             const response = await axios.get(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`);
             const { display_name } = response.data;
             setLocationName(display_name);
-            setShowLocationButton(true); 
-            setShowPopup(false); 
+            setShowLocationButton(true);
+            setShowPopup(false);
+            setLoading(false);
           } catch (error) {
             console.error('Error fetching location details:', error);
             alert('Unable to retrieve location details.');
+            setLoading(false);
           }
         },
         (error) => {
           console.error('Error getting location:', error);
           alert('Unable to retrieve your location.');
+          setLoading(false);
         }
       );
     } else {
       alert('Geolocation is not supported by your browser.');
+      setLoading(false);
     }
-  };
-
-  const handleShowLocationDetails = () => {
-    setShowLocationDetails(true); 
-  };
-
-  const handleHideLocationDetails = () => {
-    setShowLocationDetails(false); 
   };
 
   const handleBack = () => {
     setShowPopup(false);
   };
 
+  const handleHover = () => {
+    setHover(true);
+  };
+
+  const handleMouseOut = () => {
+    setHover(false);
+  };
+
+  useEffect(() => {
+    if (showLocationButton) {
+      setShowLocationDetails(true);
+    }
+  }, [showLocationButton]);
+
   return (
-    <div className="App h-screen flex items-center justify-center bg-gray-100">
+    <div className="flex items-center justify-center z bg-gray-100">
       {showPopup && (
-        <div className="popup fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg shadow-lg max-w-sm text-center">
+        <div className="popup fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-400 p-8 rounded-lg shadow-lg text-center">
           <h2 className="text-xl font-bold mb-4">Share your live location?</h2>
           <p className="text-gray-600 mb-4">This will help us provide more relevant information.</p>
           <button
@@ -64,29 +79,31 @@ function UserLocation() {
           >
             Back
           </button>
+          <PreLoader loading={loading} setLoading={setLoading} />
         </div>
       )}
 
-      {showLocationButton && (
-        <div className="fixed left-4 top-1/4 -mt-24 ">
+      <div
+        className="absolute top-16 left-0 p-4"
+        onMouseOver={handleHover}
+        onMouseOut={handleMouseOut}
+      >
+        {showLocationButton && !hover && (
           <button
-            className= "hover:bg-blue-500 bg-gray-300 -mt-96   text-gray-900 font-bold py-2 px-4 rounded"
-            onMouseEnter={handleShowLocationDetails}
-            onMouseLeave={handleHideLocationDetails}
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           >
             Show Live Location
           </button>
-          {showLocationDetails && (
-            <div className="absolute left-0 top-0 bg-white p-4 shadow-lg rounded-lg mt-2">
-              <p className="text-gray-600">Your current location:</p>
-              <p className="font-bold w-52 h-36 border-sloid">{locationName}</p>
-            </div>
-          )}
-        </div>
-      )}
+        )}
+        {hover && showLocationDetails && (
+          <div>
+            <h2>Location Details:</h2>
+            <p>Location Name: {locationName}</p>
+          </div>
+        )}
       </div>
+    </div>
   );
 }
 
 export default UserLocation;
-

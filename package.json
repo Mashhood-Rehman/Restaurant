@@ -33,6 +33,7 @@
     "react-swipeable": "^7.0.1",
     "react-swipeable-views": "^0.14.0",
     "react-toastify": "^10.0.5",
+    "reactjs-popup": "^2.0.6",
     "storybook": "^8.1.11",
     "swiper": "^11.1.4",
     "tw-elements": "^2.0.0"

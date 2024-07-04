@@ -10,10 +10,10 @@ const Chinese = ({ cart, setCart }) => {
     setShowCart(cart);
   };
   return (
-    <div>
+    <div id="Chinese">
       <div class="flex flex-col bg-white m-auto p-auto">
         <h1 class="flex py-5 md:px-10 lg:mx-40 md:mx-20 font-bold text-4xl text-gray-800">
-          Our Desi Cuisine
+         Chinese Food
         </h1>
         <div class="flex flex-row overflow-x-scroll lg:overflow-x-hidden pb-10 hide-scroll-bar">
           <div class="flex flex-nowrap lg:flex-wrap space-x-4 lg:space-x-4 lg:space-y-4">
@@ -24,7 +24,7 @@ const Chinese = ({ cart, setCart }) => {
               >
                 <img
                   src={item.img}
-                  class="h-40 w-40 object-cover mx-auto"
+                  class="h-40 w-full object-cover mx-auto"
                   alt={item.id}
                 />
                 <p className="font-semibold text-xl">{item.id}</p>

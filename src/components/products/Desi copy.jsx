@@ -10,7 +10,7 @@ const Desi = ({ cart, setCart }) => {
     setShowCart(cart);
   };
   return (
-    <div>
+    <div id="Desi">
       <div class="flex flex-col bg-white m-auto p-auto">
         <h1 class="flex py-5 md:px-10 lg:mx-40 md:mx-20 font-bold text-4xl text-gray-800">
           Our Desi Cuisine
@@ -24,7 +24,7 @@ const Desi = ({ cart, setCart }) => {
               >
                 <img
                   src={item.img}
-                  class="h-40 w-40 object-cover mx-auto"
+                  class="h-40 w-full object-cover mx-auto"
                   alt={item.id}
                 />
                 <p className="font-semibold text-xl">{item.id}</p>

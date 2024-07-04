@@ -82,7 +82,7 @@ const Contact = () => {
             >
               Send
             </button>
-            <ToastContainer theme="dark" position="top-right" />
+            <ToastContainer theme="dark" position="bottom-right" />
 
             <p class="text-xs text-gray-500 mt-3">
               Chicharrones blog helvetica normcore iceland tousled brook viral

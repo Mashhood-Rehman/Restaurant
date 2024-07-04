@@ -90,13 +90,13 @@ function UserLocation() {
       >
         {showLocationButton && !hover && (
           <button
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 mt-44 -ml-6 lg:mt-1 px-4 rounded"
           >
             Show Live Location
           </button>
         )}
         {hover && showLocationDetails && (
-          <div>
+          <div className='w-96 bg-green-500 rounded -ml-3 mt-44 md:mt-1'>
             <h2>Location Details:</h2>
             <p>Location Name: {locationName}</p>
           </div>

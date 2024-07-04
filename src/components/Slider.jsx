@@ -53,7 +53,7 @@ function Slider() {
   };
 
   return (
-    <>
+    <div id='Cart'>
       <div className=' md:justify-center  flex py-8 '>
         <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
           <Paper
@@ -126,6 +126,7 @@ function Slider() {
         </Box>
         
       </div>
+      <div></div>
       <div className='mt-1'>
         <section class="text-gray-600 body-font">
           <div class="container px-5 py-24 mx-auto">
@@ -177,7 +178,7 @@ function Slider() {
           </div>
         </section>
       </div>
-    </>
+    </div>
   );
 }
 

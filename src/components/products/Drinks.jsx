@@ -10,7 +10,7 @@ const Chinese = ({ cart, setCart }) => {
     setShowCart(cart);
   };
   return (
-    <div>
+    <div id="drink">
       <div class="flex flex-col bg-white m-auto p-auto">
         <h1 class="flex py-5 md:px-10 lg:mx-40 md:mx-20 font-bold text-4xl text-gray-800">
           Drinks

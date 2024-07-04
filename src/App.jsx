@@ -6,21 +6,21 @@ import Reservation from './components/Reservation'
 import PreLoader from './components/PreLoader'
 import Product from '../src/components/products/Product'
 import Contact from './Contact'
-import FoodDeliveryForm from './components/FoodDeliveryForm'
-import FastFood from './components/products/FastFood'
+import FastFood from "./components/products/FastFood"
 import Desi from './components/products/Desi copy'
 import Chinese from './components/products/Chinese'
 import Desserts from './components/products/Desserts'
 import Drinks from './components/products/Drinks'
-
+import './App.css'
 const App = () => {
   const [loading,setLoading]= useState(false)
   const [show, setShow] = useState(true);
   const [cart, setCart] = useState([]);
+
   return (
     <div>
     
-     <Navbar cart={cart} setCart={setCart} size={cart.length}/>   
+     <Navbar cart={cart} setCart={setCart} size={cart.length} />   
      <Product/>
      <Slider/>
      <FastFood cart={cart} setCart={setCart} />
@@ -32,7 +32,6 @@ const App = () => {
      <PreLoader loading={loading} setLoading={setLoading}/>
      <Reservation/>
       <Contact/>
-     {/* <FoodDeliveryForm/> */}
     </div>
   )
 }

@@ -1,4 +1,4 @@
-export const List = [
+  export const List = [
   {
     id: "Zinger Burger",
     price: 19,

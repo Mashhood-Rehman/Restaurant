@@ -1,5 +1,5 @@
 import React from "react";
-import { Drink } from "../data";
+import {Drink} from "../data"
 
 const Chinese = ({ cart, setCart }) => {
   const [showcart, setShowCart] = [""];

@@ -11,17 +11,20 @@ import Desi from './components/products/Desi copy'
 import Chinese from './components/products/Chinese'
 import Desserts from './components/products/Desserts'
 import Drinks from './components/products/Drinks'
+ import FoodDeliveryForm from "./components/products/FoodDeliveryForm";
+// 
 import './App.css'
 const App = () => {
   const [loading,setLoading]= useState(false)
   const [show, setShow] = useState(true);
   const [cart, setCart] = useState([]);
+  const [visible , setVisible] = useState(false);
 
   return (
     <div>
     
-     <Navbar cart={cart} setCart={setCart} size={cart.length} />   
-     <Product/>
+   <Navbar cart={cart} setCart={setCart} size={cart.length} visible={visible} setVisible={setVisible}/>    
+   <Product/>
      <Slider/>
      <FastFood cart={cart} setCart={setCart} />
       <Desi cart={cart} setCart={setCart} />
@@ -31,7 +34,11 @@ const App = () => {
      <UserLocation loading={loading} setLoading={setLoading} />
      <PreLoader loading={loading} setLoading={setLoading}/>
      <Reservation/>
-      <Contact/>
+      <Contact/> 
+      <div>
+
+      <FoodDeliveryForm visible={visible} setVisible={setVisible} />
+      </div>
     </div>
   )
 }

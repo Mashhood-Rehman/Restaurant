@@ -3,12 +3,13 @@ import { Link } from "react-scroll";
 
 import Sidebar from "./Sidebar";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import FoodDeliveryForm from "./FoodDeliveryForm";
+import FoodDeliveryForm from "./products/FoodDeliveryForm";
 
-const Navbar = ({ cart, setCart, size , }) => {
+      <input className='' type="text" placeholder='Enter your Name'/>
+const Navbar = ({ cart, setCart, size , visible , setVisible }) => {
   const [open, setOpen] = useState(true);
   const [Price, setPrice] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
   var ans = 0;
 
   const handleAdd = (item) => {
@@ -68,7 +69,6 @@ const Navbar = ({ cart, setCart, size , }) => {
               </div>
             </div>
 
-            {isOpen && <FoodDeliveryForm/>}
 
             <div className="overflow-y-auto p-4">
               {cart.map((item, index) => (
@@ -127,7 +127,7 @@ const Navbar = ({ cart, setCart, size , }) => {
                 </button>
               </div>
               <div className="flex justify-center">
-                <button className=" w-3/4 py-2 absolute  bg-blue-500 text-white hover:bg-blue-800 duration-300  font-bold rounded-md" onClick={() => setIsOpen(!isopen)}>
+                <button type="button" className=" w-3/4 py-2 absolute  bg-blue-500 text-white hover:bg-blue-800 duration-300  font-bold rounded-md" onClick={() => setVisible(true)}>
                   Checkout
                 </button>
               </div>
@@ -136,7 +136,7 @@ const Navbar = ({ cart, setCart, size , }) => {
           </>
         )}
       </div>
-      <Sidebar size={cart.length} cart={cart} setCart={setCart} />
+      <Sidebar size={cart.length} cart={cart} setCart={setCart} visible={visible} setVisible={setVisible} />
       <div className="navbar bg-base-100 fixed z-20">
         <div className="navbar">
           <div className="dropdown">

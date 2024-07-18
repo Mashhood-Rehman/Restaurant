@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const Drinks = ({ cart, setCart }) => {
+const Desi = ({ cart, setCart }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,7 +16,7 @@ const Drinks = ({ cart, setCart }) => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/getProducts/Drinks"
+          "http://localhost:5000/getProducts/Desi"
         );
         setProducts(response.data);
       } catch (err) {
@@ -39,7 +39,7 @@ const Drinks = ({ cart, setCart }) => {
     <div id="Chinese">
       <div className="flex flex-col bg-white m-auto p-auto">
         <h1 className="flex py-5 md:px-10 lg:mx-40 md:mx-20 font-bold text-4xl text-gray-800">
-          Drinks
+          Desi
         </h1>
         <div className="flex flex-row overflow-x-scroll lg:overflow-x-hidden pb-10 hide-scroll-bar">
           <div className="flex flex-nowrap lg:flex-wrap space-x-4 lg:space-x-4 lg:space-y-4">
@@ -51,7 +51,7 @@ const Drinks = ({ cart, setCart }) => {
                 >
                   <img
                     src={item.picture}
-                    className="h-40 w-full  mx-auto object-contain"
+                    className="h-40 w-full  mx-auto object-cover"
                     alt={item.name}
                   />
                   <p className="font-semibold text-xl">{item.name}</p>
@@ -73,4 +73,4 @@ const Drinks = ({ cart, setCart }) => {
   );
 };
 
-export default Drinks;
+export default Desi;

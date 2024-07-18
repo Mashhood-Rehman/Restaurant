@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-scroll";
-
-import Sidebar from "./Sidebar";
+import Sidebar from "../components/Sidebar";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import FoodDeliveryForm from "./products/FoodDeliveryForm";
+import { motion } from "framer-motion";
 
-      <input className='' type="text" placeholder='Enter your Name'/>
-const Navbar = ({ cart, setCart, size , visible , setVisible }) => {
-  const [open, setOpen] = useState(true);
+const Navbar = ({ cart, setCart, size }) => {
+  const [open, setOpen] = useState(false);
   const [Price, setPrice] = useState(0);
-  // const [isOpen, setIsOpen] = useState(false);
   var ans = 0;
 
   const handleAdd = (item) => {
@@ -48,13 +45,13 @@ const Navbar = ({ cart, setCart, size , visible , setVisible }) => {
     <div>
       {open && (
         <div
-          className="fixed inset-0 bg-black opacity-50 "
+          className="fixed inset-0 bg-black opacity-50 z-40"
           onClick={() => setOpen(false)}
         />
       )}
 
-      <div
-        className="sidebar mt-6 fixed top-20 overflow-auto   right-0 h-3/4 w-96   bg-blue-400 text-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out"
+      <motion.div
+        className="sidebar fixed top-20 right-0 h-3/4 w-64 bg-blue-400 text-white  z-50 transform transition-transform duration-300 ease-in-out"
         style={{ transform: open ? "translateX(0)" : "translateX(100%)" }}
       >
         {open && (
@@ -69,7 +66,6 @@ const Navbar = ({ cart, setCart, size , visible , setVisible }) => {
               </div>
             </div>
 
-
             <div className="overflow-y-auto p-4">
               {cart.map((item, index) => (
                 <div
@@ -77,9 +73,9 @@ const Navbar = ({ cart, setCart, size , visible , setVisible }) => {
                   className="flex items-center justify-between mb-4"
                 >
                   <img
-                    src={item.img}
-                    className="w-32 h-32 rounded-full object-cover"
-                    alt={item.id}
+                    src={item.picture}
+                    className="w-16 h-16 rounded-full object-cover"
+                    alt={item.name}
                   />
                   <div className="flex flex-col ml-2">
                     <p className="font-semibold">{item.id}</p>
@@ -108,37 +104,37 @@ const Navbar = ({ cart, setCart, size , visible , setVisible }) => {
                   </div>
                 </div>
               ))}
-              <div className="flex flex-col mb-10">
-              <div className="">
+              <div className="mt-4">
                 <button
-                  className="font-semibold  text-black text-xl "
+                  className="font-semibold tracking-tight text-xl"
                   onClick={() => getTotalAmount()}
                 >
-                  Delivery Fee:$5
+                  Total price:${Price}
                 </button>
                 <button
-                  className="font-bold  text-xl  text-black "
+                  className="font-semibold tracking-tight text-xl"
                   onClick={() => getTotalAmount()}
                 >
-                  Total price:${Price}{" "}
-                  <span className=" font-light text-black">
-                    (Including Delivery Fee)
-                  </span>
+                  Deivery Fee:$5
                 </button>
               </div>
-              <div className="flex justify-center">
-                <button type="button" className=" w-3/4 py-2 absolute  bg-blue-500 text-white hover:bg-blue-800 duration-300  font-bold rounded-md" onClick={() => setVisible(true)}>
+              <div className="mt-4">
+                <button className="w-full py-2 bg-blue-500 text-white font-bold rounded-md">
                   Checkout
                 </button>
-              </div>
               </div>
             </div>
           </>
         )}
-      </div>
-      <Sidebar size={cart.length} cart={cart} setCart={setCart} visible={visible} setVisible={setVisible} />
-      <div className="navbar bg-base-100 fixed z-20">
-        <div className="navbar">
+      </motion.div>
+      <Sidebar size={cart.length} cart={cart} setCart={setCart} />
+      <motion.div
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+        className="navbar bg-base-100 fixed z-20"
+      >
+        <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
               <svg
@@ -181,15 +177,15 @@ const Navbar = ({ cart, setCart, size , visible , setVisible }) => {
             </ul>
           </div>
           <Link
-            to="Product"
+            to="landingpage"
             smooth={true}
             duration={1000}
-            className="btn hover:text-black-800 hover:bg-blue-800 duration-500 ease-in-out text-xl"
+            className="btn hover:text-blue-700 text-xl"
           >
             Nachoo Daddy
           </Link>
         </div>
-        <div className="navbar hidden lg:flex">
+        <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
             <li>
               <Link
@@ -259,10 +255,10 @@ const Navbar = ({ cart, setCart, size , visible , setVisible }) => {
               <div className="card-body">
                 <span className="text-lg font-bold">{size}</span>
                 <span className="text-info">Subtotal: ${Price}</span>
-                <div className={`card-actions `}>
+                <div className="card-actions">
                   <button
                     onClick={() => setOpen(!open)}
-                    className={`btn btn-primary btn-block  `}
+                    className="btn btn-primary btn-block"
                   >
                     View cart
                   </button>
@@ -271,7 +267,7 @@ const Navbar = ({ cart, setCart, size , visible , setVisible }) => {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

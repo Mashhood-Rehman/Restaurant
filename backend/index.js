@@ -23,7 +23,7 @@ const orderRouter  =require("./routes/orderRoute")
 
 
 
-const stripe = require("stripe") ("sk_test_51PkqrUAusfi4SBU0ognZMrzTK9eJhstHcg0vKdqXIc2zS8RdEQMZuhNjhPlquk99TBHrfEto8FsmFZB9LS4PRCzC00sXgmu7lD")
+const stripe = require("stripe") (process.env.STRIPE_SECRET_KEY)
 
 
 

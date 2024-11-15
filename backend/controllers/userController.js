@@ -48,7 +48,7 @@ const usercreate = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    if (!email && !password) {
+    if (!email || !password) {
       return res.status(400).json({ message: "all fields required" });
     }
     const user = await userModel.findOne({ email });
@@ -57,6 +57,7 @@ const login = async (req, res) => {
     if (!user) {
       return res.status(600).json({ message: "No such User" });
     }
+    
     const ispasswordvalid = await bcrypt.compare(password, user.password);
     if (!ispasswordvalid) {
       return res.status(400).json({ message: " password invalid " });

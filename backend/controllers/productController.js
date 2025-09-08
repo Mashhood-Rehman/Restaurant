@@ -4,16 +4,17 @@ const productModel = require("../models/product");
 const productcreate = (req, res) => {
   try {
     const { name, price, amount, category, description } = req.body;
-    const picture = req.file ? `/Images/${req.file.filename}` : null; 
+    const picture = req.file ? `/Images/${req.file.filename}` : null;
     const productregister = new productModel({
       name,
-            price,
-            amount,
-            category,
-            description,
-            picture
+      price,
+      amount,
+      category,
+      description,
+      picture
     });
     productregister.save();
+    console.log(productregister);
     res.status(201).json({
       success: true,
       message: "product created successfully",
@@ -26,7 +27,7 @@ const productcreate = (req, res) => {
 const getProducts = async (req, res) => {
   try {
     const products = await productModel.find();
-    res.status(200).json({ success: true, message: "products fetcheddd" , products });
+    res.status(200).json({ success: true, message: "products fetcheddd", products });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
@@ -44,7 +45,7 @@ const delProducts = async (req, res) => {
   try {
     const { id } = req.params; // Use 'id' here to match the route parameter
     const deletedProduct = await productModel.findByIdAndDelete(id);
-    
+
     if (!deletedProduct) {
       return res.status(404).json({ success: false, message: `Product with id ${id} not found` });
     }

@@ -49,7 +49,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex z-50 bg-white items-center">
+    <div className="flex z-[999] bg-white items-center">
       <div>
         <Sidebar open={open} setOpen={setOpen} />
         <Modal>

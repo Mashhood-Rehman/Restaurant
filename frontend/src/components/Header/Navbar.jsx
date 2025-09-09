@@ -61,7 +61,7 @@ const Navbar = () => {
           >
             <div className="navbar-start">
             <div className="dropdown">
-  <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+  {/* <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className="h-5 text-black w-5"
@@ -71,7 +71,7 @@ const Navbar = () => {
     >
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
     </svg>
-  </div>
+  </div> */}
   <ul className="menu menu-sm dropdown-content bg-white z-50 mt-3 w-52 p-2">
     {navbarSections.map((section, index) => (
       <li key={index} className="relative">
@@ -114,11 +114,13 @@ const Navbar = () => {
               <img
                 src={"logoo.jpeg.png"}
                 alt="Logo"
-                className="w-32 h-32 ml-8 cursor-pointer"
+                height={70}
+                width={80}
+                className=" ml-10 cursor-pointer"
                 onClick={() => scrollToSection("landingpage")}
               />
             </div>
-            <div className="navbar-center hidden lg:flex items-center jc">
+            <div className=" hidden lg:flex items-center justify-center">
               <ul className="menu menu-horizontal px-1">
                 {navbarSections.map((section, index) => (
                   <li key={index}>

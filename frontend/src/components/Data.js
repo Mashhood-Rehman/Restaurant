@@ -1,3 +1,5 @@
+import { IMAGES } from "../assets/Images";
+
 // data.js
 export const navbarSections = [
     { name: "Home", id: "landingpage" },
@@ -15,3 +17,9 @@ export const navbarSections = [
     { id: "Dessert", label: "Desserts", imageUrl: "barfi.jpeg" },
     { id: "drink", label: "Drinks", imageUrl: "coke.jpeg" },
   ];
+
+  export const carouselImages = [
+    IMAGES.HEROCAROUSEL2,
+    IMAGES.HEROCAROUSEL1,
+    IMAGES.HEROCAROUSEL3,
+  ]

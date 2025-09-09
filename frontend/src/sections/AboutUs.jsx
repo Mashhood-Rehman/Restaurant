@@ -9,7 +9,7 @@ const AboutUs = () => {
   ];
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-white">
       {/* Grid container for images */}
       <div className=" flex justify-evenly">
 

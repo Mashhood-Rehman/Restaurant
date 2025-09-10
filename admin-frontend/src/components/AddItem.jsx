@@ -79,7 +79,6 @@ const onSubmit = async (e) => {
             id="picture"
             name="picture"
             className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
-            required
           />
         </div>
   

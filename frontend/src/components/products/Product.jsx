@@ -40,8 +40,8 @@ const Product = () => {
     <div id="Product" className="bg-white m-auto p-5 lg:px-20">
        <h2   style={{
                 fontFamily: 'Dancing Script, cursive',
-                fontSize: '2rem', // You can adjust the size as per your preference
-                fontWeight: '4rem', // This gives it a bold, cursive effect
+                fontSize: '2rem', 
+                fontWeight: '4rem', 
               }} className="text-3xl font-bold text-center text-orange-500 mb-8">
            <span> -</span>Food Menu<span> -</span>
         </h2>
@@ -52,9 +52,7 @@ const Product = () => {
         {["All", "Fast Food", "Desi", "Chinese", "Desserts", "Drinks"].map((tab) => (
           <button
             key={tab}
-            className={`py-2 px-4 rounded-lg font-medium ${
-              activeTab === tab ? "bg-blue-600 text-white" : " text-gray-700"
-            } hover:bg-blue-600 hover:text-white transition-colors duration-300`}
+            className={`py-2 px-4 rounded-lg font-medium transition-colors duration-300`}
             onClick={() => setActiveTab(tab)}
           >
             {tab}

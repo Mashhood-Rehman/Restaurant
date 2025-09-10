@@ -52,7 +52,7 @@ const Signup = ({ setModal }) => {
               id="firstname"
               value={user.firstname}
               onChange={changeHandler}
-              className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 mt-2 border bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
             />
           </div>
@@ -64,7 +64,7 @@ const Signup = ({ setModal }) => {
               id="lastname"
               value={user.lastname}
               onChange={changeHandler}
-              className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 mt-2 border bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
             />
           </div>
@@ -76,7 +76,7 @@ const Signup = ({ setModal }) => {
               value={user.email}
               onChange={changeHandler}
               id="signup-email"
-              className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 mt-2 border bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
             />
           </div>
@@ -90,17 +90,17 @@ const Signup = ({ setModal }) => {
               value={user.password}
               onChange={changeHandler}
               id="password"
-              className="w-full relative  px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full relative  px-4 py-2 mt-2 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
               />
                <p
                   onClick={passwordShow}
-                  className="absolute top-[100%] right-2 md:right-3 lg:top-[76%] lg:right-8 hover:text-red-600 cursor-pointer duration-200 ease-in-out transform  transition-all -translate-y-1/2"
+                  className="absolute top-[100%] right-2 md:right-3 lg:top-[77%] lg:right-8 hover:text-red-600 cursor-pointer duration-200 ease-in-out transform  transition-all -translate-y-1/2"
                 >
                   {show ? (
-                    <Icon icon="mdi:eye-off-outline" className="w-6 h-6" />
+                    <Icon icon="mdi:eye-off-outline" className="size-5" />
                   ) : (
-                    <Icon icon="ph:eye" className="w-6 h-6" />
+                    <Icon icon="ph:eye" className="size-5" />
                   )}
                 </p>
               </div>

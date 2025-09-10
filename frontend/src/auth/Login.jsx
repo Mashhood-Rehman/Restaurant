@@ -6,12 +6,13 @@ import Signup from "./Signup";
 import { toast } from "react-toastify";
 
 const Login = ({ setFormClose, formclose }) => {
+  
   const [modal, setModal] = useState(false);
   const [show, setShow] = useState(false);
   const [user, setUser] = useState({ email: "", password: "" });
 
   const passwordShow = () => setShow(!show);
-  const toggleSignup = () => setModal(true);
+  const toggleSignup = () => setFormClose(false);
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
@@ -71,7 +72,7 @@ const Login = ({ setFormClose, formclose }) => {
               <div>
                 <label className="block text-gray-700 font-semibold">Email</label>
                 <input
-                  className="border rounded-lg w-full p-3 text-gray-700 focus:outline-none shadow-lg transition-all duration-200 ease-in-out"
+                  className="border rounded-lg w-full p-3 bg-white text-gray-700 focus:outline-none shadow-lg transition-all duration-200 ease-in-out"
                   type="email"
                   name="email"
                   value={user.email}
@@ -82,7 +83,7 @@ const Login = ({ setFormClose, formclose }) => {
               <div className="relative">
                 <label className="block text-gray-700 font-semibold">Password</label>
                 <input
-                  className="border rounded-lg w-full p-3 focus:outline-none shadow-lg transition-all duration-200 ease-in-out"
+                  className="border rounded-lg w-full bg-white p-3 focus:outline-none shadow-lg transition-all duration-200 ease-in-out"
                   type={show ? "text" : "password"}
                   name="password"
                   value={user.password}
@@ -117,7 +118,7 @@ const Login = ({ setFormClose, formclose }) => {
           </motion.div>
         </div>
       )}
-      {modal && <Signup modal={modal} setModal={setModal} />}
+      {modal && <Signup modal={formclose} setModal={setFormClose} />}
     </>
   );
 };

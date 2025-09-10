@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Icon } from '@iconify/react';
+import { IMAGES } from "../../assets/Images";
 
 const footerData = [
   {
@@ -57,7 +58,7 @@ const Footer = () => {
         <div>
           <Link to="/landingpage">
             <img
-              src="/logoo.jpeg.png"
+              src={IMAGES.LOGO}
               alt="Fooderers Logo"
               className="w-44"
             />

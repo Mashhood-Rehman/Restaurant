@@ -12,7 +12,7 @@ const Reservation = () => {
       .sendForm(
         `${import.meta.env.VITE_EMAILJS_SERVICEKEY}`,
         `${import.meta.env.VITE_EMAILJS_TEMPLATEKEY}`,
-        form.current, // Pass the form reference correctly
+        form.current, 
         {
           publicKey: `${import.meta.env.VITE_EMAILJS_PUBLICKEY}`,
         }
@@ -33,13 +33,13 @@ const Reservation = () => {
       <div className="mx-auto w-full max-w-4xl p-6 bg-white rounded-lg shadow-lg">
         <h2   style={{
                 fontFamily: 'Dancing Script, cursive',
-                fontSize: '2rem', // You can adjust the size as per your preference
-                fontWeight: '700', // This gives it a bold, cursive effect
+                fontSize: '2rem',
+                fontWeight: '700', 
               }} className="text-3xl font-semibold text-center text-orange-500 mb-8">
            <span> -</span>Reservation<span> -</span>
         </h2>
         <form ref={form} onSubmit={sendEmail}>
-          <div className=" grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className=" grid grid-cols-1  lg:grid-cols-2 gap-6">
             <div className="w-full sm:w-1/2">
               <div className="mb-5">
                 <label
@@ -54,7 +54,7 @@ const Reservation = () => {
                   type="text"
                   id="fName"
                   placeholder="First Name"
-                  className="w-full rounded-md border border-gray-300 py-3 px-6 text-base text-gray-700 focus:outline-none "
+className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-3 px-6 text-base focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
               </div>
             </div>
@@ -71,7 +71,7 @@ const Reservation = () => {
                   type="text"
                   id="lName"
                   placeholder="Last Name"
-                  className="w-full rounded-md border border-gray-300 py-3 px-6 text-base text-gray-700 focus:outline-none "
+className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-3 px-6 text-base focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
               </div>
             </div>
@@ -90,7 +90,7 @@ const Reservation = () => {
               id="guest"
               placeholder="Number of Guests"
               min="0"
-              className="w-full rounded-md border border-gray-300 py-3 px-6 text-base text-gray-700 focus:outline-none "
+className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-3 px-6 text-base focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
   
@@ -107,7 +107,7 @@ const Reservation = () => {
                   type="date"
                   name="date"
                   id="date"
-                  className="w-full rounded-md border border-gray-300 py-3 px-6 text-base text-gray-700 focus:outline-none "
+className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-3 px-6 text-base focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
               </div>
             </div>
@@ -123,7 +123,7 @@ const Reservation = () => {
                   type="time"
                   name="time"
                   id="time"
-                  className="w-full rounded-md border border-gray-300 py-3 px-6 text-base text-gray-700 focus:outline-none "
+className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-3 px-6 text-base focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
               </div>
             </div>

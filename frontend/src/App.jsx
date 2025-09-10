@@ -1,26 +1,29 @@
-import { Route, Routes } from "react-router-dom";
+  import { Route, Routes } from "react-router-dom";
 
-import Cancel from "./components/Cancel";
-import Dispatch from "./components/Dispatch";
-import Success from "./components/Success";
+  import Cancel from "./components/Cancel";
+  import Dispatch from "./components/Dispatch";
+  import Success from "./components/Success";
 
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Home from "./pages/Home";
+  import { ToastContainer } from "react-toastify";
+  import "react-toastify/dist/ReactToastify.css";
+  import Home from "./pages/Home";
+  import Navbar from "./components/Header/Navbar";
 
-const App = () => {
-  return (<>
-    <ToastContainer />
-    <Routes>
-      {/* Main homepage */}
-      <Route path="/" element={<Home />} />
-      {/* Other routes */}
-      <Route path="/dispatch" element={<Dispatch />} />
-      <Route path="/success" element={<Success />} />
-      <Route path="/cancel" element={<Cancel />} />
-    </Routes>
-  </>
-  );
-};
+  const App = () => {
+    return (<>
+      <ToastContainer />
+              <Navbar />
 
-export default App;
+      <Routes>
+        {/* Main homepage */}
+        <Route path="/" element={<Home />} />
+        {/* Other routes */}
+        <Route path="/dispatch" element={<Dispatch />} />
+        <Route path="/success" element={<Success />} />
+        <Route path="/cancel" element={<Cancel />} />
+      </Routes>
+    </>
+    );
+  };
+
+  export default App;

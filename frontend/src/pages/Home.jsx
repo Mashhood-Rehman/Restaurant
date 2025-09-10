@@ -1,5 +1,4 @@
 import React from 'react'
-import Navbar from '../components/Header/Navbar'
 import Hero from '../components/Header/Hero'
 import AboutUs from '../sections/AboutUs'
 import Product from '../components/products/Product'
@@ -11,8 +10,7 @@ const Home = () => {
     return (
         <div>
 
-                <Navbar />
-                <Hero />
+            <Hero />
             <AboutUs />
             <Product />
             <Reservation />

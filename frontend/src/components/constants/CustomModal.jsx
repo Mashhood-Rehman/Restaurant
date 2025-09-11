@@ -1,26 +1,37 @@
-import React from 'react'
+import React from 'react';
 
 const CustomModal = ({ isOpen, onClose, children, heading }) => {
-    if (!isOpen) return
+    if (!isOpen) return null;
+    
     return (
-        <div>
-            <div className=' w-auto bg-white h-full p-4 rounded-2xl overflow-hidden'>
-                <div>
-                    <div>
-                        <h1>{heading}</h1>
-                    </div>
-                    <div onClick={onClose} className=' text-black size-4 bg-white hover:bg-gray-300 rounded-full p-1 ease-in-out transform'>
-                        X
-                    </div>
+        <div
+            className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 px-4"
+            onClick={onClose}
+        >
+            <div
+                className="w-full max-w-md max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden"
+                onClick={(e) => e.stopPropagation()}
+            >
+                <div className="flex items-center justify-between p-3 border-b border-gray-200">
+                    <h2 className="text-xl font-semibold text-gray-800">{heading}</h2>
+                    <button
+                        onClick={onClose}
+                        className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full p-2 transition-colors duration-200 ease-in-out"
+                        aria-label="Close modal"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
 
-                <div className='overflow-y-auto py-3 px-2'>
+                {/* Modal Body */}
+                <div className="overflow-y-auto p-6">
                     {children}
                 </div>
             </div>
-
         </div>
-    )
-}
+    );
+};
 
-export default CustomModal
+export default CustomModal;

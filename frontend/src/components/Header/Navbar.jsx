@@ -224,7 +224,7 @@ const Navbar = () => {
                         </motion.ul>
                       </div>
                     ) : (
-                      <ModalTrigger className="bg-black dark:bg-orange-500 dark:text-black text-white flex justify-center group/modal-btn">
+                      <ModalTrigger className="bg-orange-500 hover:bg-orange-600  text-white flex justify-center ">
                         <span onClick={toggleForm} className="text-center cursor-pointer">
                           Login
                         </span>
@@ -265,9 +265,9 @@ const Navbar = () => {
             </div>
 
           </motion.div>
-          <CustomModal>
+          <CustomModal isOpen={formclose} heading='Login' onClose={()=>setFormClose(false)} >
 
-          <Login setFormClose={setFormClose} formclose={formclose} setUserIn={setUserIn} />
+          <Login setFormClose={setFormClose}  />
           </CustomModal>
         </Modal>
       </div>

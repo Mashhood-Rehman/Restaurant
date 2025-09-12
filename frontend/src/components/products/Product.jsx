@@ -1,10 +1,5 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import FastFood from "./FastFood";
-import Drinks from "./Drinks";
-import Desserts from "./Desserts";
-import Chinese from "./Chinese";
-import Desi from "./Desi";
 import CategoryProducts from "./CategoryProducts";
 
 const Product = () => {
@@ -24,8 +19,8 @@ const Product = () => {
         );
       case "Fast Food":
         return <CategoryProducts category="FastFood" />;
-      case"Desi":
-        return   <CategoryProducts  category="Desi" />;
+      case "Desi":
+        return <CategoryProducts category="Desi" />;
       case "Chinese":
         return <CategoryProducts category="Chinese" />;
       case "Desserts":

@@ -16,7 +16,7 @@ const Navbar = () => {
   const [userIn, setUserIn] = useState("");
   useEffect(() => {
     const pressedEscapeKey = (e) => {
-      const key = e.key.toLowerCase();
+      const key = e?.key?.toLowerCase();
 
       if (key === 'escape') {
         setFormClose(false);

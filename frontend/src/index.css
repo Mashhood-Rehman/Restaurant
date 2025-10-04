@@ -18,3 +18,24 @@
     scrollbar-width: auto; /* Firefox */
   }
 }
+.continent-card {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  clip-path: path(
+    "M200 30 L300 70 L350 150 L320 250 L250 300 L180 280 L150 200 L170 100 Z"
+  );
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.continent-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+}

@@ -1,15 +1,14 @@
+import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 const Signup = ({ setModal, setShowLogin }) => {
-  const [user, setUser] = useState({ 
-    firstname: "", 
-    lastname: "", 
-    password: "", 
-    email: "" 
+  const [user, setUser] = useState({
+    name: "",
+    password: "",
+    email: ""
   });
   const [show, setShow] = useState(false);
 
@@ -24,23 +23,27 @@ const Signup = ({ setModal, setShowLogin }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     // Basic validation
-    if (!user.firstname || !user.lastname || !user.email || !user.password) {
+    if (!user.name || !user.email || !user.password) {
       toast.error("All fields are required");
       return;
     }
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/usercreate`, user);
-      if (response.data.success) {
+      const response = await axios.post(`http://localhost:8000/api/auth/signup`, user, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }); console.log(response.data)
+      if (response.data) {
         toast.success("Account Created! Please Sign in");
-        // Switch back to login after successful signup
         setShowLogin(true);
       }
     } catch (error) {
       console.error(error);
       toast.error("Error occurred: " + (error.response?.data?.message || error.message));
+
     }
   };
 
@@ -66,35 +69,20 @@ const Signup = ({ setModal, setShowLogin }) => {
       </h4>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="firstname" className="block text-gray-700 font-semibold">
-              First Name
-            </label>
-            <input
-              name="firstname"
-              type="text"
-              id="firstname"
-              value={user.firstname}
-              onChange={changeHandler}
-              className="border rounded-lg w-full p-3 bg-white text-gray-700 focus:outline-none shadow-lg transition-all duration-200 ease-in-out"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="lastname" className="block text-gray-700 font-semibold">
-              Last Name
-            </label>
-            <input
-              name="lastname"
-              type="text"
-              id="lastname"
-              value={user.lastname}
-              onChange={changeHandler}
-              className="border rounded-lg w-full p-3 bg-white text-gray-700 focus:outline-none shadow-lg transition-all duration-200 ease-in-out"
-              required
-            />
-          </div>
+
+        <div>
+          <label htmlFor="name" className="block text-gray-700 font-semibold">
+            Name
+          </label>
+          <input
+            name="name"
+            type="text"
+            id="name"
+            value={user.name}
+            onChange={changeHandler}
+            className="border rounded-lg w-full p-3 bg-white text-gray-700 focus:outline-none shadow-lg transition-all duration-200 ease-in-out"
+            required
+          />
         </div>
 
         <div>
@@ -140,9 +128,9 @@ const Signup = ({ setModal, setShowLogin }) => {
           >
             Create Account
           </motion.button>
-          <button 
+          <button
             type="button"
-            onClick={handleCloseForm} 
+            onClick={handleCloseForm}
             className="text-white bg-gray-500 py-2 px-3 rounded-md hover:bg-gray-600 transition duration-150"
           >
             Cancel

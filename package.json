@@ -5,8 +5,9 @@
   "scripts": {
     "run:gateway": "cd api-gateway && bun dev",
     "run:auth": "cd auth-service && bun dev",
-    "run:backend": "cd backend && bun dev",
-    "run:frontend": "cd frontend && bun dev"
+    "run:backend": "cd backend && bun --watch dev",
+    "run:frontend": "cd frontend && bun dev",
+    "start": "concurrently \"bun run run:gateway\" \"bun run run:auth\" \"bun run run:backend\" \"bun run run:frontend\""
   },
   "repository": {
     "type": "git",

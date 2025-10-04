@@ -1,0 +1,26 @@
+{
+  "name": "restaurant",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "run:gateway": "cd api-gateway && bun dev",
+    "run:auth": "cd auth-service && bun dev",
+    "run:backend": "cd backend && bun dev",
+    "run:frontend": "cd frontend && bun dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mashhood-Rehman/Restaurant.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mashhood-Rehman/Restaurant/issues"
+  },
+  "homepage": "https://github.com/Mashhood-Rehman/Restaurant#readme",
+  "description": "",
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

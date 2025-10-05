@@ -9,10 +9,13 @@ const app = express()
 app.use(cors({ origin: "*" }))
 app.use(express.json())
 
-// Request timeout middleware
 app.use((req, res, next) => {
-  req.setTimeout(30000);
-  res.setTimeout(30000);
+  console.log("📨 Incoming to auth-service:", {
+    method: req.method,
+    path: req.path,
+    body: req.body,
+    headers: req.headers['content-type']
+  });
   next();
 });
 

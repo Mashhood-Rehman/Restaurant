@@ -5,46 +5,21 @@ dotenv.config()
 const authRoutes = require("./routes/authRoutes")
 const googleRoutes = require("./routes/googleRoutes")
 const app = express()
+const PORT = 3000  
 
-app.use(cors({ origin: "*" }))
+app.get("/health", (req, res) => {
+    res.json({ status: "Auth service is running" })
+})
+app.use(cors())
 app.use(express.json())
 
-app.use((req, res, next) => {
-  console.log("📨 Incoming to auth-service:", {
-    method: req.method,
-    path: req.path,
-    body: req.body,
-    headers: req.headers['content-type']
-  });
-  next();
-});
 
-const PORT = process.env.PORT
-
-// Routes MUST come before error handlers
 app.use("/api/auth", authRoutes)
 app.use("/api/google", googleRoutes)
 
-app.get("/health", (req, res) => {
-    res.status(200).json({ message: "Server is healthy" })
-})
 
-// Error handling middleware MUST be AFTER all routes
-app.use((err, req, res, next) => {
-  if (err.type === 'request.aborted') {
-    console.log('⚠️ Client aborted request');
-    return;
-  }
-  
-  console.error('❌ Auth Service Error:', err);
-  if (!res.headersSent) {
-    res.status(500).json({ 
-      success: false,
-      message: err.message || 'Internal server error' 
-    });
-  }
-});
 
 app.listen(PORT, () => {
-    console.log("auth port is running on port 3000 ")
+    console.log(`🔐 Auth service running on port ${PORT}`)
 })
+

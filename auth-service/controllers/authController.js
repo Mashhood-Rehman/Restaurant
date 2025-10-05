@@ -33,7 +33,7 @@ const Login = async (req, res) => {
 
 const Signup = async (req, res) => {
     const { email, password, name } = req.body;
-    
+
     console.log("📝 Signup attempt:", { email, name });
 
     try {
@@ -52,7 +52,7 @@ const Signup = async (req, res) => {
 
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
-        
+
         // Create user
         const newUser = await prisma.user.create({
             data: {
@@ -63,8 +63,8 @@ const Signup = async (req, res) => {
         });
 
         console.log("✅ User created successfully:", newUser.id);
-        return res.status(201).json({ 
-            message: "User created successfully", 
+        return res.status(201).json({
+            message: "User created successfully",
             user: {
                 id: newUser.id,
                 email: newUser.email,
@@ -73,9 +73,9 @@ const Signup = async (req, res) => {
         });
     } catch (error) {
         console.error("❌ Signup error:", error.message);
-        return res.status(500).json({ 
+        return res.status(500).json({
             message: "Internal server error",
-            error: error.message 
+            error: error.message
         });
     }
 }

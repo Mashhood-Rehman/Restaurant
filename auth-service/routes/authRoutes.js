@@ -4,10 +4,6 @@ const { protect } = require("../middleware/authMiddleware")
 const router = express.Router()
 
 router.post("/login", Login)
-router.post("/signup", (req, res, next) => {
-    console.log("🟢 /signup route hit");
-    console.log("Body:", req.body);
-    Signup(req, res, next);
-})
+router.post("/signup",Signup)
 
 module.exports = router

@@ -55,9 +55,14 @@ const Footer = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
           <div className="lg:col-span-4">
-            <Link to="/landingpage" className="inline-block mb-6">
-              <img src={IMAGES.LOGO} alt="Fooderers Logo" className="h-full w-1/5" />
-            </Link>
+            <img
+              src={IMAGES.LOGO}
+              alt="Logo"
+              height={70}
+              width={80}
+              className="cursor-pointer"
+              onClick={() => handleScrollToSection("hero")}
+            />
             <p className="text-gray-300 text-base leading-relaxed mb-6 pr-4">
               At Fooderers, we serve authentic flavors crafted with passion and creativity.
               Enjoy unforgettable dining in a warm and welcoming atmosphere.

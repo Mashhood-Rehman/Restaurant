@@ -29,7 +29,7 @@ const Reservation = () => {
   
 return (
   <section id="Reservation" className="min-h-screen bg-gradient-to-br from-white to-gray-100 py-12">
-    <div className="container px-6">
+    <div className=" px-6">
       {/* Compact Header */}
       <div className="text-center mb-8">
         <h2 className="text-5xl font-bold text-black mb-3" style={{ fontFamily: 'Dancing Script, cursive' }}>
@@ -43,12 +43,12 @@ return (
 
       {/* Compact Form Container */}
       <div className="bg-white rounded-2xl shadow-[var(--shadow-elegant)] border border-orange-500/20 overflow-hidden">
-        <div className="bg-gradient-to-r from-orange-500 to-orange-400 p-6">
+        <div className="bg-gradient-to-r from-orange-500 to-orange-400 p-2">
           <h3 className="text-2xl font-bold text-white text-center">Make a Reservation</h3>
           <p className="text-white/90 text-center mt-1">Fill in your details below</p>
         </div>
 
-        <form ref={form} onSubmit={sendEmail} className="p-8">
+        <form ref={form} onSubmit={sendEmail} className="p-4">
           {/* Compact Grid Layout */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
             {/* First Name */}

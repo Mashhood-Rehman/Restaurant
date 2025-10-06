@@ -3,10 +3,12 @@ import { persistReducer, persistStore } from 'redux-persist';
 import storage from "redux-persist/lib/storage";
 import productReducer from "./product";
 import cartReducer from "./cartSlice";
+import { apiSlice } from "../../features/apiSlice";
 
 const rootReducer = combineReducers({
   product: productReducer,
-  cart: cartReducer
+  cart: cartReducer,
+  [apiSlice.reducerPath]: apiSlice.reducer
 });
 
 const persistConfig = {
@@ -18,7 +20,11 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
-  reducer: persistedReducer
+  reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false, // required for redux-persist
+    }).concat(apiSlice.middleware), // 👈 attach RTK Query middleware
 });
 
 const persistor = persistStore(store);

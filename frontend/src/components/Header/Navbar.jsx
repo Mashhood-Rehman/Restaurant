@@ -130,7 +130,6 @@ const Navbar = () => {
                 </ul>
               </div>
 
-              {/* Center - Logo */}
               <div className="absolute left-1/2 transform -translate-x-1/2">
                 <img
                   src={IMAGES.LOGO}
@@ -181,7 +180,7 @@ const Navbar = () => {
                   alt="Logo"
                   height={70}
                   width={80}
-                  className="ml-6 cursor-pointer"
+                  className="ml-4 cursor-pointer"
                   onClick={() => scrollToSection("hero")}
                 />
               </div>

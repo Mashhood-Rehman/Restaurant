@@ -21,8 +21,15 @@ const Login = async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: "1d" }
         );
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 24 * 60 * 60 * 1000,
+
+        })
         return res.status(200).json({
-            message: "User logged in successfully", token,
+            message: "User logged in successfully", user: { id: checkUser.id, email: checkUser.email, name: checkUser.name },
         })
     } catch (error) {
         console.log(error)

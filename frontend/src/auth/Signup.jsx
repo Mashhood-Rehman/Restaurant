@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
-import { motion } from 'framer-motion';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useSignupMutation } from '../features/api/AuthApi';
 
 const Signup = ({ setModal, setShowLogin }) => {
   const [user, setUser] = useState({
@@ -11,7 +11,7 @@ const Signup = ({ setModal, setShowLogin }) => {
     email: ""
   });
   const [show, setShow] = useState(false);
-
+  const [signup, { isLoading, error }] = useSignupMutation()
   const passwordShow = () => {
     setShow(!show);
   };
@@ -24,26 +24,26 @@ const Signup = ({ setModal, setShowLogin }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Basic validation
     if (!user.name || !user.email || !user.password) {
       toast.error("All fields are required");
       return;
     }
 
     try {
-      const response = await axios.post(`http://localhost:8000/api/auth/signup`, user, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }); console.log(response.data)
-      if (response.data) {
+      const response = await signup(user).unwrap();
+      if (response) {
         toast.success("Account Created! Please Sign in");
-        setShowLogin(true);
+        setModal(false);
       }
-    } catch (error) {
-      console.error(error);
-      toast.error("Error occurred: " + (error.response?.data?.message || error.message));
+    } catch (err) {
+      console.error(err);
 
+      const message =
+        err?.data?.message ||
+        err?.error ||
+        "Something went wrong";
+
+      toast.error(message);
     }
   };
 
@@ -57,11 +57,8 @@ const Signup = ({ setModal, setShowLogin }) => {
   };
 
   return (
-    <motion.div
-      initial={{ scale: 0.7, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.5, type: "spring", stiffness: 300 }}
-      className="transform-gpu"
+    <div
+
     >
       <h4 className="text-2xl text-neutral-600 font-bold flex justify-center mb-6">
         Create Account
@@ -121,13 +118,12 @@ const Signup = ({ setModal, setShowLogin }) => {
         </div>
 
         <div className="flex justify-between items-center mt-6">
-          <motion.button
+          <button
             type="submit"
-            whileHover={{ scale: 1.05 }}
             className="bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold shadow-lg hover:bg-green-600 focus:outline-none transition-all duration-150"
           >
             Create Account
-          </motion.button>
+          </button>
           <button
             type="button"
             onClick={handleCloseForm}
@@ -139,12 +135,12 @@ const Signup = ({ setModal, setShowLogin }) => {
       </form>
 
       <p className="text-center mt-4 text-gray-600">
-        Already have an account?{" "}
+        Already have an account?
         <span onClick={switchToLogin} className="text-blue-800 font-semibold cursor-pointer">
           Sign In
         </span>
       </p>
-    </motion.div>
+    </div>
   );
 };
 

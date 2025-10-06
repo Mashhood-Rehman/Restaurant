@@ -2,7 +2,7 @@ import { IMAGES } from "../assets/Images";
 
 // data.js
 export const navbarSections = [
-    { name: "Home", id: "landingpage" },
+    { name: "Home", id: "hero" },
     { name: "Menu", id: "Product" },
     { name: "Reservation", id: "Reservation" },
     { name: "FeedBack", id: "Contact" },

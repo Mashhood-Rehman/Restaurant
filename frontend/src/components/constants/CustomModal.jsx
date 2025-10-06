@@ -2,7 +2,7 @@ import React from 'react';
 
 const CustomModal = ({ isOpen, onClose, children, heading }) => {
     if (!isOpen) return null;
-    
+
     return (
         <div
             className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 px-4"
@@ -25,7 +25,6 @@ const CustomModal = ({ isOpen, onClose, children, heading }) => {
                     </button>
                 </div>
 
-                {/* Modal Body */}
                 <div className="overflow-y-auto p-6">
                     {children}
                 </div>

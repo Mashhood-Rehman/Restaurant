@@ -8,12 +8,16 @@ import { navbarSections } from "../Data";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { IMAGES } from "../../assets/Images";
 import CustomModal from "../constants/CustomModal";
+import { useGetMeQuery } from "../../features/api/userApi";
 
 const Navbar = () => {
   const [BGColor, SetBGColor] = useState("bg-white");
   const [open, setOpen] = useState(false);
   const [formclose, setFormClose] = useState(false);
   const [userIn, setUserIn] = useState("");
+  const {getMeUser} = useGetMeQuery()
+  const userData = getMeUser
+  console.log("userdata",userData)
   useEffect(() => {
     const pressedEscapeKey = (e) => {
       const key = e?.key?.toLowerCase();
@@ -26,12 +30,11 @@ const Navbar = () => {
     window.addEventListener("keydown", pressedEscapeKey);
 
     return () => {
+
       window.removeEventListener("keydown", pressedEscapeKey);
     };
   }, []);
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setUserIn(token);
 
     const handleScroll = () => {
       SetBGColor(window.scrollY > 30 ? "bg-white/30 backdrop-blur-lg   " : "bg-white");

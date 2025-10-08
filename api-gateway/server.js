@@ -17,7 +17,7 @@ Gateways.forEach(({route, target}) =>{
     changeOrigin: true,
     proxyReqPathResolver : (req) => req.originalUrl,
     proxyErrorHandler: (err, res ,next) => {
-      console.log(`❌ Proxy Error in route ${route}:`, err.message);
+      console.log(`❌ Proxy Error in route ${route}:`, err.message || err || err?.data?.message);
       res.status(504).json({
         success: false,
         error: "GatewayTimeout error",

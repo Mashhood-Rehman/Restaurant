@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useSignupMutation } from '../features/api/AuthApi';
 
@@ -31,10 +30,8 @@ const Signup = ({ setModal, setShowLogin }) => {
 
     try {
       const response = await signup(user).unwrap();
-      if (response) {
         toast.success("Account Created! Please Sign in");
         setModal(false);
-      }
     } catch (err) {
       console.error(err);
 

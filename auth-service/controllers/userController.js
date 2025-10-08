@@ -76,15 +76,33 @@ const deleteUserById = async (req, res) => {
     const { id } = req.params
     try {
         const deleteUser = await prisma.user.delete({ where: { id: parseInt(id) } })
-        if(!deleteUser) {
-            return res.status(400).json({message : "User not found"})
+        if (!deleteUser) {
+            return res.status(400).json({ message: "User not found" })
         }
-        return res.status(200).json({message: "User deleted successfully" , deleteUser})
+        return res.status(200).json({ message: "User deleted successfully", deleteUser })
     } catch (error) {
-console.log(error.message)
-return res.status(500).json({message:"errror deleting user" , error:error.message})
+        console.log(error.message)
+        return res.status(500).json({ message: "errror deleting user", error: error.message })
     }
 }
 
 
-module.exports = { createUser, getAllUsers, updateUserById , deleteUserById };
+ const getMe = async (req, res) => {
+    try {
+        const user = req.user;
+        const userData = await prisma.user.findUnique({
+            where: { id: user.id },
+            select: { id: true, name: true, email: true, role: true },
+        });
+
+        return res.status(200).json({
+            success: true,
+            user,
+        });
+    } catch (error) {
+        console.error("Error in getMe:", error);
+        return res.status(500).json({ message: "Server error" });
+    }
+};
+
+module.exports = { createUser, getAllUsers, updateUserById, deleteUserById, getMe };

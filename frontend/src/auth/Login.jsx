@@ -12,7 +12,7 @@ const Login = ({ setFormClose }) => {
   const [user, setUser] = useState({ email: "", password: "" });
   const [loginData] = useLoginMutation()
   const passwordShow = () => setShow(!show);
-const { refetch } = useGetMeQuery();
+  const { refetch } = useGetMeQuery();
   const changeHandler = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });

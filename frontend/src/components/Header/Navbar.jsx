@@ -10,16 +10,19 @@ import CustomModal from "../constants/CustomModal";
 import { useGetMeQuery } from "../../features/api/userApi";
 import { toast } from "react-toastify";
 import { useLogoutMutation } from "../../features/api/AuthApi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import MobileSidebar from "./MobileSidebar";
 
 const Navbar = () => {
   const [BGColor, SetBGColor] = useState("bg-white");
   const [open, setOpen] = useState(false);
   const [formclose, setFormClose] = useState(false);
-  const { data: userData, error, isLoading } = useGetMeQuery();
+  const { data: userData, error, isLoading, refetch } = useGetMeQuery();
   const [logoutUser] = useLogoutMutation();
   const [userIn, setUserIn] = useState(null);
+  const navigate = useNavigate(
 
+  )
   useEffect(() => {
     if (userData?.userData) {
       setUserIn(userData);
@@ -70,13 +73,21 @@ const Navbar = () => {
     try {
       await logoutUser().unwrap();
       setUserIn(null);
+      await refetch()
       toast.success("Logged out successfully");
     } catch (error) {
       console.error("Logout error:", error);
       toast.error("Failed to logout. Please try again.");
     }
   };
-
+  const handleNavlinkScroll = (id) => {
+    if (location.pathname === "/") {
+      // Smooth scroll if already on home page
+      scrollToSection(id);
+    } else {
+      navigate(`/#${id}`);
+    }
+  };
   return (
     <div className="flex z-[999] bg-white justify-between items-center">
       <div>
@@ -89,76 +100,15 @@ const Navbar = () => {
         >
           {/* Mobile Layout */}
           <div className="lg:hidden flex justify-between items-center w-full">
-            <div className="dropdown">
-              <div tabIndex={0} role="button" className="btn btn-ghost">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 text-black w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
-                </svg>
-              </div>
+            <MobileSidebar
+              navbarSections={navbarSections}
+              userIn={userIn}
+              toggleForm={toggleForm}
+              handleLogout={handleLogout}
+              scrollToSection={scrollToSection}
+              handleNavlinkScroll={handleNavlinkScroll}
+            />
 
-              <ul className="menu menu-sm dropdown-content bg-white z-50 mt-3 w-52 p-2 rounded-lg shadow-lg">
-                {navbarSections.map((section, index) => (
-                  <li key={index} className="relative">
-                    <button
-                      onClick={() => scrollToSection(section.id)}
-                      className="hover:text-orange-500 text-black text-xl"
-                    >
-                      {section.name}
-                    </button>
-                  </li>
-                ))}
-                {userIn ? (
-                  <div>
-                    <li className="border-t mt-2 pt-2">
-                      <div className="flex items-center gap-2 px-2 py-2">
-                        {userIn.userData?.profileImg ? (
-                          <img
-                            src={userIn.userData.profileImg}
-                            alt={userIn.userData.name}
-                            className="w-10 h-10 rounded-full object-cover border-2 border-orange-500"
-                          />
-                        ) : (
-                          <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">
-                            {userIn.userData?.name?.charAt(0).toUpperCase()}
-                          </div>
-                        )}
-                        <div className="flex flex-col ">
-                          <span className="font-semibold text-sm">{userIn.userData?.name}</span>
-                          <span className="text-xs text-gray-500 truncate overflow-hidden whitespace-nowrap max-w-[120px]">
-                            {userIn.userData?.email}
-                          </span>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <Link to='/orders' className="w-full text-left">
-                        Orders
-                      </Link>
-                    </li>
-                    <li>
-                      <button
-                        className="w-full text-xl text-red-500 hover:text-white hover:bg-red-500 transition duration-300"
-                        onClick={handleLogout}
-                      >
-                        Logout
-                      </button>
-                    </li>
-                  </div>
-                ) : (
-                  <div>
-                    <span onClick={toggleForm} className="text-center cursor-pointer">
-                      Login
-                    </span>
-                  </div>
-                )}
-              </ul>
-            </div>
 
             <div className="absolute left-1/2 transform -translate-x-1/2">
               <img
@@ -217,7 +167,7 @@ const Navbar = () => {
               <ul className="menu menu-horizontal px-1 flex items-center gap-2">
                 {navbarSections.map((section, index) => (
                   <li key={index}>
-                    <button onClick={() => scrollToSection(section.id)} className="hover:text-orange-500 text-black text-xl">
+                    <button onClick={() => handleNavlinkScroll(section.id)} className="hover:text-orange-500 text-black text-xl">
                       {section.name}
                     </button>
                   </li>

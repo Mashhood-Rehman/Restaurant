@@ -92,12 +92,12 @@ const deleteUserById = async (req, res) => {
         const user = req.user;
         const userData = await prisma.user.findUnique({
             where: { id: user.id },
-            select: { id: true, name: true, email: true, role: true },
+            select: { id: true, name: true, email: true, role: true,  profileImg: true  },
         });
 
         return res.status(200).json({
             success: true,
-            user,
+            userData,
         });
     } catch (error) {
         console.error("Error in getMe:", error);

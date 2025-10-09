@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react";
 import Signup from "./Signup";
 import { toast } from "react-toastify";
 import { useLoginMutation } from "../features/api/AuthApi";
+import { useGetMeQuery } from "../features/api/userApi";
 
 const Login = ({ setFormClose }) => {
   const [showLogin, setShowLogin] = useState(true);
@@ -11,7 +12,7 @@ const Login = ({ setFormClose }) => {
   const [user, setUser] = useState({ email: "", password: "" });
   const [loginData] = useLoginMutation()
   const passwordShow = () => setShow(!show);
-
+const { refetch } = useGetMeQuery();
   const changeHandler = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
@@ -30,6 +31,7 @@ const Login = ({ setFormClose }) => {
       const response = await loginData(user).unwrap();
       if (response) {
         toast.success("User logged in");
+        await refetch()
         handleCloseForm();
       }
     } catch (error) {
@@ -46,6 +48,9 @@ const Login = ({ setFormClose }) => {
   const toggleSignup = () => {
     setShowLogin(false);
   };
+  const handleGoogleLogin = () => {
+    window.location.href = "http://localhost:8000/api/google";
+  };
 
   if (!showLogin) {
     return (
@@ -58,10 +63,7 @@ const Login = ({ setFormClose }) => {
 
   return (
     <div>
-      <h4 className="text-2xl text-neutral-600 font-bold flex justify-center mb-6">
-        Keep it
-        <Icon icon="mdi:food-halal" width="30" className="ml-2 text-blue-700" height="26" />
-      </h4>
+
       <form onSubmit={submitHandler} className="space-y-6">
         <div>
           <label className="block text-gray-700 font-semibold">Email</label>
@@ -105,13 +107,22 @@ const Login = ({ setFormClose }) => {
             Order as Guest
           </button>
         </div>
+        <div className="border-t my-4">
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-gray-50 focus:outline-none transition-all duration-150"
+          >
+            Sign in with Google
+          </button>      </div>
       </form>
       <p className="text-center mt-4 text-gray-600">
         New here?
-        <span onClick={toggleSignup} className="text-blue-800 font-semibold cursor-pointer">
+        <span onClick={toggleSignup} className="text-blue-800 ml-1 font-semibold cursor-pointer">
           Create Account
         </span>
       </p>
+
     </div>
   );
 };

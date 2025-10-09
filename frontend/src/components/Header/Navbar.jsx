@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import { Modal, ModalTrigger } from "../OK";
 import Login from "../../auth/Login";
 import Sidebar from "../Sidebar";
 import { navbarSections } from "../Data";
@@ -9,37 +8,43 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { IMAGES } from "../../assets/Images";
 import CustomModal from "../constants/CustomModal";
 import { useGetMeQuery } from "../../features/api/userApi";
+import { toast } from "react-toastify";
+import { useLogoutMutation } from "../../features/api/AuthApi";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [BGColor, SetBGColor] = useState("bg-white");
   const [open, setOpen] = useState(false);
   const [formclose, setFormClose] = useState(false);
-  const [userIn, setUserIn] = useState("");
-  const {getMeUser} = useGetMeQuery()
-  const userData = getMeUser
-  console.log("userdata",userData)
+  const { data: userData, error, isLoading } = useGetMeQuery();
+  const [logoutUser] = useLogoutMutation();
+  const [userIn, setUserIn] = useState(null);
+
+  useEffect(() => {
+    if (userData?.userData) {
+      setUserIn(userData);
+    } else {
+      setUserIn(null);
+    }
+  }, [userData, userIn]);
+
   useEffect(() => {
     const pressedEscapeKey = (e) => {
       const key = e?.key?.toLowerCase();
-
       if (key === 'escape') {
         setFormClose(false);
       }
     };
-
     window.addEventListener("keydown", pressedEscapeKey);
-
     return () => {
-
       window.removeEventListener("keydown", pressedEscapeKey);
     };
   }, []);
+
   useEffect(() => {
-
     const handleScroll = () => {
-      SetBGColor(window.scrollY > 30 ? "bg-white/30 backdrop-blur-lg   " : "bg-white");
+      SetBGColor(window.scrollY > 30 ? "bg-white/30 backdrop-blur-lg" : "bg-white");
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   });
@@ -49,7 +54,6 @@ const Navbar = () => {
 
   const toggleForm = () => {
     setFormClose(!formclose);
-    localStorage.setItem("formclose", !formclose);
   };
 
   const scrollToSection = (id) => {
@@ -62,181 +66,227 @@ const Navbar = () => {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setUserIn("");
+  const handleLogout = async () => {
+    try {
+      await logoutUser().unwrap();
+      setUserIn(null);
+      toast.success("Logged out successfully");
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Failed to logout. Please try again.");
+    }
   };
 
   return (
-    <div className="flex z-[999]  bg-white justify-between items-center">
+    <div className="flex z-[999] bg-white justify-between items-center">
       <div>
         <Sidebar open={open} setOpen={setOpen} />
-        <Modal>
-          <motion.div
-            initial={{ y: -100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className={`navbar ${BGColor} duration-300 ease-in-out fixed z-20 flex justify-between items-center w-full px-4`}
-          >
-            {/* Mobile Layout */}
-            <div className="lg:hidden flex justify-between items-center w-full">
-              {/* Left - Hamburger Menu */}
-              <div className="dropdown">
-                <div tabIndex={0} role="button" className="btn btn-ghost">
+        <motion.div
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className={`navbar ${BGColor} duration-300 ease-in-out fixed z-20 flex justify-between items-center w-full px-4`}
+        >
+          {/* Mobile Layout */}
+          <div className="lg:hidden flex justify-between items-center w-full">
+            <div className="dropdown">
+              <div tabIndex={0} role="button" className="btn btn-ghost">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 text-black w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
+                </svg>
+              </div>
+
+              <ul className="menu menu-sm dropdown-content bg-white z-50 mt-3 w-52 p-2 rounded-lg shadow-lg">
+                {navbarSections.map((section, index) => (
+                  <li key={index} className="relative">
+                    <button
+                      onClick={() => scrollToSection(section.id)}
+                      className="hover:text-orange-500 text-black text-xl"
+                    >
+                      {section.name}
+                    </button>
+                  </li>
+                ))}
+                {userIn ? (
+                  <div>
+                    <li className="border-t mt-2 pt-2">
+                      <div className="flex items-center gap-2 px-2 py-2">
+                        {userIn.userData?.profileImg ? (
+                          <img
+                            src={userIn.userData.profileImg}
+                            alt={userIn.userData.name}
+                            className="w-10 h-10 rounded-full object-cover border-2 border-orange-500"
+                          />
+                        ) : (
+                          <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">
+                            {userIn.userData?.name?.charAt(0).toUpperCase()}
+                          </div>
+                        )}
+                        <div className="flex flex-col ">
+                          <span className="font-semibold text-sm">{userIn.userData?.name}</span>
+                          <span className="text-xs text-gray-500 truncate overflow-hidden whitespace-nowrap max-w-[120px]">
+                            {userIn.userData?.email}
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <Link to='/orders' className="w-full text-left">
+                        Orders
+                      </Link>
+                    </li>
+                    <li>
+                      <button
+                        className="w-full text-xl text-red-500 hover:text-white hover:bg-red-500 transition duration-300"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  </div>
+                ) : (
+                  <div>
+                    <span onClick={toggleForm} className="text-center cursor-pointer">
+                      Login
+                    </span>
+                  </div>
+                )}
+              </ul>
+            </div>
+
+            <div className="absolute left-1/2 transform -translate-x-1/2">
+              <img
+                src={IMAGES.LOGO}
+                alt="Logo"
+                height={70}
+                width={80}
+                className="cursor-pointer"
+                onClick={() => scrollToSection("hero")}
+              />
+            </div>
+
+            <div className="dropdown dropdown-end">
+              <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+                <div className="indicator">
+                  <span className="text-xl font-bold">{totalQuantity}</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 text-black w-5"
+                    className="h-8 w-8"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
-
-                <ul className="menu menu-sm dropdown-content bg-white z-50 mt-3 w-52 p-2">
-                  {navbarSections.map((section, index) => (
-                    <li key={index} className="relative">
-                      <button
-                        onClick={() => scrollToSection(section.id)}
-                        className="hover:text-orange-500 text-black text-xl"
-                      >
-                        {section.name}
-                      </button>
-                    </li>
-                  ))}
-                  {userIn ? (
-                    <div>
-                      <li>
-                        <button className="w-full text-left" onClick={() => scrollToSection("orders")}>
-                          Orders
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          className="w-full text-xl text-red-500 hover:text-white hover:bg-red-500 transition duration-300"
-                          onClick={handleLogout}
-                        >
-                          Logout
-                        </button>
-                      </li>
-                    </div>
-                  ) : (
-                    <div>
-                      <ModalTrigger className="dark:text-black text-xl text-black flex justify-center group/modal-btn">
-                        <span onClick={toggleForm} className="text-center cursor-pointer">
-                          Login
-                        </span>
-                      </ModalTrigger>
-                    </div>
-                  )}
-                </ul>
               </div>
-
-              <div className="absolute left-1/2 transform -translate-x-1/2">
-                <img
-                  src={IMAGES.LOGO}
-                  alt="Logo"
-                  height={70}
-                  width={80}
-                  className="cursor-pointer"
-                  onClick={() => scrollToSection("hero")}
-                />
-              </div>
-
-              {/* Right - Cart */}
-              <div className="dropdown dropdown-end">
-                <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-                  <div className="indicator">
-                    <span className="text-xl font-bold">{totalQuantity}</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-8 w-8"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                  </div>
-                </div>
-                <div className="card card-compact dropdown-content z-[1] mt-3 w-52 shadow">
-                  <div className="card-body bg-white">
-                    <span className="text-lg font-bold">{totalQuantity}</span>
-                    <span className="text-info">Subtotal: ${totalAmount}</span>
-                    <div className="card-actions">
-                      <button onClick={() => setOpen(!open)} className="btn text-white btn-block">
-                        View cart
-                      </button>
-                    </div>
+              <div className="card card-compact dropdown-content z-[1] mt-3 w-52 shadow">
+                <div className="card-body bg-white">
+                  <span className="text-lg font-bold">{totalQuantity}</span>
+                  <span className="text-info">Subtotal: ${totalAmount}</span>
+                  <div className="card-actions">
+                    <button onClick={() => setOpen(!open)} className="btn text-white btn-block">
+                      View cart
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Desktop Layout - Unchanged */}
-            <div className="hidden lg:flex justify-between items-center w-full">
-              {/* Left - Logo */}
-              <div className="navbar-start">
-                <img
-                  src={IMAGES.LOGO}
-                  alt="Logo"
-                  height={70}
-                  width={80}
-                  className="ml-4 cursor-pointer"
-                  onClick={() => scrollToSection("hero")}
-                />
-              </div>
+          {/* Desktop Layout */}
+          <div className="hidden lg:flex justify-between items-center w-full">
+            <div className="flex-shrink-0">
+              <img
+                src={IMAGES.LOGO}
+                alt="Logo"
+                height={70}
+                width={80}
+                className="ml-4 cursor-pointer"
+                onClick={() => scrollToSection("hero")}
+              />
+            </div>
 
-              {/* Center - Navigation */}
-              <div className="flex items-center justify-center">
-                <ul className="menu menu-horizontal px-1">
-                  {navbarSections.map((section, index) => (
-                    <li key={index}>
-                      <button onClick={() => scrollToSection(section.id)} className="hover:text-orange-500 text-black text-xl">
-                        {section.name}
-                      </button>
-                    </li>
-                  ))}
-                  <li>
-                    {userIn ? (
-                      <div className="relative group">
-                        <div className="cursor-pointer p-2">
-                          <Icon
-                            icon="mdi:account-circle"
-                            className="text-4xl text-gray-700 hover:text-orange-500 transition duration-300 ease-in-out transform hover:scale-110"
-                          />
-                        </div>
-                        <motion.ul
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          transition={{ duration: 0.3 }}
-                          className="absolute left-0 top-14 mt-2 hidden group-hover:block bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden"
-                        >
-                          <li className="p-3 hover:bg-orange-500 hover:text-white transition duration-300 ease-in-out cursor-pointer">
-                            Orders
-                          </li>
-                          <li
-                            className="p-3 hover:bg-red-500 hover:text-white transition duration-300 ease-in-out cursor-pointer"
-                            onClick={handleLogout}
-                          >
-                            Logout
-                          </li>
-                        </motion.ul>
-                      </div>
-                    ) : (
-                      <ModalTrigger className="bg-orange-500 hover:bg-orange-600  text-white flex justify-center ">
-                        <span onClick={toggleForm} className="text-center cursor-pointer">
-                          Login
-                        </span>
-                      </ModalTrigger>
-                    )}
+            <div className="flex-1 flex items-center justify-center">
+              <ul className="menu menu-horizontal px-1 flex items-center gap-2">
+                {navbarSections.map((section, index) => (
+                  <li key={index}>
+                    <button onClick={() => scrollToSection(section.id)} className="hover:text-orange-500 text-black text-xl">
+                      {section.name}
+                    </button>
                   </li>
-                </ul>
-              </div>
+                ))}
+              </ul>
+            </div>
 
-              {/* Right - Cart */}
+            <div className="flex-shrink-0 flex items-center gap-4 mr-4">
+              {userIn ? (
+                <div className="relative group">
+                  <div className="cursor-pointer p-2">
+                    {userIn.userData?.profileImg ? (
+                      <img
+                        src={userIn.userData.profileImg || IMAGES.DUMMYIMG}
+                        alt={userIn.userData.name}
+                        className="w-10 h-10 rounded-full object-cover border-2 border-gray-300 hover:border-orange-500 transition duration-300 ease-in-out transform hover:scale-110"
+                      />
+                    ) : (
+                      <Icon
+                        icon="mdi:account-circle"
+                        className="text-4xl text-gray-700 hover:text-orange-500 transition duration-300 ease-in-out transform hover:scale-110"
+                      />
+                    )}
+                  </div>
+                  <motion.ul
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                    className="absolute right-0 top-12 hidden group-hover:block bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden min-w-[200px]"
+                  >
+                    <li className="p-4 border-b border-gray-100">
+                      <div className="flex items-center gap-3">
+                        {userIn.userData.profileImg ? (
+                          <img
+                            src={userIn.userData.profileImg}
+                            alt={userIn.userData.name || "User"}
+                            className="w-12 h-12 rounded-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold text-xl">
+                            {userIn.userData.name?.charAt(0).toUpperCase() || "U"}
+                          </div>
+                        )}
+                        <div className="flex flex-col ">
+                          <span className="font-semibold overflow-hidden truncate whitespace-nowrap max-w-[120px] text-sm">{userIn.userData.name || "User"}</span>
+                          <span className="text-xs overflow-hidden truncate whitespace-nowrap max-w-[120px]  text-gray-500">{userIn.userData.email}</span>
+                        </div>
+                      </div>
+                    </li>
+                    <li className="p-3 hover:bg-orange-500 hover:text-white transition duration-300 ease-in-out cursor-pointer whitespace-nowrap">
+                      <Link to='/orders' className="w-full text-left ">
+                        Orders
+                      </Link>
+                    </li>
+                    <li
+                      className="p-3 hover:bg-red-500 hover:text-white transition duration-300 ease-in-out cursor-pointer whitespace-nowrap"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </li>
+                  </motion.ul>
+                </div>
+              ) : (
+                <button onClick={toggleForm} className="bg-orange-500 hover:bg-orange-600 text-white flex justify-center px-6 py-2 rounded-lg">
+                  Login
+                </button>
+              )}
+
               <div className="dropdown dropdown-end">
                 <div tabIndex={0} role="button" className="btn btn-ghost btn-circle text-black">
                   <div className="indicator">
@@ -265,13 +315,11 @@ const Navbar = () => {
                 </div>
               </div>
             </div>
-
-          </motion.div>
-          <CustomModal isOpen={formclose} heading='Login' onClose={()=>setFormClose(false)} >
-
-          <Login setFormClose={setFormClose}  />
-          </CustomModal>
-        </Modal>
+          </div>
+        </motion.div>
+        <CustomModal isOpen={formclose} heading='Login' onClose={() => setFormClose(false)}>
+          <Login setFormClose={setFormClose} />
+        </CustomModal>
       </div>
     </div>
   );

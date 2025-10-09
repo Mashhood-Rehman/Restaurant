@@ -65,7 +65,9 @@ const googleCallbackController = async (req, res) => {
             httpOnly: true,
             // secure: true,    // Uncomment this in production
             sameSite: 'strict', maxAge: 3600000 
-        }); res.redirect("/");
+        }); 
+                res.redirect(`${process.env.CLIENT_URL}?auth=success`);
+
         
  
 

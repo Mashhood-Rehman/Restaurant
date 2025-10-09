@@ -4,6 +4,7 @@ export const IMAGES =
     HEROCAROUSEL2: "/heroCarousel2.webp",
     HEROCAROUSEL3: "/heroCarousel3.webp",
     LOGO: "/logoo.webp",
+    DUMMYIMG: "/dummyImage.webp",
     ABOUT1: "/about-1.webp",
     ABOUT2: "/about-2.webp",
     ABOUT3: "/about-3.webp",

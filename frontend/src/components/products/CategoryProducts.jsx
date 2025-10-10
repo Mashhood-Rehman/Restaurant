@@ -5,23 +5,23 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 
 const CategoryProducts = ({ category }) => {
     const dispatch = useDispatch()
-      const items = useSelector((state) => state.product.products);
-  const status = useSelector((state) => state.product.status); 
-  const error = useSelector((state) => state.product.error); 
+    const items = useSelector((state) => state.product.products);
+    const status = useSelector((state) => state.product.status);
+    const error = useSelector((state) => state.product.error);
     const filteredProducts = Array.isArray(items) ? items.filter((item) => item.category === category) : [];
-  useEffect(() => {
-    if (status === 'idle') {
-      dispatch(fetchProducts(category)); 
+    useEffect(() => {
+        if (status === 'idle') {
+            dispatch(fetchProducts(category));
+        }
+    }, [status, dispatch, category]);
+
+    if (status === 'loading') {
+        return <div>Loading, please wait...</div>;
     }
-  }, [status, dispatch, category]);
 
-  if (status === 'loading') {
-    return <div>Loading, please wait...</div>;
-  }
-
-  if (status === 'failed') {
-    return <div>{error}</div>;
-  }
+    if (status === 'failed') {
+        return <div>{error}</div>;
+    }
     return (
         <div id={category}>
             <h1 className=' bg-orange-500 font-bold text-transparent bg-clip-text text-2xl ml-[10%]'>

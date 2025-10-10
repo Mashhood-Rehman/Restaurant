@@ -218,13 +218,13 @@ const Navbar = () => {
                         </div>
                       </div>
                     </li>
-                    <li className="p-3 hover:bg-orange-500 hover:text-white transition duration-300 ease-in-out cursor-pointer whitespace-nowrap">
+                    <li className="p-3 ps-5 hover:bg-orange-500 hover:text-white transition duration-300 ease-in-out cursor-pointer whitespace-nowrap">
                       <Link to='/orders' className="w-full text-left ">
                         Orders
                       </Link>
                     </li>
                     <li
-                      className="p-3 hover:bg-red-500 hover:text-white transition duration-300 ease-in-out cursor-pointer whitespace-nowrap"
+                      className="p-3 ps-5 hover:bg-red-500 hover:text-white transition duration-300 ease-in-out cursor-pointer whitespace-nowrap"
                       onClick={handleLogout}
                     >
                       Logout

@@ -1,40 +1,84 @@
+version: '3.8'
+
 services:
-  backend-dev:
+  
+  api-gateway:
     build:
-      context: .
-      dockerfile: backend/Dockerfile.backend
-      target: dev
-    volumes:
-      - ./backend:/app
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - auth-service
+      - orders-service
+      - backend
+    networks:
+      - restaurant-network
+
+  auth-service:
+     build:
+       context: ./auth-service
+       dockerfile: Dockerfile
+     ports:
+       - "3000:3000"
+     environment:
+       - DATABASE_URL=${DATABASE_URL}
+       - PORT=3000
+       - NODE_ENV=development
+       - CLIENT_URL=${CLIENT_URL}
+       - JWT_SECRET=${JWT_SECRET}
+       - REDIRECT_URI=${REDIRECT_URI}
+       - CLIENT_ID=${CLIENT_ID}
+       - CLIENT_SECRET_ID=${CLIENT_SECRET_ID}
+     networks:
+       - restaurant-network
+
+  orders-service:
+    build:
+      context: ./orders-service
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - PORT=${PORT}
+      - NODE_ENV=development
+    networks:
+      - restaurant-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "5000:5000"
     environment:
+      - MONGO_URI=${MONGO_URI}
+      - PORT=${PORT}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - JWT_SECRET=${JWT_SECRET}
       - NODE_ENV=development
-      - MONGO_URI=mongodb+srv://mashhoodbutt47:masoodbabuak47@cluster0.faqr2tn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/product
-    depends_on:
-      - db
+    networks:
+      - restaurant-network    
 
-  frontend-dev:
+  frontend:
     build:
-      context: .
-      dockerfile: frontend/Dockerfile.frontend
-      target: dev
-    volumes:
-      - ./frontend:/app
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
       - "5173:5173"
     environment:
       - NODE_ENV=development
-      - VITE_APP_API_URL=https://localhost:5173
+      - VITE_API_GATEWAY_BASE_URL=${VITE_API_GATEWAY_BASE_URL}
+      - VITE_API_BASE_URL=${VITE_API_BASE_URL}
     depends_on:
-      - db
+      - api-gateway
+    networks:
+      - restaurant-network
 
-  db:
-    image: mongo:latest
-    ports:
-      - "27017:27017"
-    volumes:
-      - mern_db:/data/db
-
-volumes:
-  mern_db:
+networks:
+  restaurant-network:
+    driver: bridge
+    

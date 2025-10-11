@@ -1,19 +1,27 @@
-FROM node:20-alpine
+# Use Bun image
+FROM oven/bun:alpine
 
+# Set working directory
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+# Copy package files
+COPY package.json ./
 COPY bun.lock* ./
 
+# Install dependencies
+RUN bun install
 
-RUN npm install
+# Copy prisma schema
+COPY prisma ./prisma
 
-COPY prisma  ./prisma
+# Generate Prisma Client
+RUN bunx prisma generate
 
-RUN npx prisma generate
-
+# Copy source code
 COPY . .
 
+# Expose port
 EXPOSE 3000
 
-CMD [ "node", "server.json" ]
+# Start the service
+CMD ["bun", "run", "server.js"]

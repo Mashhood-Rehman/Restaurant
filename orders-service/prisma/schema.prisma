@@ -15,12 +15,12 @@ datasource db {
 }
 
 model Order {
-  id        String   @id @default(cuid())
-  userId    String?
-  items     String[]
-  amount    Int
-  address   Json
-  status    String   @default("Pending")
-  date      DateTime @default(now())
-  payment   Boolean  @default(false)
+  id      String   @id @default(cuid())
+  userId  String?
+  items   String[]
+  amount  Int
+  address Json
+  status  String   @default("Pending")
+  date    DateTime @default(now())
+  payment Boolean  @default(false)
 }

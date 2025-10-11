@@ -36,46 +36,46 @@ services:
        - restaurant-network
 
   orders-service:
-    build:
-      context: ./orders-service
-      dockerfile: Dockerfile
-    ports:
+     build:
+       context: ./orders-service
+       dockerfile: Dockerfile
+     ports:
       - "3001:3001"
-    environment:
+     environment:
       - DATABASE_URL=${DATABASE_URL}
       - PORT=${PORT}
       - NODE_ENV=development
-    networks:
+     networks:
       - restaurant-network
 
   backend:
-    build:
+     build:
       context: ./backend
       dockerfile: Dockerfile
-    ports:
+     ports:
       - "5000:5000"
-    environment:
+     environment:
       - MONGO_URI=${MONGO_URI}
       - PORT=${PORT}
       - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
       - JWT_SECRET=${JWT_SECRET}
       - NODE_ENV=development
-    networks:
+     networks:
       - restaurant-network    
 
   frontend:
-    build:
+     build:
       context: ./frontend
       dockerfile: Dockerfile
-    ports:
+     ports:
       - "5173:5173"
-    environment:
+     environment:
       - NODE_ENV=development
       - VITE_API_GATEWAY_BASE_URL=${VITE_API_GATEWAY_BASE_URL}
       - VITE_API_BASE_URL=${VITE_API_BASE_URL}
-    depends_on:
+     depends_on:
       - api-gateway
-    networks:
+     networks:
       - restaurant-network
 
 networks:

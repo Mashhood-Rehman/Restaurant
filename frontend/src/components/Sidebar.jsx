@@ -4,94 +4,125 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { decrementQuantity, incrementQuantity, removeFromCart } from "./stores/cartSlice";
 import { NavLink } from "react-router-dom";
 
-const Sidebar = ({open , setOpen}) => {
-
+const Sidebar = ({open, setOpen}) => {
     const totalAmount = useSelector(state => state.cart.totalAmount)
     const items = useSelector(state => state.cart.items)
     const dispatch = useDispatch()
 
     return (
-    <div>
-              {open && (
-          <div
-            className="fixed inset-0 bg-black opacity-50 z-40"
-            onClick={() => setOpen(false)}
-          />
-        )}
+        <div>
+            {open && (
+                <div
+                    className="fixed inset-0 bg-black opacity-50 z-40"
+                    onClick={() => setOpen(false)}
+                />
+            )}
 
-        <motion.div
-          className="sidebar  fixed top-20 right-0 h-3/4 w-96 overflow-y-auto bg-blue-400 text-white z-50 transform transition-transform duration-300 ease-in-out"
-          style={{ transform: open ? "translateX(0)" : "translateX(100%)" }}
-        >
-          {open && (
-            <>
-              <div className="flex-none px-10">
-                <div className="dropdown dropdown-end">
-                  <div
-                    tabIndex={0}
-                    role="button"
-                    className="btn btn-ghost btn-circle"
-                  ></div>
-                </div>
-              </div>
+            <motion.div
+                className="fixed top-0 right-0 h-full w-96 bg-white shadow-2xl z-50 flex flex-col"
+                style={{ transform: open ? "translateX(0)" : "translateX(100%)" }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+            >
+                {open && (
+                    <>
+                        <div className="flex items-center justify-between p-6 border-b-2 border-orange-500">
+                            <h2 className="text-2xl font-bold text-black">Your Cart</h2>
+                            <button 
+                                onClick={() => setOpen(false)}
+                                className="text-gray-600 text-3xl"
+                            >
+                                <Icon icon="material-symbols:close" />
+                            </button>
+                        </div>
 
-              <div className="  ">
-              {items.map((p) => (
-    <div key={p.id} className="p-4 flex flex-col md:flex-row items-center md:items-start">
-        <img  src={`${import.meta.env.VITE_API_BASE_URL}${p.picture}`}alt={p.title} className="w-24 h-24 object-cover rounded-full mb-4 md:mb-0 md:mr-4" />
-        <div className="flex-1">
-            <h2 className="text-xl font-medium text-gray-800">{p.name}</h2>
-            <div className="flex items-center space-x-4 mt-2">
-                <button className="text-black text-3xl rounded-full px-2 py-1 hover:bg-blue-600 transition duration-300" onClick={() => dispatch(decrementQuantity(p))}>-</button>
-                <p className="text-gray-600 text-xl">{p.quantity}</p>
-                <button className="text-black text-3xl rounded-full px-2 py-1 hover:bg-blue-600 transition duration-300" onClick={() => dispatch(incrementQuantity(p))}>+</button>
-            </div>
-            <p className="text-gray-600 mt-2">Price: ${p.price }</p>
+                        <div className="flex-1 overflow-y-auto p-4">
+                            {items.length === 0 ? (
+                                <div className="flex flex-col items-center justify-center h-full text-gray-400">
+                                    <Icon icon="mdi:cart-outline" className="text-6xl mb-4" />
+                                    <p className="text-lg">Your cart is empty</p>
+                                </div>
+                            ) : (
+                                <div className="space-y-4">
+                                    {items.map((p) => (
+                                        <div key={p.id} className="bg-white border border-gray-200 rounded-lg p-4">
+                                            <div className="flex gap-3">
+                                                <img 
+                                                    src={`${import.meta.env.VITE_API_BASE_URL}${p.picture}`}
+                                                    alt={p.title} 
+                                                    className="w-20 h-20 object-cover rounded-lg" 
+                                                />
+                                                <div className="flex-1">
+                                                    <div className="flex justify-between items-start">
+                                                        <h3 className="font-semibold text-black">{p.name}</h3>
+                                                        <button
+                                                            onClick={() => dispatch(removeFromCart(p._id))}
+                                                            className="text-gray-400 text-xl"
+                                                        >
+                                                            <Icon icon="material-symbols:close" />
+                                                        </button>
+                                                    </div>
+                                                    <p className="text-orange-500 font-bold mt-1">${p.price.toFixed(2)}</p>
+                                                    <div className="flex items-center gap-3 mt-3">
+                                                        <button 
+                                                            className="w-7 h-7 flex items-center justify-center bg-orange-500 text-white rounded-full text-lg"
+                                                            onClick={() => dispatch(decrementQuantity(p))}
+                                                        >
+                                                            -
+                                                        </button>
+                                                        <span className="font-semibold text-black w-6 text-center">{p.quantity}</span>
+                                                        <button 
+                                                            className="w-7 h-7 flex items-center justify-center bg-orange-500 text-white rounded-full text-lg"
+                                                            onClick={() => dispatch(incrementQuantity(p))}
+                                                        >
+                                                            +
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="border-t-2 border-orange-500 p-6 bg-white">
+                            <div className="space-y-2 mb-4">
+                                <div className="flex justify-between text-black">
+                                    <span>Subtotal</span>
+                                    <span className="font-semibold">${totalAmount.toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between text-black">
+                                    <span>Delivery Fee</span>
+                                    <span className="font-semibold">$5.00</span>
+                                </div>
+                                <div className="flex justify-between text-xl font-bold text-black pt-2 border-t border-gray-300">
+                                    <span>Total</span>
+                                    <span className="text-orange-500">${(totalAmount + 5).toFixed(2)}</span>
+                                </div>
+                            </div>
+
+                            {totalAmount > 90 ? (
+                                <NavLink to="/dispatch" target="_blank">
+                                    <button className="w-full py-3 bg-orange-500 text-white font-bold rounded-lg">
+                                        Proceed to Checkout
+                                    </button>
+                                </NavLink>
+                            ) : (
+                                <div className="text-center">
+                                    <button 
+                                        disabled 
+                                        className="w-full py-3 bg-gray-300 text-gray-500 font-bold rounded-lg cursor-not-allowed"
+                                    >
+                                        Minimum Order $100
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </>
+                )}
+            </motion.div>
         </div>
-        <button
-            onClick={() => dispatch(removeFromCart(p._id))}
-        >
-            <Icon className="  -mt-[1]  text-black    hover:bg-red-600 px-2 w-10 h-8 rounded-full   duration-300 ease-in-out   -ml-16" icon="material-symbols:close"  />
-        </button>
-    </div>
-))}
-
-
-          <div className=" flex flex-col  mt-4">
-            <button className="font-semibold tracking-tight text-xl">
-              Total price: ${totalAmount +5}
-            </button>
-            <button className="font-semibold text-gray-300 text-sm tracking-tight ">
-              (Delivery Fee: $5)
-            </button>
-          </div>
-          <div className="mt-4">
-            
-            {totalAmount >90 ? 
-            (<div>
-
-            <NavLink to= "/dispatch" target="_blank">
-              
-              < button  className="w-full py-2 bg-blue-500  text-white font-bold rounded-md mb-1">
-
-              Checkout
-              </button>
-              </NavLink>
-                </div>)
-              :
-              <p className="font-semibold font-sans     flex text-center justify-center ">
-
-              "Minimum Delivery $100 "
-              </p>
-               }
-          </div>
-        </div>
-            </>
-          )}
-        </motion.div>
-        
-    </div>
-  )
+    )
 }
 
 export default Sidebar

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../stores/product';
 import { Icon } from '@iconify/react/dist/iconify.js';
+import { addToCart } from '../stores/cartSlice';
 
 const CategoryProducts = ({ category }) => {
     const dispatch = useDispatch()
@@ -21,6 +22,17 @@ const CategoryProducts = ({ category }) => {
 
     if (status === 'failed') {
         return <div>{error}</div>;
+    }
+    const handleAddToCart = (product) => {
+        try {
+            
+            
+            console.log("adding item to cart", product)
+            dispatch(addToCart(product));
+        } catch (error) {
+         console.log("error adding to cart", error)   
+        }
+
     }
     return (
         <div id={category}>
@@ -47,7 +59,7 @@ const CategoryProducts = ({ category }) => {
                         <div className="flex justify-center sm:justify-end space-x-4 mt-4  ">
                             <span className="text-orange-600 text-lg sm:text-xl ml-3   font-semibold">${p.price}</span>
                             <button
-                                onClick={() => dispatch(addToCart(p))}
+                                onClick={() =>handleAddToCart(p) }
                                 className="text-orange-500 p-2 rounded-lg transition duration-200 ease-in-out flex items-center"
                             >
                                 <Icon icon="mdi-light:cart" className="h-6 sm:h-8 w-6 sm:w-8" />

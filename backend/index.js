@@ -1,62 +1,64 @@
-  require("dotenv").config();
-  const express = require("express");
-  const app = express();
-  const cors = require("cors");
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const path = require("path");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-  const port = process.env.PORT || 5000;
-  const mongoose = require("mongoose");
-  const path = require("path");
+const app = express();
+const port = process.env.PORT || 5000;
 
-  app.use(express.json());
-  app.use(cors());
-  app.use(
-    "/images",
-    express.static(path.join(__dirname, "../frontend/src/Images"))
-  );
+// Middleware
+app.use(express.json());
+app.use(cors());
+app.use("/images", express.static(path.join(__dirname, "../frontend/src/Images")));
 
-  const router = require("./routes/productroute");
-  const route = require("./routes/userRoute");
-  const orderRouter = require("./routes/orderRoute");
+// Routes
+const productRouter = require("./routes/productroute");
+const userRouter = require("./routes/userRoute");
+const orderRouter = require("./routes/orderRoute");
 
-  const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+app.use("/", userRouter);
+app.use("/", productRouter);
+app.use("/", orderRouter);
 
-  mongoose
-    .connect(process.env.MONGO_URI)
-    .then(() => console.log("the db is running successfully"))
-    .catch((err) => console.log(err));
+// ✅ Stripe checkout endpoint
+app.post("/create-checkout-sessions", async (req, res) => {
+  try {
+    const { products } = req.body;
 
-  app.use("/", route);
-  app.use("/", router);
-  app.use("/", orderRouter);
-  app.post("/create-checkout-sessions", async (req, res) => {
-    try {
-      const { products } = req.body;
-
-      const lineItems = products.map((item) => ({
-        price_data: {
-          currency: "usd",
-          product_data: {
-            name: item.name,
-          },
-          unit_amount: item.price * 100,
+    const lineItems = products.map((item) => ({
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: item.name,
         },
-        quantity: item.quantity,
-      }));
+        unit_amount: Math.round(item.price * 100), // cents
+      },
+      quantity: item.quantity,
+    }));
 
-      const session = await stripe.checkout.sessions.create({
-        payment_method_types: ["card"],
-        line_items: lineItems,
-        mode: "payment",
-        success_url: "http://localhost:5173/",
-        cancel_url: "http://localhost:3000/cancel",
-      });
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: lineItems,
+      mode: "payment",
+      success_url: "http://localhost:5173/success",
+      cancel_url: "http://localhost:5173/cancel",
+    });
 
-      res.json({ id: session.id });
-    } catch (error) {
-      res.status(500).send(`Error creating checkout session: ${error.message}`);
-    }
-  });
+    res.json({ id: session.id });
+  } catch (error) {
+    console.error("Error creating checkout session:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
 
-  app.listen(port, () => {
-    console.log("restaurant port   is running on port", port);
-  });
+// Connect MongoDB
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB connected successfully"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
+
+app.listen(port, () => {
+  console.log(`🚀 Server running on port ${port}`);
+});

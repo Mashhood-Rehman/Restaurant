@@ -9,18 +9,31 @@ import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/Home";
 import Navbar from "./components/Header/Navbar";
 import Orders from "./pages/Orders";
+import AdminRoutes from "./admin/AdminRoutes";
+import AdminLayout from "./components/adminComponents/AdminLayout";
+import { AdminOrders, Analytics, Products, Users } from "./admin";
 
 const App = () => {
   return (<>
     <ToastContainer />
     <Navbar />
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/orders" element={<Orders />} />
-      <Route path="/dispatch" element={<Dispatch />} />
-      <Route path="/success" element={<Success />} />
-      <Route path="/cancel" element={<Cancel />} />
-    </Routes>
+    <div className="pt-24">
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/dispatch" element={<Dispatch />} />
+        <Route path="/success" element={<Success />} />
+        <Route path="/cancel" element={<Cancel />} />
+
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="users" element={<Users />} />
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="products" element={<Products />} />
+          <Route path="analytics" element={<Analytics />} />
+        </Route>
+      </Routes>
+    </div>
   </>
   );
 };

@@ -1,3 +1,6 @@
+import { Icon } from "@iconify/react/dist/iconify.js";
+import CustomTable from "../constants/CustomTable";
+
 const Users = () => {
   const users = [
     { _id: '1', name: 'John Doe', email: 'john@example.com', phone: '+1234567890', joinDate: '2024-01-15', orders: 12 },
@@ -21,7 +24,7 @@ const Users = () => {
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-gray-800">Users</h2>
         <button className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition flex items-center gap-2">
-          <Icon icon="mdi:account-plus" />
+          <Icon  icon="mdi:account-plus" />
           Add User
         </button>
       </div>

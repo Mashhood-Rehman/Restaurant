@@ -1,4 +1,4 @@
-const Orders = () => {
+const AdminOrders = () => {
     const orders = [
         { _id: '1', orderId: '#ORD-001', customer: 'John Doe', items: 'Pizza, Burger', total: '$27.98', status: 'Delivered', date: '2024-10-01' },
         { _id: '2', orderId: '#ORD-002', customer: 'Jane Smith', items: 'Pasta, Salad', total: '$19.98', status: 'Pending', date: '2024-10-05' },
@@ -30,4 +30,4 @@ const Orders = () => {
         </div>
     );
 };
-export default Orders;
+export default AdminOrders;

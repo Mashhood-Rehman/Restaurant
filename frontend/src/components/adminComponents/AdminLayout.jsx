@@ -4,8 +4,7 @@ import { Icon } from "@iconify/react"; // optional, if you’re already using it
 
 const AdminLayout = () => {
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
+    <div className="flex h-screen bg-gray-100 lg:pt-24">
       <aside className="w-64 bg-gray-900 text-gray-200 flex flex-col">
         <div className="p-4 text-2xl font-bold text-white border-b border-gray-700">
           Admin Panel
@@ -66,7 +65,6 @@ const AdminLayout = () => {
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 overflow-y-auto p-6">
         <Outlet />
       </main>

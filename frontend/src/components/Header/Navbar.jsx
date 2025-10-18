@@ -238,7 +238,7 @@ const Navbar = () => {
               )}
 
               <div className="dropdown dropdown-end">
-                <div tabIndex={0} role="button" className="btn btn-ghost btn-circle text-black">
+                <div tabIndex={0} role="button" className="text-black">
                   <div className="indicator">
                     <span className="text-xl font-bold">{totalQuantity}</span>
                     <svg

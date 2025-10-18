@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client"
+const { PrismaClient } = require("@prisma/client")
 
 
 const prisma = new PrismaClient()
@@ -9,14 +9,14 @@ const orderCreate = async (req, res) => {
         if (!items || items.length === 0) {
             return res.status(400).json({ message: "Items are required" })
         }
-        const newOrder = await prisma.order.createOrder({
+        const newOrder = await prisma.order.create({
             data: {
                 userId,
-                customerName: userId ? undefined : customerName,
-                customerEmail: userId ? undefined : customerEmail,
-                customerPhone: userId ? undefined : customerPhone,
+                customerName: userId ? "" : customerName,
+                customerEmail: userId ? "" : customerEmail,
+                customerPhone: userId ? "" : customerPhone,
                 items,
-                totalAmount,
+                amount,
                 address,
                 status: "Pending",
                 paymentStatus: "unpaid",

@@ -4,6 +4,7 @@ import { removeFromCart, incrementQuantity, decrementQuantity } from './stores/c
 import { useDispatch, useSelector } from 'react-redux';
 import {loadStripe} from '@stripe/stripe-js';
 import axios from 'axios';
+import { useCreateOrderMutation } from '../features/api/orderApi';
 
 const Dispatch = () => {
   const dispatch = useDispatch();
@@ -22,24 +23,49 @@ const Dispatch = () => {
     const value = e.target.value; 
     setData({ ...data, [name]: value });
   };
-  
-  const makePayment = async (e) => {
-    e.preventDefault();
+  const [createOrder, { isLoading, isSuccess, error }] = useCreateOrderMutation();
+
+const makePayment = async (e) => {
+  e.preventDefault();
+
+  try {
+    // ✅ Step 1: Create order first
+    const orderData = {
+      customerName: data.name,
+      customerEmail: data.email,
+      customerPhone: data.Number,
+      amount: totalAmount + 5,
+      address: {
+        text: data.address,
+        instructions: data.instructions
+      },
+      items: items.map(i => ({
+        id: i.id,
+        name: i.name,
+        price: i.price,
+        quantity: i.quantity
+      })),
+    };
+
+    const res = await createOrder(orderData).unwrap();
+    console.log("Order created:", res);
+
+    // ✅ Step 2: Proceed to Stripe checkout
     const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY);
     const body = { products: items };
     const headers = { "Content-Type": "application/json" };
-  
-    try {
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/create-checkout-sessions`, body, { headers });
-      const session = response.data;
-      const result = await stripe.redirectToCheckout({ sessionId: session.id });
-      if (result.error) {
-        console.log(result.error);
-      }
-    } catch (error) {
-      console.error('Error creating checkout session:', error);
+    const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/create-checkout-sessions`, body, { headers });
+    const session = response.data;
+    const result = await stripe.redirectToCheckout({ sessionId: session.id });
+
+    if (result.error) {
+      console.error("Stripe error:", result.error);
     }
-  };
+  } catch (err) {
+    console.error("Payment or Order creation error:", err);
+  }
+};
+
 
   return (
     <div className="bg-white min-h-screen py-12 px-4">

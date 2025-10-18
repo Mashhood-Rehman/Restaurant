@@ -17,10 +17,16 @@ datasource db {
 model Order {
   id      String   @id @default(cuid())
   userId  String?
-  items   String[]
+  customerName String?
+  customerEmail String?
+  customerPhone String?
+  items   Json
   amount  Int
   address Json
   status  String   @default("Pending")
   date    DateTime @default(now())
-  payment Boolean  @default(false)
+  paymentId Boolean  @default(false)
+  paymentStatus String  @default("unpaid")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }

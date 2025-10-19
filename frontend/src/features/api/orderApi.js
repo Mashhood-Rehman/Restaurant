@@ -4,14 +4,20 @@ export const orderApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         createOrder: builder.mutation({
             query: (orderData) => ({
-                url: "/createOrder",
+                url: "/orders/createOrder",
                 method: "POST",
                 credentials: "include",
                 body: orderData
             }),
-            invalidatesTags: ['Orders']    
+        }),
+        getOrders: builder.query({
+            query: () => ({
+                url: "/orders/getOrders",
+                method: "GET",
+                credentials: "include",
+            })
         })
     })
 })
 
-export const {useCreateOrderMutation} = orderApi
+export const {useCreateOrderMutation, useGetOrdersQuery} = orderApi

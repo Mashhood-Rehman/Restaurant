@@ -146,7 +146,7 @@ import DownloadExcel from "./DownloadExcel";
               <input
                 type="text"
                 placeholder="Search"
-                className="border rounded border-[var(--light-gray)] px-3 py-1 w-full sm:w-60"
+                className="border rounded border-[var(--light-gray)] bg-white px-3 py-1 w-full sm:w-60"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -289,9 +289,9 @@ import DownloadExcel from "./DownloadExcel";
                   const newPage = Number(e.target.value);
                   if (newPage >= 1 && newPage <= totalPages) setPage(newPage);
                 }}
-                className="border w-16 text-center py-1 px-2 rounded border-[var(--light-gray)]"
+                className="border w-16 text-center py-1 bg-white px-2 rounded border-[var(--light-gray)]"
               />
-              <span className="text-[var(--dark-gray)]">of {totalPages}</span>
+              <span className="text-[var(--dark-gray)] ">of {totalPages}</span>
 
               <button
                 className="btn btn-reset"
@@ -302,7 +302,7 @@ import DownloadExcel from "./DownloadExcel";
               </button>
 
               <select
-                className="border py-1 px-3 rounded border-[var(--light-gray)]"
+                className="border py-1 px-3 rounded bg-white border-[var(--light-gray)]"
                 value={perPage}
                 onChange={(e) => {
                   const value =

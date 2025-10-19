@@ -39,6 +39,21 @@ const getAllUsers = async (req, res) => {
 
 }
 
+const getAllCustomers = async (req,res) => {
+    try {
+        const Customers = await prisma.user.findMany({
+            where: {role:"customer"}
+        })
+        if(Customers.length ===0){
+            return res.status(404).json({message:"No customers found"})
+        }
+        return res.status(200).json({message:"Customers fetched successfully", Customers})
+
+    } catch (error) {
+        console.log("error", error)
+        return res.status(400).json({ message: "error", error })
+    }
+}
 
 const updateUserById = async (req, res) => {
     const { id } = req.params
@@ -105,4 +120,4 @@ const deleteUserById = async (req, res) => {
     }
 };
 
-module.exports = { createUser, getAllUsers, updateUserById, deleteUserById, getMe };
+module.exports = { createUser, getAllUsers, updateUserById, deleteUserById, getMe, getAllCustomers };

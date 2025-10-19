@@ -1,18 +1,22 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
 import CustomTable from "../constants/CustomTable";
-import { useGetAllUsersQuery } from "../../features/api/userApi";
-import { Link } from "react-router-dom";
+import { useGetAllCustomersQuery } from "../../features/api/userApi";
 
 const Customers = () => {
 
-  const {data, error} = useGetAllUsersQuery()
-const tableData = data?.getUsers
+  const {data,isLoading, isError} = useGetAllCustomersQuery()
+const tableData = data?.getUsers?.length > 0 ? data?.getUsers : [];
   const headers = [
     { key: 'id', label: 'id'  },
     { key: 'name', label: 'Name'  },
     { key: 'email', label: 'Email' },
     { key: 'orders', label: 'Total Orders' },
   ];
+  if(isLoading && tableData.length !==0) {
+    return <div>Loading...</div>;
+  }
+  if(isError) {
+    return <div>Error loading customers.</div>;
+  }
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">

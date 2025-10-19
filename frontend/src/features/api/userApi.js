@@ -17,7 +17,14 @@ export const userApi = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
+    getAllCustomers: builder.query({
+      query: () => ({
+        url: "/users/getAllCustomers",
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
-export const { useGetMeQuery, useGetAllUsersQuery } = userApi;
+export const { useGetMeQuery, useGetAllUsersQuery, useGetAllCustomersQuery } = userApi;

@@ -1,3 +1,10 @@
+import { Icon } from "@iconify/react/dist/iconify.js";
+import {
+  ResponsiveContainer,
+  LineChart, BarChart, PieChart,
+  XAxis, YAxis, Tooltip, Legend, CartesianGrid,
+  Line, Bar, Pie, Cell
+} from 'recharts';
 const Analytics = ({ period }) => {
   const salesData = [
     { name: 'Week 1', sales: 4200, orders: 45 },

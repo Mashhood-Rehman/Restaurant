@@ -1,3 +1,6 @@
+import { Icon } from "@iconify/react/dist/iconify.js";
+import CustomTable from "../constants/CustomTable";
+
 const Products = () => {
   const products = [
     { _id: '1', name: 'Margherita Pizza', category: 'Pizza', price: '$12.99', quantity: 25, status: 'In Stock' },

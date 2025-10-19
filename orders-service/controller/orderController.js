@@ -37,4 +37,15 @@ const orderCreate = async (req, res) => {
     }
 };
 
-module.exports = { orderCreate }
+const getOrders = async (req,res) =>{
+    try {
+        const orders = await prisma.order.findMany()
+       
+        return res.status(200).json({
+            message: "Orders fetched successfully", orders
+        })
+    } catch (error) {
+        return res.status(500).json({message: "Internal server error", error})
+    }
+}
+module.exports = { orderCreate, getOrders }

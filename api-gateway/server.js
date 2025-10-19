@@ -10,7 +10,8 @@ const PORT = 8000;
 app.use(cors({
   origin: "http://localhost:5173",  
   credentials: true,                
-}));app.use(express.json());
+}));
+app.use(express.json());
 
 Gateways.forEach(({route, target}) =>{
   app.use(route, proxy(target, {

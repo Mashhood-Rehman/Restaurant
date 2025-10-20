@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 
 import Cancel from "./components/Cancel";
 import Dispatch from "./components/Dispatch";
@@ -13,10 +13,13 @@ import AdminLayout from "./components/adminComponents/AdminLayout";
 import { AdminOrders, Analytics, Products, Customers } from "./admin";
 
 const App = () => {
-  return (<>
+  const location = useLocation()
+  const hideComponent = location.pathname.startsWith("/admin")
+  return (
+  <>
     <ToastContainer />
-    <Navbar />
-    <div className="pt-24 lg:pt-0">
+    {!hideComponent && <Navbar />}
+      <div className={`min-h-screen ${!hideComponent && "pt-16"}`}>
 
       <Routes>
         <Route path="/" element={<Home />} />

@@ -1,16 +1,32 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { useGetOrdersQuery } from "../../features/api/orderApi";
+import { useGetOrdersQuery, useUpdateOrderStatusMutation } from "../../features/api/orderApi";
 import CustomTable from "../constants/CustomTable";
 
 const AdminOrders = () => {
     const {data, isLoading, isError} = useGetOrdersQuery();
-    console.log("Orders Data:", data);
- const tableData = data?.orders?.map(order => ({
+    const  [updateOrderStatus] = useUpdateOrderStatusMutation()
+    const statusOptions = ["Pending", "Preparing", "Out for Delivery", "Delivered", "Cancelled"]
+ 
+ const handleStatusChange = async  (orderId, newStatus) => {
+ try {
+await updateOrderStatus({ orderId, status: newStatus }).unwrap();
+    } catch (error) {
+        console.error("Error updating order status:", error);
+    } }
+    const tableData = data?.orders?.map(order => ({
   orderId: order.orderId,
   customer: order.customerName,
   items: order.items.map(i => i.name).join(", "),
   total: order.amount,
-  status: order.status,
+  status: (
+    <select value={order.status} onChange={(e) => handleStatusChange(order.orderId, e.target.value)} className="p-1.5 focus:outline-none border rounded-md bg-white" >
+            {statusOptions.map((s)=> (
+        <option key={s} value={s}>
+            {s}
+        </option>
+        ))}
+    </select>
+  ),
   date: new Date(order.createdAt).toLocaleDateString()
 }));
     const headers = [

@@ -16,8 +16,21 @@ export const orderApi = apiSlice.injectEndpoints({
                 method: "GET",
                 credentials: "include",
             })
+        }),
+        updateOrderStatus: builder.mutation({
+            query: ({ orderId, status }) => ({
+                url: `/orders/updateStatus/${orderId}`,
+                method: "PATCH",
+                credentials: "include",
+                body: { status }
+            }),
+            invalidatesTags: ['Orders']
         })
     })
 })
 
-export const {useCreateOrderMutation, useGetOrdersQuery} = orderApi
+export const {
+    useCreateOrderMutation,
+    useGetOrdersQuery,
+    useUpdateOrderStatusMutation
+} = orderApi

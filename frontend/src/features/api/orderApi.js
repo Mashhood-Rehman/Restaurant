@@ -15,17 +15,21 @@ export const orderApi = apiSlice.injectEndpoints({
                 url: "/orders/getOrders",
                 method: "GET",
                 credentials: "include",
-            })
-        }),
-        updateOrderStatus: builder.mutation({
-            query: ({ orderId, status }) => ({
-                url: `/orders/updateStatus/${orderId}`,
-                method: "PATCH",
-                credentials: "include",
-                body: { status }
             }),
-            invalidatesTags: ['Orders']
-        })
+              providesTags: ['Orders'] 
+        }),
+       updateOrderStatus: builder.mutation({
+    query: ({ orderId, status }) => ({
+        url: `/orders/updateStatus/${orderId}`,
+        method: "PATCH",
+        credentials: "include",
+        body: { status }
+    }),
+    invalidatesTags: (result, error, { orderId }) => [
+        { type: 'Orders', id: orderId },
+        { type: 'Orders', id: 'LIST' }
+    ]
+})
     })
 })
 

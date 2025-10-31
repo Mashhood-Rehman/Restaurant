@@ -4,7 +4,7 @@ const {orderCreate, getOrders, updateOrderStatus} = require("../controller/order
 const protect = require("../../shared/middleware/authMiddleware")
 
 router.post("/createOrder",protect({required:false}), orderCreate)
-    router.patch("/updateStatus/:orderId",protect, updateOrderStatus)
+router.patch("/updateStatus/:orderId", updateOrderStatus)
 router.get("/getOrders", getOrders)
 
 module.exports = router;

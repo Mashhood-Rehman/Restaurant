@@ -37,29 +37,35 @@ const orderCreate = async (req, res) => {
     }
 };
 
-const getOrders = async (req,res) =>{
+const getOrders = async (req, res) => {
     try {
         const orders = await prisma.order.findMany()
-       
+
         return res.status(200).json({
             message: "Orders fetched successfully", orders
         })
     } catch (error) {
-        return res.status(500).json({message: "Internal server error", error})
+        return res.status(500).json({ message: "Internal server error", error })
     }
 }
 const updateOrderStatus = async (req, res) => {
     try {
-        const {orderId} = req.params;
-        const {status} = req.body;
+        const orderId = Number(req.params.orderId);
+        const { status } = req.body;
         const updatedOrder = await prisma.order.update({
-            where : {id: parseInt(orderId)},
-            data: {status}
-        })
-        return res.satus(200).json({message: "Order status updateed"})
+            where: { orderId: orderId },
+            data: { status }
+        });
+        return res.status(200).json({
+            message: "Order status updated",
+            updatedOrder
+        });
     } catch (error) {
-        return res.status(500).json({message: "Internal server error", error})
-        
+        console.error("Error updating order status:", error);
+        return res.status(500).json({
+            message: "Internal server error",
+            error: error.message
+        });
     }
 }
 module.exports = { orderCreate, getOrders, updateOrderStatus }

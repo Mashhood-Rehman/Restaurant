@@ -22,5 +22,5 @@ model Order {
   paymentStatus String   @default("unpaid")
   updatedAt     DateTime @updatedAt
   items         Json
-  orderId       Int      @default(autoincrement())
+  orderId       Int      @unique @default(autoincrement())
 }

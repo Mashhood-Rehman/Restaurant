@@ -11,7 +11,7 @@ const Hero = () => {
     return () => clearInterval(interval)
   } , [currentPic])
   return (
-       <div id='hero' className="overflow-hidden lg:pt-24 pt-16 w-full ">
+       <div id='hero' className="overflow-hidden lg:pt-8 pt-16 w-full ">
       <div
         className="flex transition-transform duration-700 ease-in-out"
         style={{ transform: `translateX(-${currentPic * 100}%)` }}

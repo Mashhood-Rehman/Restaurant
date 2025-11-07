@@ -46,7 +46,6 @@ console.log("function hit")
         quantity: i.quantity
       })),
     };
-console.log("order data", orderData)
 
     const res = await createOrder(orderData).unwrap();
     console.log("Response from order", res)
@@ -142,25 +141,7 @@ console.log("order data", orderData)
               />
             </div>
 
-            {/* Payment Method */}
-            <div className="bg-white border-2 border-orange-500 rounded-lg p-6">
-              <h3 className="text-xl font-semibold text-black mb-4">Payment Method</h3>
-              <div className="flex gap-4">
-                <button 
-                  type="submit" 
-                  className="flex-1 py-3 px-4 bg-orange-500 text-white font-semibold rounded-lg"
-                >
-                  Cash on Delivery
-                </button>
-                <button 
-                  type="button"
-                  onClick={makePayment} 
-                  className="flex-1 py-3 px-4 bg-black text-white font-semibold rounded-lg"
-                >
-                  Pay with Card
-                </button>
-              </div>
-            </div>
+      
           </div>
 
           {/* Right Column - Cart Summary */}

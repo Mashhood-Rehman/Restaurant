@@ -12,6 +12,17 @@ const AdminLayout = () => {
 
         <nav className="flex-1 p-4 space-y-2">
           <NavLink
+            to="/admin/customers"
+            className={({ isActive }) =>
+              `flex items-center p-2 rounded-lg transition ${
+                isActive ? "bg-gray-700 text-white" : "hover:bg-gray-800"
+              }`
+            }
+          >
+            <Icon icon="mdi:account-group-outline" className="mr-2" />
+            Customers
+          </NavLink>
+          <NavLink
             to="/admin/users"
             className={({ isActive }) =>
               `flex items-center p-2 rounded-lg transition ${

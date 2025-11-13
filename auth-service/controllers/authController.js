@@ -41,8 +41,7 @@ const Login = async (req, res) => {
 
 const Signup = async (req, res) => {
     const { email, password, name } = req.body;
-
-    console.log("📝 Signup attempt:", { email, name });
+    console.log("Signup request received:", req.body);
 
     try {
         // Validate input
@@ -66,7 +65,7 @@ const Signup = async (req, res) => {
             data: {
                 email,
                 name,
-                password: hashedPassword
+                password: hashedPassword,
             }
         });
 
@@ -76,7 +75,7 @@ const Signup = async (req, res) => {
             user: {
                 id: newUser.id,
                 email: newUser.email,
-                name: newUser.name
+
             }
         });
     } catch (error) {
@@ -106,9 +105,9 @@ const logout = async (req, res) => {
         });
     } catch (error) {
         console.error("Error in logout:", error);
-        return res.status(500).json({ 
+        return res.status(500).json({
             success: false,
-            message: "Server error during logout" 
+            message: "Server error during logout"
         });
     }
 };

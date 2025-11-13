@@ -10,7 +10,7 @@ import Home from "./pages/Home";
 import Navbar from "./components/Header/Navbar";
 import Orders from "./pages/Orders";
 import AdminLayout from "./components/adminComponents/AdminLayout";
-import { AdminOrders, Analytics, Products, Customers } from "./admin";
+import { AdminOrders, Analytics, Products, Customers, Users } from "./admin";
 
 const App = () => {
   const location = useLocation()
@@ -29,7 +29,8 @@ const App = () => {
         <Route path="/cancel" element={<Cancel />} />
 
         <Route path="/admin" element={<AdminLayout />}>
-          <Route path="users" element={<Customers />} />
+          <Route path="customers" element={<Customers />} />
+          <Route path="users" element={<Users />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="products" element={<Products />} />
           <Route path="analytics" element={<Analytics />} />

@@ -22,6 +22,17 @@
   }
 }
 
+.custom-input {
+  border: 1px solid black;
+  border-radius: 8px;
+  padding: 0.34rem 0.7rem;
+  width: 100%;
+  background: white;
+  box-sizing: border-box;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+
 .btn {
   padding: 0.4rem 0.9rem;
   border-radius: 0.25rem;

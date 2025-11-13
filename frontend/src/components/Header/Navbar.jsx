@@ -18,6 +18,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [formclose, setFormClose] = useState(false);
   const { data: userData, error, isLoading, refetch } = useGetMeQuery();
+  console.log(userData)
   const [logoutUser] = useLogoutMutation();
   const [userIn, setUserIn] = useState(null);
   const navigate = useNavigate(

@@ -13,11 +13,13 @@ model User {
   email      String  @unique
   password   String
   profileImg String? @default("dummyImage.webp")
-  role       Role    @default(user)
-}
+  role       Role    @default(dbgenerated("'customer'::role"))
+  }
 
 enum Role {
   superadmin
   manager
-  user
+  customer
+  chef
+  rider
 }

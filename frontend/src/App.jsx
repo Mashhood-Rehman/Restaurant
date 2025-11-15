@@ -9,8 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/Home";
 import Navbar from "./components/Header/Navbar";
 import Orders from "./pages/Orders";
-import AdminLayout from "./components/adminComponents/AdminLayout";
-import { AdminOrders, Analytics, Products, Customers, Users } from "./admin";
+import { AdminOrders, Analytics, Products, Customers, Users, AdminLayout } from "./admin";
 
 const App = () => {
   const location = useLocation()

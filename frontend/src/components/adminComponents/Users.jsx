@@ -3,6 +3,7 @@ import CustomModal from '../constants/CustomModal'
 import { useCreateUsersMutation, useGetAllUsersQuery } from '../../features/api/userApi'
 import { toast } from 'react-toastify'
 import { Icons } from '../../assets/Icons'
+import MessageLayout from './layout/MessageLayout'
 const Users = () => {
   const [openModal, setOpenModal] = useState(false)
   const [showMessagePanel, setShowMessaegPanel] = useState(false)
@@ -61,7 +62,7 @@ const Users = () => {
         </button>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {usersData.getUsers && usersData?.getUsers?.map(user => (
+        {usersData?.getUsers && usersData?.getUsers?.map(user => (
           <div
             key={user.id}
             className="group bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:border-blue-400/40 hover:bg-gray-50 transition-all duration-300 hover:shadow-md"
@@ -196,6 +197,11 @@ const Users = () => {
           </button>
         </form>
       </CustomModal>
+      <div
+        className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+
+        <MessageLayout />
+      </div>
     </div>
   )
 }

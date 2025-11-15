@@ -1,8 +1,14 @@
-import {Download, RefreshCcw, SkipBack, SkipForward, User} from "lucide-react"
+import { Download, Phone, RefreshCcw, Search, SkipBack, SkipForward, User, Video, Send, Annoyed, Folder } from "lucide-react"
 export const Icons = {
-    RefreshCcw,
+  RefreshCcw,
   User,
-    SkipBack,
-    SkipForward,
-    Download
+  SkipBack,
+  SkipForward,
+  Download,
+  Phone,
+  Search,
+  Video,
+  Annoyed, 
+  Send,
+  Folder 
 }

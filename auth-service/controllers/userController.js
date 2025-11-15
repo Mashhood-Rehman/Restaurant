@@ -3,10 +3,9 @@ const bcrypt = require("bcrypt");
 const prisma = new PrismaClient();
 
 const createUser = async (req, res) => {
-    const { email, name, password } = req.body;
+    const { email, name, password,role } = req.body;
 
     try {
-        console.log("Incoming req.body:", req.body)
         const cjeckUser = await prisma.user.findUnique({
             where: { email }
         });
@@ -18,7 +17,7 @@ const createUser = async (req, res) => {
         console.log("Hashed password:", hashedPassword);
 
         const newUser = await prisma.user.create({
-            data: { email, name, password: hashedPassword }
+            data: { email, name, password: hashedPassword,role }
         });
         return res.status(200).json({ message: "User created successfully", user: newUser });
     } catch (error) {
@@ -30,7 +29,7 @@ const createUser = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
     try {
-        const getUsers = await prisma.user.findMany()
+        const getUsers = await prisma.user.findMany({omit: {password: true}})
         return res.status(200).json({ message: "All users fetched successfully", getUsers })
     } catch (error) {
         console.log("error", error)

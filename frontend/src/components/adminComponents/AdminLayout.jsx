@@ -31,7 +31,7 @@ const AdminLayout = () => {
             }
           >
             <Icon icon="mdi:account-group-outline" className="mr-2" />
-            Users
+            Staff
           </NavLink>
 
           <NavLink

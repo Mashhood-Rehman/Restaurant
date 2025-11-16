@@ -3,15 +3,15 @@ import { Icons } from '../../assets/Icons'
 import { IMAGES } from '../../assets/Images'
 
 
-const ChatHeader = () => {
+const ChatHeader = ({user}) => {
     return (
         <div>
             <div className='flex items-center justify-between'>
                 {/* first div  */}
                 <div>
                     <div className='flex items-center space-x-2'>
-                        <img src={IMAGES.PERSONPLACEHOLDER} alt="person placeholder image" height={50} width={50} className='rounded-full' />
-                        <h1>PErson name</h1>
+                        <img src={user?.profileImg ? user?.profileImg : IMAGES.PERSONPLACEHOLDER} alt="person placeholder image" height={50} width={50} className='rounded-full' />
+                        <h1>{user?.name}</h1>
                     </div>
                 </div>
                 {/* second div  */}

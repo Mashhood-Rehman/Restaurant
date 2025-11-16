@@ -6,6 +6,7 @@ import { Icons } from '../../assets/Icons'
 import MessageLayout from './layout/MessageLayout'
 const Users = () => {
   const [openModal, setOpenModal] = useState(false)
+  const [user, setUser] = useState(null)
   const [showMessagePanel, setShowMessaegPanel] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
@@ -46,10 +47,12 @@ const Users = () => {
     console.log('View profile:', userId);
   };
 
-  const handleMessage = (userId) => {
+  const handleMessage = (user) => {
     setShowMessaegPanel(true)
-    console.log('Message user:', userId);
+    setUser(user)
+    console.log('Message user:', user.userId);
   };
+
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center mb-8">
@@ -117,7 +120,7 @@ const Users = () => {
               </button>
 
               <button
-                onClick={() => handleMessage(user.id)}
+                onClick={() => handleMessage(user)}
                 className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-sm text-white bg-blue-600 rounded hover:bg-blue-700 transition"
               >
                 <span className="hidden sm:inline">Message</span>
@@ -197,11 +200,14 @@ const Users = () => {
           </button>
         </form>
       </CustomModal>
-      <div
-        className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+      {showMessagePanel && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 px-4"
+        >
+          <MessageLayout user={user} onClose={() => setShowMessaegPanel(false)} />
+        </div>
+      )}
 
-        <MessageLayout />
-      </div>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { IMAGES } from "../assets/Images";
+import { IMAGES } from "../src/assets/Images";
 
 // data.js
 export const navbarSections = [

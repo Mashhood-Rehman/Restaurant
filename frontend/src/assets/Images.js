@@ -1,6 +1,6 @@
 export const IMAGES =
 {
-    PERSONPLACEHOLDER: "/pp.webp",
+    PERSONPLACEHOLDER: "/dummyImage.webp",
     HEROCAROUSEL1: "/heroCarousel1.webp",
     HEROCAROUSEL2: "/heroCarousel2.webp",
     HEROCAROUSEL3: "/heroCarousel3.webp",

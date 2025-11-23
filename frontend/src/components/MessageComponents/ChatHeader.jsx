@@ -10,7 +10,11 @@ const ChatHeader = ({user}) => {
                 {/* first div  */}
                 <div>
                     <div className='flex items-center space-x-2'>
-                        <img src={user?.profileImg ? user?.profileImg : IMAGES.PERSONPLACEHOLDER} alt="person placeholder image" height={50} width={50} className='rounded-full' />
+                        {user?.profileImg === 'dummyImage.webp' ?
+                        <img src={ IMAGES.PERSONPLACEHOLDER } alt="person placeholder image" height={50} width={50} className='rounded-full' /> 
+                        :
+                        <img src={ user?.profileImg } alt="profile  image" height={50} width={50} className='rounded-full' />
+                    }
                         <h1>{user?.name}</h1>
                     </div>
                 </div>

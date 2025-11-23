@@ -29,7 +29,7 @@ const MessageLayout = ({onClose, user}) => {
                                 <MessagePanel />
                             </div>
                         </div>
-                        <MessageFooter />                </div>
+                        <MessageFooter user={user} />                </div>
                 </div>
                 {/* panel footer  */}
             </div>

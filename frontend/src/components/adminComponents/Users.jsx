@@ -15,7 +15,7 @@ const Users = () => {
     role: ''
   })
   const [createUser] = useCreateUsersMutation()
-  const { data: usersData } = useGetAllUsersQuery()
+  const { data: usersData, error } = useGetAllUsersQuery()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -50,9 +50,12 @@ const Users = () => {
   const handleMessage = (user) => {
     setShowMessaegPanel(true)
     setUser(user)
-    console.log('Message user:', user.userId);
   };
 
+  if(error) {
+    return <div className="text-red-500">      Error fetching users: {JSON.stringify(error)}
+</div>;
+  }
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center mb-8">

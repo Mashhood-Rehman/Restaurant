@@ -1,16 +1,27 @@
 import React, { useState } from "react";
 import { Icons } from "../../assets/Icons";
 import { socket } from "../../../utils/socket";
+import { useSendMessagesMutation } from "../../features/api/messageApi";
 
 const MessageFooter = ({user}) => {
     const [message, setMessage] = useState("");
-
-    const sendMessage = () => {
+    const [sendMessages] = useSendMessagesMutation()
+    const sendMessage = async () => {
         if(!message.trim() )return;
-        socket.emit("send_message", {
-            to: user.div,
+      const messageSent =  socket.emit("send_message", {
+            to: user._id,
             text: message
         })
+        if(messageSent){
+          await   sendMessages({
+            receiverId: user._id,
+            text: message
+          })
+
+            console.log("Message sent via socket:", message);
+        } else {
+            console.log("Failed to send message via socket");
+        }
         setMessage("")
     }
 

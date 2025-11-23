@@ -1,8 +1,10 @@
 const  message = require("../model/message");
 
 const sendMessage = (req, res) => {
+    console.log("controller hit" );
     try{
         const {receiverId, text} = req.body;
+        console.log("req.body:", req.body);
         const senderId = req.user.id; 
         const newMessage = new message({
             senderId,
@@ -10,8 +12,10 @@ const sendMessage = (req, res) => {
             text
         });
         newMessage.save();
+        console.log("Message saved:", newMessage);
         return res.status(201).json({message: "Message Sent Successfully", data: newMessage});
     } catch (error) {
+        console.log("Error in sendMessage:", error);
         res.status(500).json({message: "Internal Server Error"});
     }
 }

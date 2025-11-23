@@ -8,19 +8,20 @@ const setupMessageSocket = require("./sockets/messageSocket")
 dotenv.config()
 const app = express()
 app.use(express.json())
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3003
 
 app.use(express.json())
 app.use("/api/messages", messageRoutes)
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "*"
+         origin: "http://localhost:5173",
+        credentials: true,
     },
 })
 setupMessageSocket(io)
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     db()
     console.log(`Message Service is running on port ${PORT}`)
 })

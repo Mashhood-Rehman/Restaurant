@@ -9,7 +9,7 @@
     "run:orders": "cd orders-service && bun --watch dev",
     "run:backend": "cd backend && bun --watch dev",
     "run:frontend": "cd frontend && bun --watch dev",
-"start": "concurrently  \"bun run run:message \"\"bun run run:gateway\" \"bun run run:auth\" \"bun run run:backend\" \"bun run run:frontend\" \"bun run run:orders\""
+"start": "concurrently \"bun run run:gateway\" \"bun run run:auth\" \"bun run run:backend\" \"bun run run:frontend\" \"bun run run:orders\" \"bun run run:message\""
   },
   "repository": {
     "type": "git",

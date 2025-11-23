@@ -1,6 +1,5 @@
 import React from 'react'
 import MessagePanel from '../../MessageComponents/MessagePanel'
-import { IMAGES } from '../../../assets/Images'
 import { Icons } from '../../../assets/Icons'
 import ChatSection from '../../MessageComponents/ChatSection'
 import ChatHeader from '../../MessageComponents/ChatHeader'

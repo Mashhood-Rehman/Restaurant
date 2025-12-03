@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import Login from "../../auth/Login";
 import Sidebar from "../Sidebar";
-import { carouselImages } from '../../../utils/Data'
+import { carouselImages, navbarSections } from '../../../utils/Data'
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { IMAGES } from "../../assets/Images";
 import CustomModal from "../constants/CustomModal";

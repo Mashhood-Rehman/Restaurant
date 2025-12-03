@@ -2,28 +2,49 @@ import React, { useState } from "react";
 import { Icons } from "../../assets/Icons";
 import { socket } from "../../../utils/socket";
 import { useSendMessagesMutation } from "../../features/api/messageApi";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 const MessageFooter = ({user}) => {
     const [message, setMessage] = useState("");
-    const [sendMessages] = useSendMessagesMutation()
-    const sendMessage = async () => {
-        if(!message.trim() )return;
-      const messageSent =  socket.emit("send_message", {
-            to: user._id,
-            text: message
-        })
-        if(messageSent){
-          await   sendMessages({
-            receiverId: user._id,
-            text: message
-          })
+    const [sendMessages] = useSendMessagesMutation();
+    const currentUser = useCurrentUser();
+    console.log("current user",currentUser)
+const sendMessage = async () => {
+  if (!message.trim()) return;
 
-            console.log("Message sent via socket:", message);
-        } else {
-            console.log("Failed to send message via socket");
-        }
-        setMessage("")
-    }
+  try {
+  // Get current user ID from RTK Query cache
+  const senderId = currentUser?._id;
+
+    const payload = {
+      senderId,
+      receiverId: user._id,
+      text: message,
+    };
+
+    // Emit to socket with acknowledgement callback
+    socket.emit("send_message", payload, (ack) => {
+      if (ack && ack.success) {
+        console.log("✅ Message sent via socket:", message);
+      } else {
+        console.error("❌ Failed to send via socket:", ack?.error);
+        // Fallback: also try HTTP API
+        sendMessages({
+          receiverId: user._id,
+          text: message,
+        }).then(() => {
+          console.log("✅ Message sent via HTTP API");
+        }).catch(err => {
+          console.error("❌ Failed to send via HTTP:", err);
+        });
+      }
+    });
+
+    setMessage("");
+  } catch (error) {
+    console.error("❌ Error in sendMessage:", error);
+  }
+};
 
     const changeHandler = (e) =>{
         const {name, value} = e.target;

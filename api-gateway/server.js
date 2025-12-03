@@ -8,7 +8,7 @@ const app = express();
 const PORT = 8000;
 
 app.use(cors({
-  origin: "*",  
+origin: "http://localhost:5173",
   credentials: true,                
 }));
 app.use(express.json());
@@ -16,6 +16,13 @@ app.use(express.json());
 Gateways.forEach(({route, target}) =>{
   app.use(route, proxy(target, {
     changeOrigin: true,
+proxyReqOptDecorator: (options, req ) => {
+  if(req.headers.cookie) {
+    options.headers['cookie'] = req.headers.cookie;
+  }
+  return options
+},
+
     proxyReqPathResolver : (req) => req.originalUrl,
     proxyErrorHandler: (err, res ,next) => {
       console.log(`❌ Proxy Error in route ${route}:`, err.message || err || err?.data?.message);

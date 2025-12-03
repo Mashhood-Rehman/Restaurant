@@ -24,11 +24,12 @@ const Login = async (req, res) => {
         );
         res.cookie("token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            secure: false,
+            // allow cross-site requests from frontend during development
+            sameSite: "lax",
+            path: '/',
             maxAge: 24 * 60 * 60 * 1000,
-
-        })
+        });
         return res.status(200).json({
             message: "User logged in successfully", user: { id: checkUser.id, email: checkUser.email, name: checkUser.name },
         })

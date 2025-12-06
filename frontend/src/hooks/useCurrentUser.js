@@ -8,10 +8,10 @@ import { userApi, useGetMeQuery } from "../features/api/userApi";
  */
 export const useCurrentUser = () => {
   // Trigger the query (will use cache if available)
-  const { data } = useGetMeQuery();
-console.log("data is",data)
+  const { data:userData } = useGetMeQuery();
+console.log("data is",userData)
   // Prefer the live query result
-  if (data?.userData) return data.userData;
+  if (userData?.userData) return userData.userData;
 
   // Fallback to reading the cached value from the store
   const selectGetMe = userApi.endpoints.getMe.select();

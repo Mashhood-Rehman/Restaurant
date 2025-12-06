@@ -12,25 +12,27 @@ import { toast } from "react-toastify";
 import { useLogoutMutation } from "../../features/api/AuthApi";
 import { Link, useNavigate } from "react-router-dom";
 import MobileSidebar from "./MobileSidebar";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 const Navbar = () => {
   const [BGColor, SetBGColor] = useState("bg-white");
   const [open, setOpen] = useState(false);
   const [formclose, setFormClose] = useState(false);
-  const { data: userData, error, isLoading, refetch } = useGetMeQuery();
-  console.log(userData)
+  // const { data: userData, error, isLoading, refetch } = useGetMeQuery();
+  const currentUser = useCurrentUser()
+  console.log(currentUser)
   const [logoutUser] = useLogoutMutation();
   const [userIn, setUserIn] = useState(null);
   const navigate = useNavigate(
 
   )
   useEffect(() => {
-    if (userData?.userData) {
-      setUserIn(userData);
+    if (currentUser) {
+      setUserIn(currentUser);
     } else {
       setUserIn(null);
     }
-  }, [userData, userIn]);
+  }, [currentUser, userIn]);
 
   useEffect(() => {
     const pressedEscapeKey = (e) => {
@@ -177,13 +179,13 @@ const Navbar = () => {
             </div>
 
             <div className="flex-shrink-0 flex items-center gap-4 mr-4">
-              {userIn ? (
+              {currentUser ? (
                 <div className="relative group">
                   <div className="cursor-pointer p-2">
-                    {userIn.userData?.profileImg ? (
+                    {currentUser?.profileImg ? (
                       <img
-                        src={userIn.userData.profileImg || IMAGES.DUMMYIMG}
-                        alt={userIn.userData.name}
+                        src={currentUser.profileImg || IMAGES.DUMMYIMG}
+                        alt={currentUser.name}
                         className="w-10 h-10 rounded-full object-cover border-2 border-gray-300 hover:border-orange-500 transition duration-300 ease-in-out transform hover:scale-110"
                       />
                     ) : (
@@ -202,15 +204,15 @@ const Navbar = () => {
                   >
                     <li className="p-4 border-b border-gray-100">
                       <div className="flex items-center gap-3">
-                        {userIn.userData.profileImg ? (
+                        {currentUser.profileImg ? (
                           <img
-                            src={userIn.userData.profileImg}
-                            alt={userIn.userData.name || "User"}
+                            src={currentUser.profileImg}
+                            alt={currentUser.name || "User"}
                             className="w-12 h-12 rounded-full object-cover"
                           />
                         ) : (
                           <div className="w-12 h-12 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold text-xl">
-                            {userIn.userData.name?.charAt(0).toUpperCase() || "U"}
+                            {currentUser.name?.charAt(0).toUpperCase() || "U"}
                           </div>
                         )}
                         <div className="flex flex-col ">

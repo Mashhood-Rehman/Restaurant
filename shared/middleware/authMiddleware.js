@@ -1,7 +1,12 @@
 const jwt = require("jsonwebtoken");
 
 const protect = (options = { required: true }) => {
+
   return (req, res, next) => {
+
+     console.log("🔒 Protect middleware hit"); // ✅ Add this
+      console.log("🍪 Cookies:", req.cookies); // ✅ Add this
+      console.log("📝 Headers:", req.headers.authorization); // ✅ Add 
     try {
       let token;
 

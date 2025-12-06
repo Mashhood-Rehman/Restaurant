@@ -103,12 +103,14 @@ const deleteUserById = async (req, res) => {
 
  const getMe = async (req, res) => {
     try {
+        console.log("api hit")
         const user = req.user;
+        console.log("Authenticated user:", user);
         const userData = await prisma.user.findUnique({
             where: { id: user.id },
             select: { id: true, name: true, email: true, role: true,  profileImg: true  },
         });
-
+console.log("Fetched user data:", userData);
         return res.status(200).json({
             success: true,
             userData,

@@ -32,8 +32,8 @@ const Login = ({ setFormClose }) => {
       if (response) {
         toast.success("User logged in");
         await refetch()
-        handleCloseForm();
       }
+      handleCloseForm();
     } catch (error) {
       console.log(error);
       toast.error("Invalid email or password");

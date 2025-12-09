@@ -24,6 +24,18 @@ proxyReqOptDecorator: (options, req ) => {
 },
 
     proxyReqPathResolver : (req) => req.originalUrl,
+    proxyResDecorator: function(proxyRes, proxyResData, userReq, userRes) {
+      // Forward Set-Cookie headers from target services to the browser
+      try {
+        const setCookie = proxyRes.headers && proxyRes.headers['set-cookie'];
+        if (setCookie) {
+          userRes.setHeader('set-cookie', setCookie);
+        }
+      } catch (e) {
+        console.warn('Failed to forward set-cookie header through gateway', e?.message || e);
+      }
+      return proxyResData;
+    },
     proxyErrorHandler: (err, res ,next) => {
       console.log(`❌ Proxy Error in route ${route}:`, err.message || err || err?.data?.message);
       res.status(504).json({

@@ -10,8 +10,11 @@ import Home from "./pages/Home";
 import Navbar from "./components/Header/Navbar";
 import Orders from "./pages/Orders";
 import { AdminOrders, Analytics, Products, Customers, Users, AdminLayout } from "./admin";
+import { useCurrentUser } from "./hooks/useCurrentUser";
 
 const App = () => {
+   const user = useCurrentUser()
+   console.log("current user in app.jsx",user)
   const location = useLocation()
   const hideComponent = location.pathname.startsWith("/admin")
   return (

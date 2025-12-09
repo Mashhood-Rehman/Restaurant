@@ -23,9 +23,18 @@ const io = new Server(server, {
         credentials: true,
     },
 })
-setupMessageSocket(io)
+setupMessageSocket(io);
 
-server.listen(PORT, () => {
-    db()
-    console.log(`Message Service is running on port ${PORT}`)
-})
+// Start server with proper async initialization
+(async () => {
+    try {
+        await db();
+        console.log("✅ Database connected");
+        server.listen(PORT, () => {
+            console.log(`🚀 Message Service running on port ${PORT}`);
+        });
+    } catch (error) {
+        console.error("❌ Failed to start server:", error.message);
+        process.exit(1);
+    }
+})();

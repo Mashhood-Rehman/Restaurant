@@ -11,10 +11,11 @@ export const userApi = apiSlice.injectEndpoints({
     }),
     getMe: builder.query({
       query: () => ({
-        url: "users/getMe",
+        url: "/users/getMe",
         method: "GET",
         credentials: "include",
       }),
+      providesTags: ["User"],
     }),
 
     getAllUsers: builder.query({

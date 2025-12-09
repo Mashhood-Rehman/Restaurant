@@ -17,7 +17,7 @@ export const authApi = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Auth"],
+      invalidatesTags: ["Auth", "User"],  // Invalidate both Auth and User tags so getMe refetches
     }),
        logout: builder.mutation({
       query: () => ({

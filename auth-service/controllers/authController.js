@@ -4,7 +4,9 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken");
 
 const Login = async (req, res) => {
+    console.log("login req, hit")
     const { email, password } = req.body
+    console.log("Login request received:", req.body)
     try {
         if (!email || !password) {
             return res.status(400).json({ message: "All fields are required" });
@@ -22,6 +24,7 @@ const Login = async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: "1d" }
         );
+        console.log("User logged in successfully:", checkUser.id);
         res.cookie("token", token, {
             httpOnly: true,
             secure: false,
@@ -30,6 +33,7 @@ const Login = async (req, res) => {
             path: '/',
             maxAge: 24 * 60 * 60 * 1000,
         });
+        console.log("Token set in cookie for user:", checkUser.id);
         return res.status(200).json({
             message: "User logged in successfully",  user: { id: checkUser.id, email: checkUser.email, name: checkUser.name,token:token },
         })

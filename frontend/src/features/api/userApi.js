@@ -15,7 +15,7 @@ export const userApi = apiSlice.injectEndpoints({
         method: "GET",
         credentials: "include",
       }),
-      providesTags: ["User"],
+      providesTags: ["User", "Auth"],
     }),
 
     getAllUsers: builder.query({

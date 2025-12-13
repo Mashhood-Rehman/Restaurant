@@ -1,32 +1,33 @@
-import { apiSlice } from "../apiSlice";
+  import { apiSlice } from "../apiSlice";
 
-export const authApi = apiSlice.injectEndpoints({
-  endpoints: (builder) => ({
-    signup: builder.mutation({
-      query: (data) => ({
-        url: "/auth/signup",
-        method: "POST",
-        body: data,
+  export const authApi = apiSlice.injectEndpoints({
+    endpoints: (builder) => ({
+      signup: builder.mutation({
+        query: (data) => ({
+          url: "/auth/signup",
+          method: "POST",
+          body: data,
+        }),
+        invalidatesTags: ["Auth"],
       }),
-      invalidatesTags: ["Auth"],
-    }),
 
-    login: builder.mutation({
-      query: (data) => ({
-        url: "/auth/login",
-        method: "POST",
-        body: data,
+      login: builder.mutation({
+        query: (data) => ({
+          url: "/auth/login",
+          method: "POST",
+          body: data,
+          credentials: "include"
+        }),
+        invalidatesTags: ["Auth", "User"],
       }),
-      invalidatesTags: ["Auth", "User"],  // Invalidate both Auth and User tags so getMe refetches
-    }),
-       logout: builder.mutation({
-      query: () => ({
-        url: '/auth/logout',
-        method: 'POST',
+        logout: builder.mutation({
+        query: () => ({
+          url: '/auth/logout',
+          method: 'POST',
+        }),
+        invalidatesTags: ['User'],
       }),
-      invalidatesTags: ['User'],
     }),
-  }),
-});
+  });
 
-export const { useSignupMutation, useLoginMutation, useLogoutMutation } = authApi;
+  export const { useSignupMutation, useLoginMutation, useLogoutMutation } = authApi;

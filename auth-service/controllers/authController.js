@@ -15,6 +15,7 @@ const Login = async (req, res) => {
         if (!checkUser) {
             return res.status(400).json({ message: "User not found" })
         }
+        console.log("CHECKED USER IS",checkUser)
         const comparePassword = await bcrypt.compare(password, checkUser.password)
         if (!comparePassword) {
             return res.status(400).json({ message: "Invalid Credentials" })

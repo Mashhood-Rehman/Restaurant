@@ -29,6 +29,7 @@ const Login = ({ setFormClose }) => {
 
     try {
       const response = await loginData(user).unwrap();
+      console.log('response we got',response)
       if (response) {
         toast.success("User logged in");
         await refetch()

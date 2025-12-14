@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
 import { Icon } from "@iconify/react";
 import Signup from "./Signup";
@@ -10,9 +10,24 @@ const Login = ({ setFormClose }) => {
   const [showLogin, setShowLogin] = useState(true);
   const [show, setShow] = useState(false);
   const [user, setUser] = useState({ email: "", password: "" });
-  const [loginData] = useLoginMutation()
+  const [justLoggedIn, setJustLoggedIn] = useState(false);
+  const [loginData] = useLoginMutation();
+  const { data: meData, error: meError, refetch } = useGetMeQuery(undefined, { 
+    skip: !justLoggedIn,
+  });
   const passwordShow = () => setShow(!show);
-  const { refetch } = useGetMeQuery();
+  
+  // Handle successful data fetch
+  React.useEffect(() => {
+    if (justLoggedIn && meData?.userData) {
+      console.log("✅ User data fetched:", meData.userData);
+      handleCloseForm();
+    } else if (justLoggedIn && meError) {
+      console.error("⚠️ Failed to fetch user data:", meError);
+      handleCloseForm();
+    }
+  }, [meData, meError, justLoggedIn]);
+  
   const changeHandler = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
@@ -23,21 +38,24 @@ const Login = ({ setFormClose }) => {
     const { email, password } = user;
 
     if (!email || !password) {
-      toast.error("All fields are required");
+      // toast.error("All fields are required");
+      alert("All fields are required");
       return;
     }
 
     try {
       const response = await loginData(user).unwrap();
-      console.log('response we got',response)
+      console.log('✅ Login response:', response);
       if (response) {
-        toast.success("User logged in");
-        await refetch()
+        // toast.success("User logged in");
+        console.log("📞 Triggering getMe query...");
+        // Set flag to enable the query
+        setJustLoggedIn(true);
       }
-      handleCloseForm();
     } catch (error) {
-      console.log(error);
-      toast.error("Invalid email or password");
+      console.error("❌ Login failed:", error);
+      // toast.error("Invalid email or password");
+      alert("Invalid email or password");
     }
   };
 

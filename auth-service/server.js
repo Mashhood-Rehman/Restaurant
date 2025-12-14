@@ -9,10 +9,14 @@ const userRoutes = require("./routes/userRoutes")
 dotenv.config()
 const app = express()
 const PORT = 3000
+
+// CORS with credentials support
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "http://localhost:8000"],
     credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
 }));
+
 app.use(express.json())
 app.use(cookieParser());
 

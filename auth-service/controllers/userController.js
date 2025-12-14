@@ -103,21 +103,35 @@ const deleteUserById = async (req, res) => {
 
  const getMe = async (req, res) => {
     try {
-        console.log("api hit")
+        console.log("🔐 getMe API hit");
         const user = req.user;
-        console.log("Authenticated user:", user);
+        
+        if (!user || !user.id) {
+            console.error("❌ No authenticated user in getMe request");
+            console.error("req.user:", user);
+            console.error("req.cookies:", req.cookies);
+            return res.status(401).json({ message: "Not authenticated" });
+        }
+        
+        console.log("✅ Authenticated user:", user);
         const userData = await prisma.user.findUnique({
             where: { id: user.id },
-            select: { id: true, name: true, email: true, role: true,  profileImg: true  },
+            select: { id: true, name: true, email: true, role: true, profileImg: true },
         });
-console.log("Fetched user data:", userData);
+        
+        if (!userData) {
+            console.error("❌ User not found in database with ID:", user.id);
+            return res.status(404).json({ message: "User not found" });
+        }
+        
+        console.log("✅ Fetched user data:", userData);
         return res.status(200).json({
             success: true,
             userData,
         });
     } catch (error) {
-        console.error("Error in getMe:", error);
-        return res.status(500).json({ message: "Server error" });
+        console.error("❌ Error in getMe:", error.message || error);
+        return res.status(500).json({ message: "Server error", error: error.message });
     }
 };
 

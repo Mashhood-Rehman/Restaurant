@@ -35,5 +35,5 @@ export const userApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetMeQuery, useGetAllUsersQuery, useGetAllCustomersQuery, useCreateUsersMutation
+export const { useGetMeQuery, useLazyGetMeQuery, useGetAllUsersQuery, useGetAllCustomersQuery, useCreateUsersMutation
  } = userApi;

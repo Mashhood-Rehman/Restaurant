@@ -1,19 +1,23 @@
-import { useSelector } from "react-redux";
-import { userApi, useLazyGetMeQuery } from "../features/api/userApi";
+import { useGetMeQuery } from "../features/api/userApi";
 
 export const useCurrentUser = () => {
-  // Use lazy query to prevent automatic request on component mount
-  const [trigger] = useLazyGetMeQuery();
+  const { data, isLoading, isError } = useGetMeQuery();
 
-  // Use selector to check cached data without triggering a request
-  const selectGetMe = userApi.endpoints.getMe.select();
-  const cached = useSelector((state) => selectGetMe(state));
-  
-  if (cached?.data?.userData) {
-    console.log("✅ useCurrentUser: Returning cached user data:", cached.data.userData);
-    return cached.data.userData;
+  if (isLoading) {
+    console.log("⏳ useCurrentUser: Loading user data...");
+    return null;
   }
 
-  console.log("❌ useCurrentUser: No user data available, returning null");
+  if (isError) {
+    console.log("❌ useCurrentUser: Error fetching user data");
+    return null;
+  }
+
+  if (data?.userData) {
+    console.log("✅ useCurrentUser: User data:", data.userData);
+    return data.userData;
+  }
+
+  console.log("❌ useCurrentUser: No user data available");
   return null;
 };

@@ -26,18 +26,17 @@ const Login = async (req, res) => {
             { expiresIn: "1d" }
         );
         console.log("User logged in successfully:", checkUser.id);
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: false,
-            // allow cross-site requests from frontend during development
-            sameSite: "lax",
-            path: '/',
-            maxAge: 24 * 60 * 60 * 1000,
-        });
-        console.log("Token set in cookie for user:", checkUser.id);
-        return res.status(200).json({
-            message: "User logged in successfully",  user: { id: checkUser.id, email: checkUser.email, name: checkUser.name,token:token },
-        })
+       return res.status(200).json({
+    message: "User logged in successfully",
+    user: {
+        id: checkUser.id,
+        email: checkUser.email,
+        name: checkUser.name,
+        role: checkUser.role,
+    },
+    token: token,
+});
+
     } catch (error) {
         console.log(error)
         return res.status(500).json({ message: "Internal server error" })

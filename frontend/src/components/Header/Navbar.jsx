@@ -12,27 +12,24 @@ import { toast } from "react-toastify";
 import { useLogoutMutation } from "../../features/api/AuthApi";
 import { Link, useNavigate } from "react-router-dom";
 import MobileSidebar from "./MobileSidebar";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 const Navbar = () => {
   const [BGColor, SetBGColor] = useState("bg-white");
   const [open, setOpen] = useState(false);
   const [formclose, setFormClose] = useState(false);
   // const { data: userData, error, isLoading, refetch } = useGetMeQuery();
-  const currentUser = useCurrentUser()
-  console.log(currentUser)
   const [logoutUser] = useLogoutMutation();
   const [userIn, setUserIn] = useState(null);
   const navigate = useNavigate(
 
   )
-  useEffect(() => {
-    if (currentUser) {
-      setUserIn(currentUser);
-    } else {
-      setUserIn(null);
-    }
-  }, [currentUser, userIn]);
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     setUserIn(currentUser);
+  //   } else {
+  //     setUserIn(null);
+  //   }
+  // }, [currentUser, userIn]);
 
   useEffect(() => {
     const pressedEscapeKey = (e) => {
@@ -91,6 +88,7 @@ const Navbar = () => {
       navigate(`/#${id}`);
     }
   };
+  const currentUser = null
   return (
     <div className="flex z-[999] bg-white justify-between items-center">
       <div>

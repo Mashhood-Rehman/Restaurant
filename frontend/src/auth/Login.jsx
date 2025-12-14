@@ -12,9 +12,7 @@ const Login = ({ setFormClose }) => {
   const [user, setUser] = useState({ email: "", password: "" });
   const [justLoggedIn, setJustLoggedIn] = useState(false);
   const [loginData] = useLoginMutation();
-  const { data: meData, error: meError, refetch } = useGetMeQuery(undefined, { 
-    skip: !justLoggedIn,
-  });
+  const { data: meData, error: meError, refetch } = useGetMeQuery();
   const passwordShow = () => setShow(!show);
   
   // Handle successful data fetch
@@ -47,15 +45,13 @@ const Login = ({ setFormClose }) => {
       const response = await loginData(user).unwrap();
       console.log('✅ Login response:', response);
       if (response) {
-        // toast.success("User logged in");
-        console.log("📞 Triggering getMe query...");
-        // Set flag to enable the query
         setJustLoggedIn(true);
+        handleCloseForm()
       }
+refetch()
     } catch (error) {
       console.error("❌ Login failed:", error);
-      // toast.error("Invalid email or password");
-      alert("Invalid email or password");
+      toast.error("Invalid email or password");
     }
   };
 

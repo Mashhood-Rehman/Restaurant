@@ -13,10 +13,10 @@ import { AdminOrders, Analytics, Products, Customers, Users, AdminLayout } from 
 import { useCurrentUser } from "./hooks/useCurrentUser";
 
 const App = () => {
-   const user = useCurrentUser()
-   console.log("current user in app.jsx",user)
   const location = useLocation()
   const hideComponent = location.pathname.startsWith("/admin")
+  const currentUser = useCurrentUser()
+  console.log("🌟 App.jsx: Current User:", currentUser);
   return (
   <>
     <ToastContainer />

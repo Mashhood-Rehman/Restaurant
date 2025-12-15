@@ -7,6 +7,14 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl,
     credentials: "include",
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+        console.log('🔑 Token attached to request');
+      }
+      return headers;
+    },
   }),
   tagTypes: ["Auth", "Messages", "User"],
   endpoints: () => ({}),

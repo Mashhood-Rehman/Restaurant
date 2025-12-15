@@ -12,9 +12,12 @@ import { toast } from "react-toastify";
 import { useLogoutMutation } from "../../features/api/AuthApi";
 import { Link, useNavigate } from "react-router-dom";
 import MobileSidebar from "./MobileSidebar";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 const Navbar = () => {
   const [BGColor, SetBGColor] = useState("bg-white");
+  const newUser = useCurrentUser();
+  console.log(newUser)
   const [open, setOpen] = useState(false);
   const [formclose, setFormClose] = useState(false);
   // const { data: userData, error, isLoading, refetch } = useGetMeQuery();

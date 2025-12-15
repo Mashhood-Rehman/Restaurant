@@ -31,29 +31,34 @@ const Login = ({ setFormClose }) => {
     setUser({ ...user, [name]: value });
   };
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    const { email, password } = user;
-
-    if (!email || !password) {
-      // toast.error("All fields are required");
-      alert("All fields are required");
-      return;
+const submitHandler = async (e) => {
+  e.preventDefault();
+  const { email, password } = user;
+  if (!email || !password) {
+    alert("All fields are required");
+    return;
+  }
+  
+  try {
+    const response = await loginData(user).unwrap();
+    console.log('✅ Login response:', response);
+    
+    // ✅ ADD THIS BLOCK
+    if (response?.token) {
+      localStorage.setItem('token', response.token);
+      console.log('✅ Token stored:', response.token);
     }
-
-    try {
-      const response = await loginData(user).unwrap();
-      console.log('✅ Login response:', response);
-      if (response) {
-        setJustLoggedIn(true);
-        handleCloseForm()
-      }
-refetch()
-    } catch (error) {
-      console.error("❌ Login failed:", error);
-      toast.error("Invalid email or password");
+    
+    if (response) {
+      setJustLoggedIn(true);
+      handleCloseForm();
     }
-  };
+    refetch();
+  } catch (error) {
+    console.error("❌ Login failed:", error);
+    toast.error("Invalid email or password");
+  }
+};
 
   const handleCloseForm = () => {
     setFormClose(false);

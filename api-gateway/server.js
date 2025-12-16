@@ -21,9 +21,9 @@ Gateways.forEach(({route, target}) =>{
     changeOrigin: true,
     proxyReqOptDecorator: (options, req) => {
       // Forward cookies from client to upstream service
-      if(req.headers.cookie) {
-        options.headers['cookie'] = req.headers.cookie;
-      }
+   if (req.headers.authorization) {
+  options.headers['authorization'] = req.headers.authorization;
+}
       return options;
     },
     proxyReqPathResolver: (req) => req.originalUrl,

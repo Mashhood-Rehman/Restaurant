@@ -3,19 +3,18 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const baseUrl = "http://localhost:8000/api";
 
 export const apiSlice = createApi({
-  reducerPath: "api",
+ reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl,
-    credentials: "include",
+    baseUrl: "http://localhost:8000/api",
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
-        console.log('🔑 Token attached to request');
+        headers.set("Authorization", `Bearer ${token}`);
       }
       return headers;
     },
+    credentials: "include",  // if you need cookies
   }),
-  tagTypes: ["Auth", "Messages", "User"],
+  tagTypes: ["Auth", "User"],
   endpoints: () => ({}),
 });

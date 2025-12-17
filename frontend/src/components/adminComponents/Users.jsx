@@ -53,7 +53,8 @@ const Users = () => {
   };
 
   if(error) {
-    return <div className="text-red-500">      Error fetching users: {JSON.stringify(error)}
+    return <div className="text-red-500"> 
+         Error fetching users: {JSON.stringify(error)}
 </div>;
   }
   return (

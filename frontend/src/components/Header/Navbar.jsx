@@ -7,7 +7,6 @@ import { carouselImages, navbarSections } from '../../../utils/Data'
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { IMAGES } from "../../assets/Images";
 import CustomModal from "../constants/CustomModal";
-import { useGetMeQuery } from "../../features/api/userApi";
 import { toast } from "react-toastify";
 import { useLogoutMutation } from "../../features/api/AuthApi";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,23 +15,22 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 const Navbar = () => {
   const [BGColor, SetBGColor] = useState("bg-white");
-  const newUser = useCurrentUser();
-  console.log(newUser)
+  const currentUser = useCurrentUser();
   const [open, setOpen] = useState(false);
   const [formclose, setFormClose] = useState(false);
-  // const { data: userData, error, isLoading, refetch } = useGetMeQuery();
   const [logoutUser] = useLogoutMutation();
   const [userIn, setUserIn] = useState(null);
   const navigate = useNavigate(
 
   )
-  // useEffect(() => {
-  //   if (currentUser) {
-  //     setUserIn(currentUser);
-  //   } else {
-  //     setUserIn(null);
-  //   }
-  // }, [currentUser, userIn]);
+
+  useEffect(() => {
+    if (currentUser) {
+      setUserIn(currentUser);
+    } else {
+      setUserIn(null);
+    }
+  }, [currentUser, userIn]);
 
   useEffect(() => {
     const pressedEscapeKey = (e) => {
@@ -91,7 +89,6 @@ const Navbar = () => {
       navigate(`/#${id}`);
     }
   };
-  const currentUser = null
   return (
     <div className="flex z-[999] bg-white justify-between items-center">
       <div>
@@ -217,8 +214,8 @@ const Navbar = () => {
                           </div>
                         )}
                         <div className="flex flex-col ">
-                          <span className="font-semibold overflow-hidden truncate whitespace-nowrap max-w-[120px] text-sm">{userIn.userData.name || "User"}</span>
-                          <span className="text-xs overflow-hidden truncate whitespace-nowrap max-w-[120px]  text-gray-500">{userIn.userData.email}</span>
+                          <span className="font-semibold overflow-hidden truncate whitespace-nowrap max-w-[120px] text-sm">{currentUser?.userData?.name || "User"}</span>
+                          <span className="text-xs overflow-hidden truncate whitespace-nowrap max-w-[120px]  text-gray-500">{currentUser?.userData?.email}</span>
                         </div>
                       </div>
                     </li>

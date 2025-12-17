@@ -1,7 +1,7 @@
 const  message = require("../model/message");
 
 const sendMessage = (req, res) => {
-    console.log("controller hit" );
+    console.log("message controller hit" );
     try{
         const {receiverId, text} = req.body;
         console.log("req.body:", req.body);

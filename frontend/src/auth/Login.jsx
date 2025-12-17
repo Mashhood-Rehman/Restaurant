@@ -43,14 +43,11 @@ const submitHandler = async (e) => {
     const response = await loginData(user).unwrap();
     console.log('✅ Login response:', response);
     
-    // ✅ ADD THIS BLOCK
-    if (response?.token) {
-      localStorage.setItem('token', response.token);
-      console.log('✅ Token stored:', response.token);
-    }
+  
     
     if (response) {
       setJustLoggedIn(true);
+      toast.success("Login successful");
       handleCloseForm();
     }
     refetch();

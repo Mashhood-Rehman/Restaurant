@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Icons } from "../../assets/Icons";
 import { socket } from "../../../utils/socket";
 import { useSendMessagesMutation } from "../../features/api/messageApi";
@@ -8,13 +8,22 @@ const MessageFooter = ({user}) => {
     const [message, setMessage] = useState("");
     const [sendMessages] = useSendMessagesMutation();
     const currentUser = useCurrentUser();
+
     console.log("current user",currentUser)
+
+    // Join socket room when component mounts
+    useEffect(() => {
+        if (currentUser?.userData?._id) {
+            console.log("🔌 Joining socket room for user:", currentUser.userData._id);
+            socket.emit('join', currentUser.userData._id);
+        }
+    }, [currentUser]);
 const sendMessage = async () => {
   if (!message.trim()) return;
 
   try {
   // Get current user ID from RTK Query cache
-  const senderId = currentUser?._id;
+  const senderId = currentUser?.userData?._id;
 
     const payload = {
       senderId,

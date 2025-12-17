@@ -1,6 +1,7 @@
 const express = require("express");
 const { Login, Signup, logout } = require("../controllers/authController");
-const protect = require("../../shared/middleware/authMiddleware");
+const {protect} = require("shared");  
+
 const router = express.Router();
 const loginReq = (req,res,next) => {
     try {
@@ -12,7 +13,7 @@ const loginReq = (req,res,next) => {
     }
 }
 router.post("/login",loginReq, Login);
-router.post("/logout", protect, logout);
+router.post("/logout", protect(), logout);
 router.post("/signup", Signup);
 
 module.exports = router;

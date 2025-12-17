@@ -9,9 +9,13 @@
         let token;
 
         // Check for token in cookies first
-      
+        if (req.cookies && req.cookies.token) {
+          token = req.cookies.token;
+          console.log("✅ Token found in cookies");
+        }
+
         // Then check Authorization header
-        if (req.headers.authorization?.startsWith("Bearer ")) {
+        if (!token && req.headers.authorization?.startsWith("Bearer ")) {
           token = req.headers.authorization.split(" ")[1];
           console.log("✅ Token found in Authorization header");
         }

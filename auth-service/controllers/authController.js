@@ -26,16 +26,24 @@ const Login = async (req, res) => {
             { expiresIn: "1d" }
         );
         console.log("User logged in successfully:", checkUser.id);
-       return res.status(200).json({
-    message: "User logged in successfully",
-    user: {
-        id: checkUser.id,
-        email: checkUser.email,
-        name: checkUser.name,
-        role: checkUser.role,
-    },
-    token: token,
-});
+
+        // Set token in cookie
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 24 * 60 * 60 * 1000 // 1 day
+        });
+
+        return res.status(200).json({
+            message: "User logged in successfully",
+            user: {
+                id: checkUser.id,
+                email: checkUser.email,
+                name: checkUser.name,
+                role: checkUser.role,
+            }
+        });
 
     } catch (error) {
         console.log(error)
@@ -74,13 +82,30 @@ const Signup = async (req, res) => {
             }
         });
 
+        // Generate token for the new user
+        const token = jwt.sign(
+            { id: newUser.id, email: newUser.email, role: newUser.role },
+            process.env.JWT_SECRET,
+            { expiresIn: "1d" }
+        );
+
         console.log("✅ User created successfully:", newUser.id);
+
+        // Set token in cookie
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 24 * 60 * 60 * 1000 // 1 day
+        });
+
         return res.status(201).json({
             message: "User created successfully",
             user: {
                 id: newUser.id,
                 email: newUser.email,
-
+                name: newUser.name,
+                role: newUser.role
             }
         });
     } catch (error) {

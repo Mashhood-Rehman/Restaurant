@@ -13,23 +13,32 @@ const MessageFooter = ({user}) => {
 
     // Join socket room when component mounts
     useEffect(() => {
-        if (currentUser?.userData?._id) {
-            console.log("🔌 Joining socket room for user:", currentUser.userData._id);
-            socket.emit('join', currentUser.userData._id);
+        if (currentUser?.userData?.id) {
+            console.log("🔌 Joining socket room for user:", currentUser.userData.id);
+            socket.emit('join', currentUser.userData.id);
         }
     }, [currentUser]);
 const sendMessage = async () => {
   if (!message.trim()) return;
-
+console.log("current user",currentUser)
+console.log("user",user)
   try {
-  // Get current user ID from RTK Query cache
-  const senderId = currentUser?.userData?._id;
+    // Get current user ID from RTK Query cache
+    const senderId = currentUser?.userData?.id;
+    const receiverId = user?.id;
+
+    if (!senderId || !receiverId) {
+      console.error("❌ Missing senderId or receiverId:", { senderId, receiverId });
+      return;
+    }
 
     const payload = {
       senderId,
-      receiverId: user._id,
+      receiverId,
       text: message,
     };
+
+    console.log("📤 Sending message payload:", payload);
 
     // Emit to socket with acknowledgement callback
     socket.emit("send_message", payload, (ack) => {
@@ -39,7 +48,7 @@ const sendMessage = async () => {
         console.error("❌ Failed to send via socket:", ack?.error);
         // Fallback: also try HTTP API
         sendMessages({
-          receiverId: user._id,
+          receiverId,
           text: message,
         }).then(() => {
           console.log("✅ Message sent via HTTP API");

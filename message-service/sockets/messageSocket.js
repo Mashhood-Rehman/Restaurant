@@ -37,7 +37,6 @@ const setupMessageSocket = (io) => {
           });
 
           await newMessage.save();
-          console.log("💾 Message saved to DB:", newMessage._id);
 
           // Emit to receiver's room
           io.to(String(receiverId)).emit("receive_message", newMessage);

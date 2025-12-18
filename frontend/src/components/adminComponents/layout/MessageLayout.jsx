@@ -15,19 +15,19 @@ const MessageLayout = ({onClose, user}) => {
                 {/* panel header */}
                 <div className="flex flex-1 ">
                     {/* tabs */}
-                    <aside className=" w-96 overflow-y-auto max-h-[calc(90vh)] Message-panel-scrollbar">
+                    <aside className=" w-96 overflow-y-auto h-full  max-h-[calc(90vh)] Message-panel-scrollbar">
                         <ChatSection />
                     </aside>
                     {/* main content */}
-                    <div className="bg-white px-4 py-2 flex-1 ">
-                        <div className='max-h-[calc(90vh-80px)] Message-panel-scrollbar overflow-y-auto'>
+                    <div className="bg-white flex-1 ">
+                        <div className=' Message-panel-scrollbar overflow-y-auto'>
 
                             <ChatHeader user={user} />
-                            <div className='overflow-y-auto Message-panel-scrollbar max-h-[calc(90vh-80px)]'>
+                        </div>
+                            <div className='overflow-y-auto Message-panel-scrollbar  max-h-[calc(80vh-80px)] h-full'>
 
                                 <MessagePanel />
                             </div>
-                        </div>
                         <MessageFooter user={user} />                </div>
                 </div>
                 {/* panel footer  */}

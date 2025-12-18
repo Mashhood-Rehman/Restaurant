@@ -1,5 +1,6 @@
 const express = require("express")
 const dotenv = require("dotenv")
+const path = require("path")
 const db = require("./db/db")
 const http = require("http")
 const messageRoutes = require("./route/messageRoute")
@@ -8,7 +9,7 @@ const cors = require("cors")
 const cookieParser = require("cookie-parser")
 const setupMessageSocket = require("./sockets/messageSocket")
 
-dotenv.config()
+dotenv.config({ path: path.join(__dirname, "../shared/.env") })
 const app = express()
 app.use(express.json())
 const PORT = process.env.PORT || 3003

@@ -25,11 +25,11 @@ const sendMessage = (req, res) => {
 const getConversation = async (req, res) => {
     try {
         const {userId} = req.params
-        const currentUserId = req.user.id; 
+        const currentUserId = req.user.id;
         const messages = await message.find({
             $or: [
-                {sendId: currentUserId, receiverId: userId },
-                {sendId: userId, receiverId: currentUserId}
+                {senderId: currentUserId, receiverId: userId },
+                {senderId: userId, receiverId: currentUserId}
             ],
 
         }).sort({createdAt: 1});

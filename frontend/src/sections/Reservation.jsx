@@ -189,7 +189,6 @@ return (
         </form>
       </div>
     </div>
-    <ToastContainer theme="light" position="bottom-right" />
   </section>
 );
 

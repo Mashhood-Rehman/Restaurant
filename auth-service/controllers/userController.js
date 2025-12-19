@@ -14,7 +14,6 @@ const createUser = async (req, res) => {
             return res.status(400).json({ message: "User already exists" });
         }
         const hashedPassword = await bcrypt.hash(password, 10)
-        console.log("Hashed password:", hashedPassword);
 
         const newUser = await prisma.user.create({
             data: { email, name, password: hashedPassword,role }
@@ -56,7 +55,7 @@ const getAllCustomers = async (req,res) => {
 
 const updateUserById = async (req, res) => {
     const { id } = req.params
-    const data = req.body
+    const data = {...req.body}
     try {
         const getUser = await prisma.user.findUnique({
             where: { id: parseInt(id) }
@@ -66,8 +65,11 @@ const updateUserById = async (req, res) => {
             return res.status(404).json({ message: "No user found" }); // Changed to 404
         }
         if (data.password) {
-            data.password = await bcrypt.hash(data.password, 10)
-        }
+      data.password = await bcrypt.hash(data.password, 10);
+    }
+    if(req.file) {
+        data.profileImg = req.file.path
+    }
         const updatedUser = await prisma.user.update({
             where: { id: parseInt(id) },
             data: data

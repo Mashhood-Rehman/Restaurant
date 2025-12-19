@@ -11,22 +11,22 @@ const MessageLayout = ({onClose, user}) => {
         <div>
         <Icons.X className='absolute top-2 right-2 cursor-pointer hover:bg-white/10 rounded-full p-0.5' onClick={onClose} />
         </div>
-            <div className='flex mt-3 flex-col p-4'>
+<div className='flex bg-white rounded-xl shadow-2xl max-w-[calc(100vw-2rem)] w-full max-h-[calc(100vh-5.5rem)] overflow-hidden'>
                 {/* panel header */}
-                <div className="flex flex-1 ">
+<div className="flex flex-1 h-full">
                     {/* tabs */}
-                    <aside className=" w-96 overflow-y-auto h-full  max-h-[calc(90vh)] Message-panel-scrollbar">
+                    <aside className="w-80 overflow-y-auto h-full border-r border-gray-200 Message-panel-scrollbar">
                         <ChatSection />
                     </aside>
                     {/* main content */}
-                    <div className="bg-white flex-1 ">
+                    <div className="flex-1 flex flex-col">
                         <div className=' Message-panel-scrollbar overflow-y-auto'>
 
                             <ChatHeader user={user} />
                         </div>
                             <div className='overflow-y-auto Message-panel-scrollbar  max-h-[calc(80vh-80px)] h-full'>
 
-                                <MessagePanel />
+                                <MessagePanel user={user} />
                             </div>
                         <MessageFooter user={user} />                </div>
                 </div>

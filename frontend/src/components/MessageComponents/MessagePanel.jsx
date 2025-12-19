@@ -8,16 +8,15 @@ const MessagePanel = ({ user }) => {
   const currentUser = useCurrentUser()
   const userId = user?._id || user?.id
 
-  // Fetch existing messages for this conversation
   const { data: existingMessages, isLoading } = useGetMessagesQuery(userId, {
     skip: !userId
   })
 
   useEffect(() => {
     if (existingMessages) {
-      const normalizedMessages = existingMessages.map(msg => ({
+      const normalizedMessages = existingMessages?.data?.map(msg => ({
         ...msg,
-        id: msg._id || msg.id, // Handle both MongoDB (_id) and PostgreSQL (id)
+        id: msg._id || msg.id,
         senderId: msg.senderId || msg.sender_id,
         receiverId: msg.receiverId || msg.receiver_id
       }))
@@ -26,17 +25,12 @@ const MessagePanel = ({ user }) => {
   }, [existingMessages])
 
   useEffect(() => {
-    console.log("working")
-
-    // Join socket room for current user
     if (currentUser?.userData?.id) {
       console.log("🔌 MessagePanel: Joining socket room for user:", currentUser.userData.id);
       socket.emit('join', currentUser.userData.id);
     }
 
     socket.on("receive_message", (data) => {
-      console.log("📨 Received message:", data);
-      // Normalize the new message ID
       const normalizedMessage = {
         ...data,
         id: data._id || data.id,
@@ -46,7 +40,6 @@ const MessagePanel = ({ user }) => {
       setMessages((prevMessages) => [...prevMessages, normalizedMessage])
     })
 
-    console.log("socket hit", socket)
     return () => socket.off("receive_message")
   }, [currentUser])
 
@@ -60,9 +53,8 @@ const MessagePanel = ({ user }) => {
         <p className="text-gray-500 text-center">No messages yet. Start the conversation!</p>
       ) : (
         messages?.map((msg, index) => (
-          <div key={msg.id || index} className={`mb-2 p-2 rounded ${
-            msg?.senderId == currentUser?.userData?.id ? 'bg-purple-500 ml-auto max-w-xs' : 'bg-gray-100 mr-auto max-w-xs'
-          }`}>
+          <div key={msg.id || index} className={`mb-2 p-2 rounded ${msg?.senderId == currentUser?.userData?.id ? 'bg-blue-500 ml-auto max-w-xs' : 'bg-gray-100 mr-auto max-w-xs'
+            }`}>
             <p>{msg.text}</p>
           </div>
         ))

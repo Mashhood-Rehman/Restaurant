@@ -14,16 +14,12 @@ const MessageFooter = ({user}) => {
     // Join socket room when component mounts
     useEffect(() => {
         if (currentUser?.userData?.id) {
-            console.log("🔌 Joining socket room for user:", currentUser.userData.id);
             socket.emit('join', currentUser.userData.id);
         }
     }, [currentUser]);
 const sendMessage = async () => {
   if (!message.trim()) return;
-console.log("current user",currentUser)
-console.log("user",user)
   try {
-    // Get current user ID from RTK Query cache
     const senderId = currentUser?.userData?.id;
     const receiverId = user?.id;
 
@@ -38,15 +34,10 @@ console.log("user",user)
       text: message,
     };
 
-    console.log("📤 Sending message payload:", payload);
 
-    // Emit to socket with acknowledgement callback
     socket.emit("send_message", payload, (ack) => {
       if (ack && ack.success) {
-        console.log("✅ Message sent via socket:", message);
       } else {
-        console.error("❌ Failed to send via socket:", ack?.error);
-        // Fallback: also try HTTP API
         sendMessages({
           receiverId,
           text: message,
@@ -69,7 +60,7 @@ console.log("user",user)
         setMessage(value)
     }
     return (
-        <div className="border-t border-gray-200 px-4 py-3 flex items-center gap-3 bg-white">
+        <div className="border-t border-gray-200 px-4 py-3  flex items-center gap-3 bg-white">
 
             {/* Emoji Button */}
             <button className="text-gray-600 hover:text-gray-800 transition">

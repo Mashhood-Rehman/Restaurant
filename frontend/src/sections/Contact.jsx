@@ -92,7 +92,6 @@ const Contact = () => {
         </form>
       </div>
 
-      <ToastContainer theme="dark" position="bottom-right" />
     </section>
   );
 };

@@ -11,6 +11,7 @@ import Navbar from "./components/Header/Navbar";
 import Orders from "./pages/Orders";
 import { AdminOrders, Analytics, Products, Customers, Users, AdminLayout } from "./admin";
 import { useCurrentUser } from "./hooks/useCurrentUser";
+import Profile from "./components/Profile";
 
 const App = () => {
   const location = useLocation()
@@ -25,6 +26,7 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/dispatch" element={<Dispatch />} />
         <Route path="/success" element={<Success />} />

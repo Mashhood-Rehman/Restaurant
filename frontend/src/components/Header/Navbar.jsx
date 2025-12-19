@@ -219,9 +219,24 @@ const Navbar = () => {
                         </div>
                       </div>
                     </li>
+                    { currentUser?.userData?.role === 'superadmin' ?
+                     <>
+                        <li className="p-3 ps-5 hover:bg-orange-500 hover:text-white transition duration-300 ease-in-out cursor-pointer whitespace-nowrap">
+                      <Link to='/admin/customers' className="w-full text-left ">
+                        Dashboard
+                      </Link>
+                    </li></> :
                     <li className="p-3 ps-5 hover:bg-orange-500 hover:text-white transition duration-300 ease-in-out cursor-pointer whitespace-nowrap">
                       <Link to='/orders' className="w-full text-left ">
                         Orders
+                      </Link>
+                    </li>
+              }
+                    <li
+className="p-3 ps-5 hover:bg-orange-500 hover:text-white transition duration-300 ease-in-out cursor-pointer whitespace-nowrap"                      onClick={handleLogout}
+                    >
+                       <Link to='/profile' className="w-full text-left ">
+                        Profile
                       </Link>
                     </li>
                     <li

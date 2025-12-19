@@ -1,8 +1,11 @@
 import React from "react";
 import { Icons } from "../../assets/Icons";
 import { IMAGES } from "../../assets/Images";
+import { useGetAllUsersQuery } from "../../features/api/userApi";
 
 const ChatSection = () => {
+    const {data:usersData} =  useGetAllUsersQuery()
+    console.log(usersData)
     const chats = [
         {
             id: 1,
@@ -76,13 +79,13 @@ const ChatSection = () => {
 
             {/* Chat List */}
             <div className="space-y-3">
-                {chats.map((chat) => (
+                {usersData?.getUsers?.map((chat) => (
                     <div
                         key={chat.id}
                         className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded-lg cursor-pointer transition"
                     >
                         <img
-                            src={chat.image}
+                            src={chat.profileImg || IMAGES.PERSONPLACEHOLDER}
                             alt={chat.name}
                             className="w-12 h-12 rounded-full object-cover"
                         />

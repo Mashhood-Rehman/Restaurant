@@ -4,7 +4,7 @@ import { IMAGES } from "../../assets/Images";
 import { useGetAllUsersQuery } from "../../features/api/userApi";
 
 const ChatSection = () => {
-    const {data:usersData} =  useGetAllUsersQuery()
+    const { data: usersData } = useGetAllUsersQuery()
     console.log(usersData)
     const chats = [
         {
@@ -85,7 +85,7 @@ const ChatSection = () => {
                         className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded-lg cursor-pointer transition"
                     >
                         <img
-                            src={chat.profileImg || IMAGES.PERSONPLACEHOLDER}
+                            src={chat.profileImg ?? IMAGES.PERSONPLACEHOLDER}
                             alt={chat.name}
                             className="w-12 h-12 rounded-full object-cover"
                         />

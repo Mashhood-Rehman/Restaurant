@@ -32,8 +32,17 @@ export const userApi = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
+    updateUserByID: builder.mutation({
+      query: ({data, id}) => ({
+        url: `/users/updateuserbyid/${id}`,
+        method: "PUT",
+        body: data,
+        credentials: "include",
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
-export const { useGetMeQuery, useLazyGetMeQuery, useGetAllUsersQuery, useGetAllCustomersQuery, useCreateUsersMutation
+export const { useGetMeQuery, useLazyGetMeQuery, useGetAllUsersQuery, useGetAllCustomersQuery, useCreateUsersMutation, useUpdateUserByIDMutation
  } = userApi;

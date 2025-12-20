@@ -12,7 +12,7 @@
     router.get("/getAllUsers", getAllUsers);
     router.get("/getMe", protect(), getMe);
     router.get("/getAllCustomers", getAllCustomers);
-    router.patch("/updateuserbyid/:id", uploadProfileImage, updateUserById);
+    router.put("/updateuserbyid/:id", uploadProfileImage, updateUserById);
     router.delete("/deleteUserById/:id", deleteUserById);
 
     module.exports = router;

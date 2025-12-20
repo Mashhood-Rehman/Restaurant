@@ -1,11 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { User, Mail, Lock, Camera, Edit2, Save, X, Shield } from 'lucide-react';
 import { useCurrentUser } from '../hooks/useCurrentUser';
+import { useUpdateUserByIDMutation } from '../features/api/userApi';
+
+// Constants
+const DUMMY_IMAGE = 'dummyImage.webp';
+const ROLE_COLORS = {
+  superadmin: 'bg-red-500 text-white',
+  manager: 'bg-orange-500 text-white',
+  chef: 'bg-orange-400 text-white',
+  rider: 'bg-orange-300 text-gray-800',
+  customer: 'bg-gray-200 text-gray-700'
+};
 
 const Profile = () => {
   const rawUser = useCurrentUser();
   const currentUser = rawUser?.userData;
-console.log("🌟 Profile.jsx: Current User:", currentUser);
+  console.log("🌟 Profile.jsx: Current User:", currentUser);
+  const [updateUserByID, { isLoading: isUpdating, error: updateError }] = useUpdateUserByIDMutation();
   const [isEditing, setIsEditing] = useState(false);
   const [userData, setUserData] = useState({
     id: 1,
@@ -36,31 +48,37 @@ console.log("🌟 Profile.jsx: Current User:", currentUser);
     }
   }, [currentUser]);
 
-  const roleColors = {
-    superadmin: 'bg-red-500 text-white',
-    manager: 'bg-orange-500 text-white',
-    chef: 'bg-orange-400 text-white',
-    rider: 'bg-orange-300 text-gray-800',
-    customer: 'bg-gray-200 text-gray-700'
-  };
 
-  const handleChange = (e) => {
+if(updateError) {
+  console.log(updateError )
+}
+  const handleChange = useCallback((e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-  };
+  }, []);
 
-  const handleSave = () => {
-    setUserData(formData);
-    setIsEditing(false);
-    // Backend integration will go here
-  };
+  const handleSave = useCallback(async () => {
+    try {
+      const updateData = {
+        name: formData.name,
+        email: formData.email,
+        profileImg: formData.profileImg
+      };
+      await updateUserByID({ data: updateData, id: userData.id }).unwrap();
+      setUserData(formData);
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Failed to update user:', error);
+      // Handle error, maybe show a toast or alert
+    }
+  }, [formData, updateUserByID, userData.id]);
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     setFormData(userData);
     setIsEditing(false);
-  };
+  }, [userData]);
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = useCallback((e) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
@@ -69,7 +87,7 @@ console.log("🌟 Profile.jsx: Current User:", currentUser);
       };
       reader.readAsDataURL(file);
     }
-  };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50 py-8 px-4">
@@ -83,7 +101,7 @@ console.log("🌟 Profile.jsx: Current User:", currentUser);
             <div className="absolute -top-16 left-6">
               <div className="relative">
                 <div className="w-32 h-32 rounded-full bg-white p-2 shadow-xl">
-                  {formData.profileImg && formData.profileImg !== "dummyImage.webp" ? (
+                  {formData.profileImg && formData.profileImg !== DUMMY_IMAGE ? (
                     <img
                       src={formData.profileImg}
                       alt={formData.name}
@@ -131,10 +149,20 @@ console.log("🌟 Profile.jsx: Current User:", currentUser);
                   </button>
                   <button
                     onClick={handleSave}
-                    className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-6 py-2.5 rounded-lg transition-colors shadow-md"
+                    disabled={isUpdating}
+                    className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-6 py-2.5 rounded-lg transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <Save className="w-4 h-4" />
-                    Save Changes
+                    {isUpdating ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="w-4 h-4" />
+                        Save Changes
+                      </>
+                    )}
                   </button>
                 </div>
               )}
@@ -144,7 +172,7 @@ console.log("🌟 Profile.jsx: Current User:", currentUser);
             <div className="mt-8">
               <div className="flex items-center gap-3 mb-2">
                 <h1 className="text-3xl font-bold text-gray-900">{userData.name}</h1>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium capitalize ${roleColors[userData.role]}`}>
+                <span className={`px-3 py-1 rounded-full text-sm font-medium capitalize ${ROLE_COLORS[userData.role]}`}>
                   {userData.role}
                 </span>
               </div>
@@ -159,6 +187,17 @@ console.log("🌟 Profile.jsx: Current User:", currentUser);
             <Shield className="w-6 h-6 text-orange-500" />
             <h2 className="text-2xl font-bold text-gray-900">Profile Information</h2>
           </div>
+
+          {updateError && (
+<>
+{console.log('update error is',updateError)
+}            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-600 text-sm">
+                Failed to update profile. Please try again.
+              </p>
+            </div>
+            </>
+          )}
 
           <div className="space-y-6">
             {/* Name Field */}
@@ -212,7 +251,7 @@ console.log("🌟 Profile.jsx: Current User:", currentUser);
                 Role
               </label>
               <div className="px-4 py-3 bg-gray-50 rounded-lg">
-                <span className={`inline-block px-4 py-1.5 rounded-full text-sm font-semibold capitalize ${roleColors[userData.role]}`}>
+                <span className={`inline-block px-4 py-1.5 rounded-full text-sm font-semibold capitalize ${ROLE_COLORS[userData.role]}`}>
                   {userData.role}
                 </span>
               </div>

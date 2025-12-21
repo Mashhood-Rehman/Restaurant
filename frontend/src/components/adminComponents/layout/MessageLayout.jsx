@@ -18,6 +18,7 @@ const MessageLayout = ({ onClose, user, onUserSelect }) => {
                     <aside className="w-80 overflow-y-auto h-screen border-r border-gray-200 Message-panel-scrollbar">
                         <ChatSection onUserSelect={onUserSelect} selectedUserId={user?.id} />
                     </aside>
+                    
                     {/* main content */}
                     <div className="flex-1 flex flex-col">
                         <div className=' Message-panel-scrollbar overflow-y-auto'>

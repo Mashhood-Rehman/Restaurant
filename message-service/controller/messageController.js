@@ -1,21 +1,47 @@
 const message = require("../model/message");
 
-const sendMessage = (req, res) => {
+const sendMessage = async (req, res) => {
   try {
     const { receiverId, text } = req.body;
-    console.log("req.body:", req.body);
     const senderId = req.user.id;
+
+    // Validate that we have either text or file
+    if (!text && !req.file) {
+      return res.status(400).json({ message: "Message must contain text or file" });
+    }
+
+    if (!receiverId) {
+      return res.status(400).json({ message: "Receiver ID is required" });
+    }
+
+    // Handle file upload if present
+    let fileData = {};
+    if (req.file) {
+      fileData = {
+        fileUrl: req.file.path, // Cloudinary URL
+        fileType: req.file.mimetype,
+        fileName: req.file.originalname,
+      };
+    }
+
     const newMessage = new message({
       senderId,
       receiverId,
-      text
+      text: text || null, // Allow null if only file is sent
+      ...fileData,
+      isRead: false,
     });
-    newMessage.save();
-    console.log("Message saved:", newMessage);
-    return res.status(201).json({ message: "Message Sent Successfully", data: newMessage });
+
+    await newMessage.save(); // Add await here!
+    console.log("✅ Message saved:", newMessage);
+    
+    return res.status(201).json({ 
+      message: "Message Sent Successfully", 
+      data: newMessage 
+    });
   } catch (error) {
-    console.log("Error in sendMessage:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.error("❌ Error in sendMessage:", error);
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 }
 

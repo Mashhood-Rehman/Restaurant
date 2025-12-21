@@ -53,9 +53,30 @@ const MessagePanel = ({ user }) => {
         <p className="text-gray-500 text-center">No messages yet. Start the conversation!</p>
       ) : (
         messages?.map((msg, index) => (
-          <div key={msg.id || index} className={`mb-2 p-2 rounded text-white   ${msg?.senderId == currentUser?.userData?.id ? 'bg-blue-500 ml-auto max-w-xs' : 'bg-gray-300 mr-auto max-w-xs'
-            }`}>
-            <p>{msg.text}</p>
+          <div key={msg.id || index} className={`mb-2 p-2 rounded text-white ${msg?.senderId == currentUser?.userData?.id ? 'bg-blue-500 ml-auto max-w-xs' : 'bg-gray-300 mr-auto max-w-xs'}`}>
+            {msg.fileUrl && (
+              <div className="mb-2">
+                {msg.fileType?.startsWith('image/') ? (
+                  <img
+                    src={msg.fileUrl}
+                    alt={msg.fileName || 'Image'}
+                    className="max-w-full h-auto rounded-lg cursor-pointer"
+                    onClick={() => window.open(msg.fileUrl, '_blank')}
+                  />
+                ) : (
+                  <div className="bg-white bg-opacity-20 p-3 rounded-lg cursor-pointer hover:bg-opacity-30 transition-colors" onClick={() => window.open(msg.fileUrl, '_blank')}>
+                    <div className="flex items-center gap-3">
+                      <Icons.File size={24} />
+                      <div>
+                        <p className="text-sm font-medium">{msg.fileName}</p>
+                        <p className="text-xs opacity-75">{msg.fileType}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+            {msg.text && <p>{msg.text}</p>}
           </div>
         ))
       )}

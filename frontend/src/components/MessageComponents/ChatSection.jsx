@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Icons } from "../../assets/Icons";
 import { IMAGES } from "../../assets/Images";
 import { useGetAllUsersQuery } from "../../features/api/userApi";
 
 const ChatSection = ({ onUserSelect, selectedUserId }) => {
+    const [search, setSearch] = useState("");
+
     const { data: usersData } = useGetAllUsersQuery()
 
+    const filteredUsers = usersData.getUsers.filter(user => user?.name?.toLowerCase().includes(search?.toLowerCase()))
     return (
         <div className="h-full p-3 text-black flex flex-col">
 
@@ -16,6 +19,8 @@ const ChatSection = ({ onUserSelect, selectedUserId }) => {
             <div className="relative mb-4">
                 <input
                     type="text"
+                    value={search}
+                    onChange={(e)=> setSearch(e.target.value)}
                     placeholder="Search or start a new chat"
                     className="w-full px-4 py-2 pl-10 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none"
                 />
@@ -27,7 +32,7 @@ const ChatSection = ({ onUserSelect, selectedUserId }) => {
 
             {/* Chat List */}
             <div className="space-y-3 flex-1 overflow-y-auto">
-                {usersData?.getUsers?.map((chat) => (
+                {filteredUsers.map((chat) => (
                     <div
                         key={chat.id}
                         onClick={() => onUserSelect(chat)}

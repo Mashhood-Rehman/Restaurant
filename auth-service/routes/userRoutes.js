@@ -2,10 +2,10 @@
     const express = require("express");
     const { createUser, getAllUsers, updateUserById, deleteUserById, getMe, getAllCustomers } = require("../controllers/userController");
     const {protect} = require("shared");
-    const uploadMiddleware = require("../middleware/uploadMiddleware");
+    const {upload} = require("shared");
     const router = express.Router();
 
-    const userUpload = uploadMiddleware("userProfiles");
+    const userUpload = upload("userProfiles");
 
     const uploadProfileImage = userUpload.single("profileImg")
     router.post("/createUser", createUser);

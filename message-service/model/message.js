@@ -3,7 +3,10 @@
         senderId: {type: String, required: true},
         receiverId: {type: String, required: true},
         isRead: {type: Boolean, default: false},
-        text: {type: String, required: true},
+        text: {type: String},
+        fileUrl: {type: String},
+        fileType: {type: String},
+        fileName: {type: String},
     }, {timestamps: true});
 
     module.exports = mongoose.model("Message", messageSchema)

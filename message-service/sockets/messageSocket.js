@@ -20,10 +20,14 @@ const setupMessageSocket = (io) => {
           const senderId = message.senderId || message.from || message.sender;
           const receiverId = message.receiverId || message.to;
           const text = message.text;
+          const fileUrl = message.fileUrl;
+          const fileType = message.fileType;
+          const fileName = message.fileName;
 
-          if (!senderId || !receiverId || !text) {
-            const error = "Missing senderId, receiverId or text";
-            console.error("❌", error, { senderId, receiverId, text });
+          // Allow messages with either text or file
+          if (!senderId || !receiverId || (!text && !fileUrl)) {
+            const error = "Missing senderId, receiverId, or content (text or file)";
+            console.error("❌", error, { senderId, receiverId, text, fileUrl });
             if (typeof ack === "function") ack({ success: false, error });
             return;
           }
@@ -32,7 +36,10 @@ const setupMessageSocket = (io) => {
           const newMessage = new Message({
             senderId: String(senderId),
             receiverId: String(receiverId),
-            text,
+            text: text || null,
+            fileUrl: fileUrl || null,
+            fileType: fileType || null,
+            fileName: fileName || null,
             isRead: false,
           });
 

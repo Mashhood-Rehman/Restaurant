@@ -1,9 +1,12 @@
 const express = require('express');
-const {protect} = require("shared")
+const {protect, upload} = require("shared")
  const { sendMessage, getConversation, getChatList } = require('../controller/messageController');
 const router = express.Router()
 
-router.post("/send-message", protect(), sendMessage);
+const chatUpload = upload("chatFiles");
+const uploadFile = chatUpload.single("file");
+
+router.post("/send-message", protect(),uploadFile, sendMessage);
 router.get("/get-conversation/:userId", protect(), getConversation);
 router.get("/get-list", protect(), getChatList);
 

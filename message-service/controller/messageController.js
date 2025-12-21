@@ -1,48 +1,47 @@
-const  message = require("../model/message");
+const message = require("../model/message");
 
 const sendMessage = (req, res) => {
-    console.log("message controller hit" );
-    try{
-        const {receiverId, text} = req.body;
-        console.log("req.body:", req.body);
-        const senderId = req.user.id; 
-        const newMessage = new message({
-            senderId,
-            receiverId,
-            text
-        });
-        newMessage.save();
-        console.log("Message saved:", newMessage);
-        return res.status(201).json({message: "Message Sent Successfully", data: newMessage});
-    } catch (error) {
-        console.log("Error in sendMessage:", error);
-        res.status(500).json({message: "Internal Server Error"});
-    }
+  try {
+    const { receiverId, text } = req.body;
+    console.log("req.body:", req.body);
+    const senderId = req.user.id;
+    const newMessage = new message({
+      senderId,
+      receiverId,
+      text
+    });
+    newMessage.save();
+    console.log("Message saved:", newMessage);
+    return res.status(201).json({ message: "Message Sent Successfully", data: newMessage });
+  } catch (error) {
+    console.log("Error in sendMessage:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 }
 
 // Get full conversation
 
 const getConversation = async (req, res) => {
-    try {
-        const {userId} = req.params
-        const currentUserId = req.user.id;
-        const messages = await message.find({
-            $or: [
-                {senderId: currentUserId, receiverId: userId },
-                {senderId: userId, receiverId: currentUserId}
-            ],
+  try {
+    const { userId } = req.params
+    const currentUserId = req.user.id;
+    const messages = await message.find({
+      $or: [
+        { senderId: currentUserId, receiverId: userId },
+        { senderId: userId, receiverId: currentUserId }
+      ],
 
-        }).sort({createdAt: 1});
-        return res.status(200).json({message: "Conversation fetched successfully", data: messages});
+    }).sort({ createdAt: 1 });
+    return res.status(200).json({ message: "Conversation fetched successfully", data: messages });
 
-    }catch (error) {
-        res.status(500).json({message: "Internal Server Error"});
-    }
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 }
 
 
 // Conversation list (recent chats)
- const getChatList = async (req, res) => {
+const getChatList = async (req, res) => {
   try {
     const messages = await message.aggregate([
       {
@@ -80,4 +79,4 @@ const getConversation = async (req, res) => {
 };
 
 
-module.exports = {sendMessage, getConversation, getChatList};
+module.exports = { sendMessage, getConversation, getChatList };

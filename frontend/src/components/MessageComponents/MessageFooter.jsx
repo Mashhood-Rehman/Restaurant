@@ -25,10 +25,10 @@ const MessageFooter = ({ user }) => {
     setMessage((prev) => prev + emojiData.emoji);
   };
 
- 
+
   const sendMessage = async () => {
     if (!message || message.trim().length === 0) return;
-    
+
     try {
       const senderId = currentUser?.userData?.id;
       const receiverId = user?.id;
@@ -144,7 +144,7 @@ const MessageFooter = ({ user }) => {
     setMessage(value)
   }
 
-  
+
   return (
     <>
       <div className="border-t border-gray-200 px-4 py-3 flex items-center gap-3 bg-white">

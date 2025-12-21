@@ -48,12 +48,12 @@ const MessagePanel = ({ user }) => {
   }
 
   return (
-    <div className="p-4">
+    <div className="p-4 h-80">
       {messages?.length === 0 ? (
         <p className="text-gray-500 text-center">No messages yet. Start the conversation!</p>
       ) : (
         messages?.map((msg, index) => (
-          <div key={msg.id || index} className={`mb-2 p-2 rounded ${msg?.senderId == currentUser?.userData?.id ? 'bg-blue-500 ml-auto max-w-xs' : 'bg-gray-100 mr-auto max-w-xs'
+          <div key={msg.id || index} className={`mb-2 p-2 rounded text-white   ${msg?.senderId == currentUser?.userData?.id ? 'bg-blue-500 ml-auto max-w-xs' : 'bg-gray-300 mr-auto max-w-xs'
             }`}>
             <p>{msg.text}</p>
           </div>

@@ -6,15 +6,11 @@ import { IMAGES } from '../../assets/Images'
 const ChatHeader = ({user}) => {
     return (
         <div>
-            <div className='flex px-4 bg-green-500 py-1 items-center justify-between'>
+            <div className='flex px-4 py-1 items-center pb-12 justify-between'>
                 {/* first div  */}
                 <div>
                     <div className='flex items-center space-x-2'>
-                        {user?.profileImg === 'dummyImage.webp' ?
-                        <img src={ IMAGES.PERSONPLACEHOLDER } alt="person placeholder image" className=' rounded-full' /> 
-                        :
-                        <img src={ user?.profileImg } alt="profile  image" className='size-16 rounded-full' />
-                    }
+                        <img src={ user?.profileImg ?? IMAGES.DUMMYIMG } alt="profile  image" className='size-16 rounded-full' />
                         <h1>{user?.name}</h1>
                     </div>
                 </div>

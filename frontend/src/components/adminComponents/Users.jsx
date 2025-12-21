@@ -54,6 +54,7 @@ import { useNavigate, useParams } from 'react-router-dom'
       navigate(`/admin/users/${user.id}`);
     };
 
+
     if(error) {
       return <div className="text-red-500"> 
           Error fetching users: {JSON.stringify(error)}
@@ -210,6 +211,7 @@ import { useNavigate, useParams } from 'react-router-dom'
   <div className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 px-4">
     <MessageLayout
       user={selectedUser}
+      onUserSelect={handleMessage}
       onClose={() => navigate("/admin/users")}
     />
   </div>

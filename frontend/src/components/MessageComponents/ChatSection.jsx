@@ -3,63 +3,11 @@ import { Icons } from "../../assets/Icons";
 import { IMAGES } from "../../assets/Images";
 import { useGetAllUsersQuery } from "../../features/api/userApi";
 
-const ChatSection = () => {
+const ChatSection = ({ onUserSelect, selectedUserId }) => {
     const { data: usersData } = useGetAllUsersQuery()
-    console.log(usersData)
-    const chats = [
-        {
-            id: 1,
-            name: "Home",
-            lastMessage: "Image",
-            time: "6:25 AM",
-            image: IMAGES.PERSONPLACEHOLDER,
-        },
-        {
-            id: 2,
-            name: "Api",
-            lastMessage: "Kahan reh gaye ho?",
-            time: "5:28 AM",
-            image: IMAGES.PERSONPLACEHOLDER,
-        },
-        {
-            id: 3,
-            name: "والد",
-            lastMessage: "Missed voice call",
-            time: "5:14 AM",
-            image: IMAGES.PERSONPLACEHOLDER,
-        },
-        {
-            id: 4,
-            name: "Zaid",
-            lastMessage: "👆",
-            time: "4:37 AM",
-            image: IMAGES.PERSONPLACEHOLDER,
-        },
-        {
-            id: 5,
-            name: "Hamdan Khan",
-            lastMessage: "6 bajay aj",
-            time: "2:03 AM",
-            image: IMAGES.PERSONPLACEHOLDER,
-        },
-        {
-            id: 6,
-            name: "talha new",
-            lastMessage: "😂😂",
-            time: "Yesterday",
-            image: IMAGES.PERSONPLACEHOLDER,
-        },
-        {
-            id: 7,
-            name: "Hasnain",
-            lastMessage: "🎤 0:22",
-            time: "Yesterday",
-            image: IMAGES.PERSONPLACEHOLDER,
-        },
-    ];
 
     return (
-        <div className="bg-white p-3 text-black ">
+        <div className="h-full p-3 text-black flex flex-col">
 
             {/* Header */}
             <h1 className="font-semibold text-xl mb-3">Chats</h1>
@@ -78,11 +26,14 @@ const ChatSection = () => {
             </div>
 
             {/* Chat List */}
-            <div className="space-y-3">
+            <div className="space-y-3 flex-1 overflow-y-auto">
                 {usersData?.getUsers?.map((chat) => (
                     <div
                         key={chat.id}
-                        className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded-lg cursor-pointer transition"
+                        onClick={() => onUserSelect(chat)}
+                        className={`flex items-center gap-3 p-2 hover:bg-gray-100 rounded-lg cursor-pointer transition ${
+                            selectedUserId === chat.id ? 'bg-blue-50 border border-blue-200' : ''
+                        }`}
                     >
                         <img
                             src={chat.profileImg ?? IMAGES.PERSONPLACEHOLDER}

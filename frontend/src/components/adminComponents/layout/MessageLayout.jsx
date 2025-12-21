@@ -5,18 +5,18 @@ import ChatSection from '../../MessageComponents/ChatSection'
 import ChatHeader from '../../MessageComponents/ChatHeader'
 import MessageFooter from '../../MessageComponents/MessageFooter'
 
-const MessageLayout = ({ onClose, user }) => {
+const MessageLayout = ({ onClose, user, onUserSelect }) => {
     return (
         <>
             <div>
                 <Icons.X className='absolute top-2 right-2 cursor-pointer hover:bg-white/10 rounded-full p-0.5' onClick={onClose} />
             </div>
-            <div className='flex bg-white rounded-xl  shadow-2xl max-w-[calc(100vw-2rem)] w-full max-h-[calc(100vh-4rem)] overflow-hidden'>
+            <div className='flex bg-white rounded-xl  shadow-2xl max-w-[calc(100vw-2rem)] w-full max-h-[calc(100vh-1rem)] overflow-hidden'>
                 {/* panel header */}
                 <div className="flex flex-1 h-full">
                     {/* tabs */}
-                    <aside className="w-80 overflow-y-auto h-full border-r border-gray-200 Message-panel-scrollbar">
-                        <ChatSection />
+                    <aside className="w-80 overflow-y-auto h-screen border-r border-gray-200 Message-panel-scrollbar">
+                        <ChatSection onUserSelect={onUserSelect} selectedUserId={user?.id} />
                     </aside>
                     {/* main content */}
                     <div className="flex-1 flex flex-col">
@@ -28,9 +28,9 @@ const MessageLayout = ({ onClose, user }) => {
 
                             <MessagePanel user={user} />
                         </div>
-                        <MessageFooter user={user} />                </div>
+                        <MessageFooter user={user} />
+                    </div>
                 </div>
-                {/* panel footer  */}
             </div>
         </>
     )

@@ -2,11 +2,11 @@
 // This file can be used to create test users for development
 
 const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient()
 const bcrypt = require("bcrypt");
 
-const prisma = new PrismaClient();
 
-async function main() {
+ async function main() {
   try {
     // Clear existing test users (optional, comment out if you want to keep data)
     // await prisma.user.deleteMany();
@@ -58,5 +58,6 @@ async function main() {
     await prisma.$disconnect();
   }
 }
+module.exports = main;
 
 main();

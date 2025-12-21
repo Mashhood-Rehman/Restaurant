@@ -4,6 +4,7 @@ import { socket } from "../../../utils/socket";
 import { useSendMessagesMutation } from "../../features/api/messageApi";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import EmojiPicker from "emoji-picker-react";
+import CustomModal from "../constants/CustomModal";
 
 const MessageFooter = ({ user }) => {
   const currentUser = useCurrentUser();
@@ -205,78 +206,63 @@ const MessageFooter = ({ user }) => {
         </button>
       </div>
 
-      {/* File Preview Modal */}
-      {selectedFile && (
-        <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg max-w-md w-full mx-4 max-h-[80vh] overflow-hidden">
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="text-lg font-semibold">Send File</h3>
-              <button
-                onClick={cancelFilePreview}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <Icons.X size={24} />
-              </button>
+      {/* File Preview Modal (uses CustomModal) */}
+      <CustomModal isOpen={!!selectedFile} onClose={cancelFilePreview} heading="Send File">
+        {/* File Preview */}
+        <div className="p-4">
+          {filePreview ? (
+            <img
+              src={filePreview}
+              alt="File preview"
+              className="max-w-full h-auto max-h-64 object-contain mx-auto rounded-lg"
+            />
+          ) : (
+            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+              <Icons.File size={48} className="text-gray-400" />
+              <div>
+                <p className="font-medium text-gray-900">{selectedFile?.name}</p>
+                <p className="text-sm text-gray-500">{selectedFile?.type || 'File'}</p>
+                <p className="text-xs text-gray-400">{selectedFile ? (selectedFile.size / 1024 / 1024).toFixed(2) : '0.00'} MB</p>
+              </div>
             </div>
-
-            {/* File Preview */}
-            <div className="p-4">
-              {filePreview ? (
-                <img
-                  src={filePreview}
-                  alt="File preview"
-                  className="max-w-full h-auto max-h-64 object-contain mx-auto rounded-lg"
-                />
-              ) : (
-                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
-                  <Icons.File size={48} className="text-gray-400" />
-                  <div>
-                    <p className="font-medium text-gray-900">{selectedFile.name}</p>
-                    <p className="text-sm text-gray-500">{selectedFile.type || 'File'}</p>
-                    <p className="text-xs text-gray-400">{(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Caption Input */}
-            <div className="px-4 pb-4">
-              <input
-                type="text"
-                placeholder="Add a caption (optional)"
-                value={message}
-                onChange={changeHandler}
-                className="w-full bg-white px-2 py-1 border border-gray-300 rounded-md focus:outline-none"
-              />
-            </div>
-
-            {/* Actions */}
-            <div className="flex gap-3 p-4 border-t bg-gray-50">
-              <button
-                onClick={cancelFilePreview}
-                className="flex-1 px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={sendFileMessage}
-                disabled={isUploading}
-                className="flex-1 px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isUploading ? (
-                  <div className="flex items-center justify-center gap-2">
-                    <Icons.Loader2 size={16} className="animate-spin" />
-                    Sending...
-                  </div>
-                ) : (
-                  'Send'
-                )}
-              </button>
-            </div>
-          </div>
+          )}
         </div>
-      )}
+
+        {/* Caption Input */}
+        <div className="px-4 pb-4">
+          <input
+            type="text"
+            placeholder="Add a caption (optional)"
+            value={message}
+            onChange={changeHandler}
+            className="w-full bg-white px-2 py-1 border border-gray-300 rounded-md focus:outline-none"
+          />
+        </div>
+
+        {/* Actions */}
+        <div className="flex gap-3 p-4 border-t bg-gray-50">
+          <button
+            onClick={cancelFilePreview}
+            className="flex-1 px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={sendFileMessage}
+            disabled={isUploading}
+            className="flex-1 px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isUploading ? (
+              <div className="flex items-center justify-center gap-2">
+                <Icons.Loader2 size={16} className="animate-spin" />
+                Sending...
+              </div>
+            ) : (
+              'Send'
+            )}
+          </button>
+        </div>
+      </CustomModal>
     </>
   );
 };

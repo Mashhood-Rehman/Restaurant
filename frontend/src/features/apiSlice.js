@@ -15,6 +15,6 @@ export const apiSlice = createApi({
     },
     credentials: "include",  // if you need cookies
   }),
-  tagTypes: ["Auth", "User"],
+  tagTypes: ["Auth", "User", "Products"],
   endpoints: () => ({}),
 });

@@ -27,13 +27,15 @@
   scrollbar-width: none;
 }
 
-.custom-input {
+.custom_input {
+
   border: 1px solid black;
   border-radius: 4px;
   color: black;
   padding: 0.34rem 0.7rem;
   width: 100%;
-  background: white;
+  background: white !important;
+  outline: none;
   box-sizing: border-box;
   transition: box-shadow 0.2s ease-in-out;
 }

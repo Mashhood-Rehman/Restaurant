@@ -10,4 +10,4 @@ router.post("/send-message", protect(),uploadFile, sendMessage);
 router.get("/get-conversation/:userId", protect(), getConversation);
 router.get("/get-list", protect(), getChatList);
 
-module.exports = router;
+module.exports = router;    

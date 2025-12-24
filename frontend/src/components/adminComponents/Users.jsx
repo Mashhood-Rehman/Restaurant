@@ -154,7 +154,7 @@ const Users = () => {
               onChange={handleChange}
               value={formData.name}
               placeholder="Enter Name Here.."
-              className="custom-input"
+              className="custom_input"
             />
           </div>
 
@@ -167,7 +167,7 @@ const Users = () => {
 
               value={formData.email}
               placeholder="Enter Email Here.."
-              className="custom-input"
+              className="custom_input"
             />
           </div>
 
@@ -180,7 +180,7 @@ const Users = () => {
               value={formData.password}
               type="password"
               placeholder="Enter Password Here.."
-              className="custom-input"
+              className="custom_input"
             />
           </div>
 

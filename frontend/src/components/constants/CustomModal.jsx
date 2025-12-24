@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CustomModal = ({ isOpen, onClose, children, heading }) => {
+const CustomModal = ({ isOpen, onClose, children, heading, width = "max-w-md" }) => {
     if (!isOpen) return null;
 
     return (
@@ -9,7 +9,7 @@ const CustomModal = ({ isOpen, onClose, children, heading }) => {
             onClick={onClose}
         >
             <div
-                className="w-full max-w-md max-h-[90vh] bg-white rounded-2xl shadow-2xl "
+                className={`${width} max-h-[90vh] bg-white rounded-2xl shadow-2xl `}
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex items-center justify-between p-3 border-b border-gray-200">

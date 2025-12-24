@@ -23,7 +23,7 @@ const userRouter = require("./routes/userRoute");
 const orderRouter = require("./routes/orderRoute");
 
 app.use("/", userRouter);
-app.use("/", productRouter);
+app.use("/api/products", productRouter);
 app.use("/", orderRouter);
 
 // ✅ Stripe checkout endpoint

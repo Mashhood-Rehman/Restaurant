@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { socket } from '../../../utils/socket'
 import { useCurrentUser } from '../../hooks/useCurrentUser'
 import { useGetMessagesQuery } from '../../features/api/messageApi'
+import { Icons } from '../../assets/Icons'
 
 const MessagePanel = ({ user }) => {
   const [messages, setMessages] = useState([])

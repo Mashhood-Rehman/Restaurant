@@ -23,3 +23,24 @@ export const navbarSections = [
     IMAGES.HEROCAROUSEL1,
     IMAGES.HEROCAROUSEL3,
   ]
+
+
+   export const products = [
+      { _id: '1', name: 'Margherita Pizza', category: 'Pizza', price: '$12.99', quantity: 25, status: 'In Stock' },
+      { _id: '2', name: 'Pepperoni Pizza', category: 'Pizza', price: '$14.99', quantity: 18, status: 'In Stock' },
+      { _id: '3', name: 'Cheese Burger', category: 'Burgers', price: '$9.99', quantity: 32, status: 'In Stock' },
+      { _id: '4', name: 'Veggie Burger', category: 'Burgers', price: '$8.99', quantity: 15, status: 'In Stock' },
+      { _id: '5', name: 'Spaghetti Carbonara', category: 'Pasta', price: '$11.99', quantity: 8, status: 'Low Stock' },
+      { _id: '6', name: 'Penne Arrabbiata', category: 'Pasta', price: '$10.99', quantity: 20, status: 'In Stock' },
+      { _id: '7', name: 'Caesar Salad', category: 'Salads', price: '$7.99', quantity: 12, status: 'In Stock' },
+      { _id: '8', name: 'Greek Salad', category: 'Salads', price: '$8.49', quantity: 0, status: 'Out of Stock' },
+    ];
+  
+  export   const headers = [
+      { key: 'name', label: 'Product Name' },
+      { key: 'category', label: 'Category' },
+      { key: 'price', label: 'Price' },
+      { key: 'amount', label: 'Quantity' },
+      { key: 'status', label: 'Status' },
+    ];
+  

@@ -1,36 +1,37 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts } from '../stores/product';
+import React from 'react'
+import { useDispatch } from 'react-redux';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { addToCart } from '../stores/cartSlice';
+import { useGetProductsQuery } from '../../features/api/productApi';
 
 const CategoryProducts = ({ category }) => {
     const dispatch = useDispatch()
-    const items = useSelector((state) => state.product.products);
-    const status = useSelector((state) => state.product.status);
-    const error = useSelector((state) => state.product.error);
-    const filteredProducts = Array.isArray(items) ? items.filter((item) => item.category === category) : [];
-    useEffect(() => {
-        if (status === 'idle') {
-            dispatch(fetchProducts(category));
-        }
-    }, [status, dispatch, category]);
+    const { data: getAllProducts, isLoading, error } = useGetProductsQuery();
+    const items = getAllProducts?.products || [];
 
-    if (status === 'loading') {
+    const filteredProducts = items.filter(
+        (item) => {
+            const itemCat = item.category.toLowerCase().replace(/\s/g, '');
+            const cat = category.toLowerCase().replace(/\s/g, '');
+            return itemCat === cat;
+        }
+    );
+
+    if (isLoading) {
         return <div>Loading, please wait...</div>;
     }
 
-    if (status === 'failed') {
-        return <div>{error}</div>;
+    if (error) {
+        return <div>Error: {error.message}</div>;
     }
     const handleAddToCart = (product) => {
         try {
-            
-            
+
+
             console.log("adding item to cart", product)
             dispatch(addToCart(product));
         } catch (error) {
-         console.log("error adding to cart", error)   
+            console.log("error adding to cart", error)
         }
 
     }
@@ -54,12 +55,12 @@ const CategoryProducts = ({ category }) => {
                             <h2 className="text-base sm:text-lg font-semibold border-b p-2 border-gray-200 text-gray-800">
                                 {p.name}
                             </h2>
-                            <p className="text-gray-600 text-sm hidden lg:block sm:text-base p-2">Lorem ipsum clita erat amet dolor justo diam</p>
+                            <p className="text-gray-600 text-sm hidden lg:block sm:text-base p-2">{p?.description}</p>
                         </div>
                         <div className="flex justify-center sm:justify-end space-x-4 mt-4  ">
                             <span className="text-orange-600 text-lg sm:text-xl ml-3   font-semibold">${p.price}</span>
                             <button
-                                onClick={() =>handleAddToCart(p) }
+                                onClick={() => handleAddToCart(p)}
                                 className="text-orange-500 p-2 rounded-lg transition duration-200 ease-in-out flex items-center"
                             >
                                 <Icon icon="mdi-light:cart" className="h-6 sm:h-8 w-6 sm:w-8" />

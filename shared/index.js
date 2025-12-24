@@ -6,6 +6,6 @@ dotenv.config({ path: path.join(__dirname, ".env") });
 
 console.log("Shared package loaded...");
 module.exports = {
-  protect: require("./middleware/authMiddleware"),
-  upload: require("./uploads/uploadMiddleware"),
+protect: require("./middleware/authMiddleware"),
+upload: require("./uploads/uploadMiddleware"),
 }

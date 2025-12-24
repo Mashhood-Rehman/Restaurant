@@ -1,5 +1,6 @@
-import { Download, Phone, RefreshCcw, Search, SkipBack, SkipForward, User, Video, Send, Annoyed, Folder, X, Loader2, File } from "lucide-react"
+import { Download, Phone, RefreshCcw, Search, SkipBack, SkipForward, User, Video, Send, Annoyed, Folder, X, Loader2, File, Plus } from "lucide-react"
 export const Icons = {
+  Plus,
   Loader2,
   File,
   RefreshCcw,

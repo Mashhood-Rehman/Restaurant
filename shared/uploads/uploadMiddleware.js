@@ -4,7 +4,11 @@ const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const { cloudinary, initCloudinary } = require("./cloudinary");
 
 const uploadMiddleware = (options = {}) => {
-  initCloudinary();
+  try {
+    initCloudinary();
+  } catch (err) {
+    console.error("Cloudinary initialization error:", err);
+  }
 
   const {
     folder = "uploads",

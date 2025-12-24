@@ -10,14 +10,11 @@ import Home from "./pages/Home";
 import Navbar from "./components/Header/Navbar";
 import Orders from "./pages/Orders";
 import { AdminOrders, Analytics, Products, Customers, Users, AdminLayout } from "./admin";
-import { useCurrentUser } from "./hooks/useCurrentUser";
 import Profile from "./components/Profile";
 
 const App = () => {
   const location = useLocation()
   const hideComponent = location.pathname.startsWith("/admin")
-  const currentUser = useCurrentUser()
-  console.log("🌟 App.jsx: Current User:", currentUser);
   return (
   <>
     <ToastContainer />

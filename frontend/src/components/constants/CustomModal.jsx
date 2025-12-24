@@ -9,7 +9,7 @@ const CustomModal = ({ isOpen, onClose, children, heading, width = "max-w-md" })
             onClick={onClose}
         >
             <div
-                className={`${width} max-h-[90vh] bg-white rounded-2xl shadow-2xl `}
+                className={`${width} w-full max-h-[90vh] bg-white rounded-2xl shadow-2xl `}
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex items-center justify-between p-3 border-b border-gray-200">

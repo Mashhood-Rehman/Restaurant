@@ -42,5 +42,6 @@ export const navbarSections = [
       { key: 'price', label: 'Price' },
       { key: 'amount', label: 'Quantity' },
       { key: 'status', label: 'Status' },
+        { key: "actions", label: "Actions" },
     ];
   

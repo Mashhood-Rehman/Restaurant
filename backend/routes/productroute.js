@@ -1,13 +1,17 @@
 const express = require("express");
-const upload = require("../multerConfig");
+const {upload} = require("shared");
 const {  getAllProducts,
   productcreate,
   getProducts,
-  delProducts} = require("../controllers/productController")
+  delProducts,
+  updateProduct} = require("../controllers/productController")
   const router = express.Router();
 
-  router.post("/productcreate", upload.single('picture'), productcreate);
-
+  const chatUpload = upload("picture");
+  const uploadFile = chatUpload.single("picture");
+  
+router.post("/productcreate", uploadFile, productcreate);
+router.put("/updateProduct/:id",uploadFile, updateProduct);
 router.get("/getProducts/:category",getProducts) 
 router.get("/getAllProducts",getAllProducts)
 

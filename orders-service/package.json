@@ -1,7 +1,5 @@
 {
   "name": "orders-service",
-  "module": "index.ts",
-  "type": "module",
   "private": true,
   "devDependencies": {
     "@types/bun": "latest",
@@ -17,6 +15,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.17.1",
+    "amqplib": "^0.10.9",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",

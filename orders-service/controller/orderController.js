@@ -1,7 +1,8 @@
 const { PrismaClient } = require("@prisma/client")
-
+const {getChannel } = require("../broker/rabbit")
 
 const prisma = new PrismaClient()
+
 const orderCreate = async (req, res) => {
     try {
         const { customerName, customerEmail, customerPhone, amount, address, items } = req.body
@@ -9,6 +10,9 @@ const orderCreate = async (req, res) => {
         if (!items || items.length === 0) {
             return res.status(400).json({ message: "Items are required" })
         }
+
+        const channel = await getChannel()
+        
         const newOrder = await prisma.order.create({
             data: {
                 userId,
@@ -22,6 +26,22 @@ const orderCreate = async (req, res) => {
                 paymentStatus: "unpaid",
             },
         })
+        channel.publish(
+            "order-events", "order.created",
+            Buffer.from (JSON.stringify({
+                userId,
+                customerName,
+                customerEmail,
+                customerPhone,
+                items,
+                amount,
+                address,
+                status: "Pending",
+                paymentStatus: "unpaid",
+
+            })),
+            {persistent: true}
+        )
         return res.status(201).json({
             success: true,
             message: "Order created successfully.",

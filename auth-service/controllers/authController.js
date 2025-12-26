@@ -32,7 +32,7 @@ const Login = async (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
-            maxAge: 24 * 60 * 60 * 1000 // 1 day
+        maxAge: 24 * 60 * 60 * 1000 // 1 day
         });
 
         return res.status(200).json({
@@ -79,6 +79,7 @@ const Signup = async (req, res) => {
                 email,
                 name,
                 password: hashedPassword,
+                role: "customer",
             }
         });
 

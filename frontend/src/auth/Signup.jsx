@@ -132,9 +132,9 @@ const Signup = ({ setModal, setShowLogin }) => {
       </form>
 
       <p className="text-center mt-4 text-gray-600">
-        Already have an account?
-        <span onClick={switchToLogin} className="text-blue-800 font-semibold cursor-pointer">
-          Sign In
+        Already have an account? 
+        <span onClick={switchToLogin} className="text-blue-800 ml-1 font-semibold cursor-pointer">
+           Sign In
         </span>
       </p>
     </div>

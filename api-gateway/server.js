@@ -20,9 +20,7 @@ app.use(cors({
 
 Gateways.forEach(({route, target}) =>{
   app.use(route, proxy(target, {
-     parseReqBody: false,
     changeOrigin: true,
-    timeout: 60000, // Increase timeout to 60 seconds for file uploads
     proxyReqOptDecorator: (options, req) => {
    if (req.headers.authorization) {
   options.headers['authorization'] = req.headers.authorization;
@@ -31,7 +29,6 @@ Gateways.forEach(({route, target}) =>{
     },
     proxyReqPathResolver: (req) => req.originalUrl,
     proxyResDecorator: function(proxyRes, proxyResData, userReq, userRes) {
-      // Forward Set-Cookie headers from target services to the browser
       try {
         const setCookie = proxyRes.headers && proxyRes.headers['set-cookie'];
         if (setCookie) {

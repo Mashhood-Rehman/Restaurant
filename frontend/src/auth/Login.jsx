@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { Icon } from "@iconify/react";
 import Signup from "./Signup";
@@ -12,11 +12,12 @@ const Login = ({ setFormClose }) => {
   const [user, setUser] = useState({ email: "", password: "" });
   const [justLoggedIn, setJustLoggedIn] = useState(false);
   const [loginData] = useLoginMutation();
-  const { data: meData, error: meError, refetch } = useGetMeQuery();
-  const passwordShow = () => setShow(!show);
+const { data: meData, error: meError } = useGetMeQuery(undefined, {
+  skip: !justLoggedIn,
+});  const passwordShow = () => setShow(!show);
   
   // Handle successful data fetch
-  React.useEffect(() => {
+  useEffect(() => {
     if (justLoggedIn && meData?.userData) {
       console.log("✅ User data fetched:", meData.userData);
       handleCloseForm();
@@ -35,7 +36,7 @@ const submitHandler = async (e) => {
   e.preventDefault();
   const { email, password } = user;
   if (!email || !password) {
-    alert("All fields are required");
+    toast.warn("All fields are required");
     return;
   }
   
@@ -50,7 +51,7 @@ const submitHandler = async (e) => {
       toast.success("Login successful");
       handleCloseForm();
     }
-    refetch();
+    
   } catch (error) {
     console.error("❌ Login failed:", error);
     toast.error("Invalid email or password");

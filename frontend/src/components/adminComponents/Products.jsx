@@ -31,7 +31,7 @@ const Products = () => {
   const [createProduct] = useCreateProductMutation();
   const [updateProduct] = useUpdateProductMutation();
   const [deleteProduct] = useDeleteProductMutation();
-  const { data: productsData, isLoading } = useGetProductsQuery();
+  const { data: productsData, isLoading, refetch } = useGetProductsQuery();
 
   /* -------------------- handlers -------------------- */
 
@@ -71,7 +71,6 @@ const Products = () => {
   };
 
   const handleEdit = (product) => {
-    console.log('product is ',product);
     setIsEdit(true);
     setSelectedId(product._id);
     setShowModal(true);
@@ -88,7 +87,6 @@ const Products = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this product?")) return;
 
     try {
       await deleteProduct(id).unwrap();
@@ -122,7 +120,7 @@ if (formData.picture) {
         await createProduct(formDataToSend).unwrap();
         toast.success("Product added successfully");
       }
-
+      refetch()
       handleClose();
     } catch (error) {
       console.log("error", error)

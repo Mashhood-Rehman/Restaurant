@@ -1,6 +1,6 @@
-const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcrypt");
-const prisma = new PrismaClient();
+const { prisma } = require("../lib/prisma");
+
 
 const createUser = async (req, res) => {
     const { email, name, password,role } = req.body;

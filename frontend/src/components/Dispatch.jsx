@@ -63,7 +63,7 @@ console.log("function hit")
     }
   } catch (err) {
     const message = err?.data?.message || err.message || "An unexpected error occurred";
-    console.error("Payment or Order creation error:", message);
+    console.error("Payment or Order creation error:", err);
     toast.error("An error occurred during payment. Please try again.");
   }
 };

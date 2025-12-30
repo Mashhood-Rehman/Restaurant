@@ -1,9 +1,9 @@
 // Test user seed file
 // This file can be used to create test users for development
 
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient()
+
 const bcrypt = require("bcrypt");
+const { prisma } = require("./lib/prisma");
 
 
  async function main() {

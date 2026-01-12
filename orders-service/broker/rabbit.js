@@ -10,7 +10,6 @@ async function connectRabbitMQ() {
         await channel.assertExchange("order-events", "topic", {
             durable: true
         })
-        console.log("🐇 Connected to RabbitMQ");
     } catch (error) {
         console.error("Failed to connect to RabbitMQ", error);
         process.exit(1);

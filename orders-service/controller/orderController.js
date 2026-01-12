@@ -1,5 +1,5 @@
 const { PrismaClient } = require("@prisma/client")
-const {getChannel } = require("../broker/rabbit")
+const { getChannel } = require("../broker/rabbit")
 
 const prisma = new PrismaClient()
 
@@ -12,7 +12,7 @@ const orderCreate = async (req, res) => {
         }
 
         const channel = await getChannel()
-        
+
         const newOrder = await prisma.order.create({
             data: {
                 userId,
@@ -28,7 +28,7 @@ const orderCreate = async (req, res) => {
         })
         channel.publish(
             "order-events", "order.created",
-            Buffer.from (JSON.stringify({
+            Buffer.from(JSON.stringify({
                 userId,
                 customerName,
                 customerEmail,
@@ -40,7 +40,7 @@ const orderCreate = async (req, res) => {
                 paymentStatus: "unpaid",
 
             })),
-            {persistent: true}
+            { persistent: true }
         )
         return res.status(201).json({
             success: true,

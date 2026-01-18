@@ -93,10 +93,7 @@ const Navbar = () => {
     <div className="flex z-[999] bg-white justify-between items-center">
       <div>
         <Sidebar open={open} setOpen={setOpen} />
-        <motion.div
-          initial={{ y: -100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
+        <div
           className={`navbar ${BGColor} duration-300 ease-in-out fixed z-20 flex justify-between items-center w-full px-4`}
         >
           {/* Mobile Layout */}
@@ -193,11 +190,7 @@ const Navbar = () => {
                       />
                     )}
                   </div>
-                  <motion.ul
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.3 }}
+                  <ul
                     className="absolute right-0 top-12 hidden group-hover:block bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden min-w-[200px]"
                   >
                     <li className="p-4 border-b border-gray-100">
@@ -245,7 +238,7 @@ const Navbar = () => {
                     >
                       Logout
                     </li>
-                  </motion.ul>
+                  </ul>
                 </div>
               ) : (
                 <button onClick={toggleForm} className="bg-orange-500 hover:bg-orange-600 text-white flex justify-center px-6 py-2 rounded-lg">
@@ -282,7 +275,7 @@ const Navbar = () => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
         <CustomModal isOpen={formclose} heading='Login' onClose={() => setFormClose(false)}>
           <Login setFormClose={setFormClose} />
         </CustomModal>

@@ -35,6 +35,7 @@ const CategoryProducts = ({ category }) => {
         }
 
     }
+    console.log(filteredProducts)
     return (
         <div id={category}>
             <h1 className=' bg-orange-500 font-bold text-transparent bg-clip-text text-2xl ml-[10%]'>
@@ -47,7 +48,7 @@ const CategoryProducts = ({ category }) => {
                         className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 bg-white p-4 sm:p-6 transition ease-in-out duration-200"
                     >
                         <img
-                            src={`${import.meta.env.VITE_API_BASE_URL}${p.picture}`}
+                            src={p.picture}
                             alt={p.title}
                             className="w-16 h-16 sm:w-24 sm:h-24 object-cover object-center rounded-full "
                         />

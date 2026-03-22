@@ -15,22 +15,14 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 const Navbar = () => {
   const [BGColor, SetBGColor] = useState("bg-white");
-  const currentUser = useCurrentUser();
+  const { currentUser, isLoading } = useCurrentUser();
   const [open, setOpen] = useState(false);
   const [formclose, setFormClose] = useState(false);
   const [logoutUser] = useLogoutMutation();
-  const [userIn, setUserIn] = useState(null);
-  const navigate = useNavigate(
+  const navigate = useNavigate();
 
-  )
-
-  useEffect(() => {
-    if (currentUser) {
-      setUserIn(currentUser);
-    } else {
-      setUserIn(null);
-    }
-  }, [currentUser, userIn]);
+  const totalAmount = useSelector((state) => state.cart.totalAmount);
+  const totalQuantity = useSelector((state) => state.cart.totalQuantity);
 
   useEffect(() => {
     const pressedEscapeKey = (e) => {
@@ -53,13 +45,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   });
 
-  const totalAmount = useSelector((state) => state.cart.totalAmount);
-  const totalQuantity = useSelector((state) => state.cart.totalQuantity);
-
-  const toggleForm = () => {
-    setFormClose(!formclose);
-  };
-
   const scrollToSection = (id) => {
     const section = document.getElementById(id);
     if (section) {
@@ -73,22 +58,25 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await logoutUser().unwrap();
-      setUserIn(null);
-      await refetch()
       toast.success("Logged out successfully");
     } catch (error) {
       console.error("Logout error:", error);
       toast.error("Failed to logout. Please try again.");
     }
   };
+
   const handleNavlinkScroll = (id) => {
     if (location.pathname === "/") {
-      // Smooth scroll if already on home page
       scrollToSection(id);
     } else {
       navigate(`/#${id}`);
     }
   };
+
+  const toggleForm = () => {
+    setFormClose(!formclose);
+  };
+
   return (
     <div className="flex z-[999] bg-white justify-between items-center">
       <div>
@@ -100,13 +88,12 @@ const Navbar = () => {
           <div className="lg:hidden flex justify-between items-center w-full">
             <MobileSidebar
               navbarSections={navbarSections}
-              userIn={userIn}
+              userIn={currentUser}
               toggleForm={toggleForm}
               handleLogout={handleLogout}
               scrollToSection={scrollToSection}
               handleNavlinkScroll={handleNavlinkScroll}
             />
-
 
             <div className="absolute left-1/2 transform -translate-x-1/2">
               <img
@@ -174,76 +161,78 @@ const Navbar = () => {
             </div>
 
             <div className="flex-shrink-0 flex items-center gap-4 mr-4">
-              {currentUser ? (
-                <div className="relative group">
-                  <div className="cursor-pointer p-2">
-                    {currentUser?.profileImg ? (
-                      <img
-                        src={currentUser.profileImg || IMAGES.DUMMYIMG}
-                        alt={currentUser.name}
-                        className="w-10 h-10 rounded-full object-cover border-2 border-gray-300 hover:border-orange-500 transition duration-300 ease-in-out transform hover:scale-110"
-                      />
-                    ) : (
-                      <Icon
-                        icon="mdi:account-circle"
-                        className="text-4xl text-gray-700 hover:text-orange-500 transition duration-300 ease-in-out transform hover:scale-110"
-                      />
-                    )}
-                  </div>
-                  <ul
-                    className="absolute right-0 top-12 hidden group-hover:block bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden min-w-[200px]"
-                  >
-                    <li className="p-4 border-b border-gray-100">
-                      <div className="flex items-center gap-3">
-                        {currentUser.profileImg ? (
-                          <img
-                            src={currentUser.profileImg}
-                            alt={currentUser.name || "User"}
-                            className="w-12 h-12 rounded-full object-cover"
-                          />
-                        ) : (
-                          <div className="w-12 h-12 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold text-xl">
-                            {currentUser.name?.charAt(0).toUpperCase() || "U"}
+              {!isLoading && (
+                currentUser ? (
+                  <div className="relative group">
+                    <div className="cursor-pointer p-2">
+                      {currentUser?.profileImg ? (
+                        <img
+                          src={currentUser.profileImg || IMAGES.DUMMYIMG}
+                          alt={currentUser.name}
+                          className="w-10 h-10 rounded-full object-cover border-2 border-gray-300 hover:border-orange-500 transition duration-300 ease-in-out transform hover:scale-110"
+                        />
+                      ) : (
+                        <Icon
+                          icon="mdi:account-circle"
+                          className="text-4xl text-gray-700 hover:text-orange-500 transition duration-300 ease-in-out transform hover:scale-110"
+                        />
+                      )}
+                    </div>
+                    <ul
+                      className="absolute right-0 top-12 hidden group-hover:block bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden min-w-[200px]"
+                    >
+                      <li className="p-4 border-b border-gray-100">
+                        <div className="flex items-center gap-3">
+                          {currentUser.profileImg ? (
+                            <img
+                              src={currentUser.profileImg}
+                              alt={currentUser.name || "User"}
+                              className="w-12 h-12 rounded-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-12 h-12 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold text-xl">
+                              {currentUser.name?.charAt(0).toUpperCase() || "U"}
+                            </div>
+                          )}
+                          <div className="flex flex-col ">
+                            <span className="font-semibold overflow-hidden truncate whitespace-nowrap max-w-[120px] text-sm">{currentUser?.userData?.name || "User"}</span>
+                            <span className="text-xs overflow-hidden truncate whitespace-nowrap max-w-[120px]  text-gray-500">{currentUser?.userData?.email}</span>
                           </div>
-                        )}
-                        <div className="flex flex-col ">
-                          <span className="font-semibold overflow-hidden truncate whitespace-nowrap max-w-[120px] text-sm">{currentUser?.userData?.name || "User"}</span>
-                          <span className="text-xs overflow-hidden truncate whitespace-nowrap max-w-[120px]  text-gray-500">{currentUser?.userData?.email}</span>
                         </div>
-                      </div>
-                    </li>
-                    {currentUser?.userData?.role === 'superadmin' ?
-                      <>
+                      </li>
+                      {currentUser?.userData?.role === 'superadmin' ?
+                        <>
+                          <li className="p-3 ps-5 hover:bg-orange-500 hover:text-white transition duration-300 ease-in-out cursor-pointer whitespace-nowrap">
+                            <Link to='/admin/customers' className="w-full text-left ">
+                              Dashboard
+                            </Link>
+                          </li></> :
                         <li className="p-3 ps-5 hover:bg-orange-500 hover:text-white transition duration-300 ease-in-out cursor-pointer whitespace-nowrap">
-                          <Link to='/admin/customers' className="w-full text-left ">
-                            Dashboard
+                          <Link to='/orders' className="w-full text-left ">
+                            Orders
                           </Link>
-                        </li></> :
-                      <li className="p-3 ps-5 hover:bg-orange-500 hover:text-white transition duration-300 ease-in-out cursor-pointer whitespace-nowrap">
-                        <Link to='/orders' className="w-full text-left ">
-                          Orders
+                        </li>
+                      }
+                      <li
+                        className="p-3 ps-5 hover:bg-orange-500 hover:text-white transition duration-300 ease-in-out cursor-pointer whitespace-nowrap"
+                      >
+                        <Link to='/profile' className="w-full text-left ">
+                          Profile
                         </Link>
                       </li>
-                    }
-                    <li
-                      className="p-3 ps-5 hover:bg-orange-500 hover:text-white transition duration-300 ease-in-out cursor-pointer whitespace-nowrap"
-                    >
-                      <Link to='/profile' className="w-full text-left ">
-                        Profile
-                      </Link>
-                    </li>
-                    <li
-                      className="p-3 ps-5 hover:bg-red-500 hover:text-white transition duration-300 ease-in-out cursor-pointer whitespace-nowrap"
-                      onClick={handleLogout}
-                    >
-                      Logout
-                    </li>
-                  </ul>
-                </div>
-              ) : (
-                <button onClick={toggleForm} className="bg-orange-500 hover:bg-orange-600 text-white flex justify-center px-6 py-2 rounded-lg">
-                  Login
-                </button>
+                      <li
+                        className="p-3 ps-5 hover:bg-red-500 hover:text-white transition duration-300 ease-in-out cursor-pointer whitespace-nowrap"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </li>
+                    </ul>
+                  </div>
+                ) : (
+                  <button onClick={toggleForm} className="bg-orange-500 hover:bg-orange-600 text-white flex justify-center px-6 py-2 rounded-lg">
+                    Login
+                  </button>
+                )
               )}
 
               <div className="dropdown dropdown-end">

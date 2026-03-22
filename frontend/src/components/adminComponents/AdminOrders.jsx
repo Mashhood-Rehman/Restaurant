@@ -11,9 +11,10 @@ const AdminOrders = () => {
         try {
             const done = await updateOrderStatus({ orderId, status: newStatus }).unwrap();
             toast.success("Order status updated")
-            refetch()
 
         } catch (error) {
+            console.log("error while updating the order status", error)
+            toast.error(error.message)
         }
     }
     const tableData = data?.orders?.map(order => ({

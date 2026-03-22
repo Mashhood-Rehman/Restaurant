@@ -16,20 +16,26 @@ export const orderApi = apiSlice.injectEndpoints({
                 method: "GET",
                 credentials: "include",
             }),
-              providesTags: ['Orders'] 
+            providesTags: (result) =>
+                result?.orders
+                    ? [
+                        ...result.orders.map(({ orderId }) => ({ type: 'Orders', id: orderId })),
+                        { type: 'Orders', id: 'LIST' },
+                    ]
+                    : [{ type: 'Orders', id: 'LIST' }],
         }),
-       updateOrderStatus: builder.mutation({
-    query: ({ orderId, status }) => ({
-        url: `/orders/updateStatus/${orderId}`,
-        method: "PATCH",
-        credentials: "include",
-        body: { status }
-    }),
-    invalidatesTags: (result, error, { orderId }) => [
-        { type: 'Orders', id: orderId },
-        { type: 'Orders', id: 'LIST' }
-    ]
-})
+        updateOrderStatus: builder.mutation({
+            query: ({ orderId, status }) => ({
+                url: `/orders/updateStatus/${orderId}`,
+                method: "PATCH",
+                credentials: "include",
+                body: { status }
+            }),
+            invalidatesTags: (result, error, { orderId }) => [
+                { type: 'Orders', id: orderId },
+                { type: 'Orders', id: 'LIST' }
+            ]
+        })
     })
 })
 

@@ -6,12 +6,8 @@ const bcrypt = require("bcrypt");
 const { prisma } = require("./lib/prisma");
 
 
- async function main() {
+async function main() {
   try {
-    // Clear existing test users (optional, comment out if you want to keep data)
-    // await prisma.user.deleteMany();
-
-    // Create test users
     const testUsers = [
       {
         email: "customer@test.com",

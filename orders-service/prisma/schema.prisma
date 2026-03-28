@@ -9,12 +9,13 @@ datasource db {
 
 model Order {
   id            String   @id @default(cuid())
-  userId        String?
+  driverId      String?
   amount        Int
   address       Json
   status        String   @default("Pending")
   date          DateTime @default(now())
   createdAt     DateTime @default(now())
+  customerId    String?
   customerEmail String?
   customerName  String?
   customerPhone String?

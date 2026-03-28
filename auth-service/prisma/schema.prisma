@@ -23,5 +23,6 @@ model User {
   password   String
   profileImg String? 
   role       Role
+  orders     Order[]
   }
 

@@ -23,6 +23,9 @@ model User {
   password   String
   profileImg String? 
   role       Role
+  isOnline   Boolean @default(false)
+  lat        Float?
+  lng        Float?
   orders     Order[]
   }
 

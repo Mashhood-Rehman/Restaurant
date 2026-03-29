@@ -2,9 +2,7 @@ import { Navigate, Outlet } from "react-router-dom"
 import { useCurrentUser } from "../hooks/useCurrentUser.jsx"
 
 const ProtectedRoutes = () => {
-    const { currentUser, isLoading } = useCurrentUser()
-
-    // 1. IMPORTANT: Wait for the query to finish before deciding what to show.
+    const { currentUser, isLoading } = useCurrentUser()    // 1. IMPORTANT: Wait for the query to finish before deciding what to show.
     if (isLoading) {
         return (
             <div className="flex items-center justify-center min-h-screen">

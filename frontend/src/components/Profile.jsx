@@ -177,6 +177,27 @@ if(updateError) {
                 </span>
               </div>
               <p className="text-gray-600">{userData.email}</p>
+              {userData.role === 'rider' && (
+                <div className="mt-4 flex items-center gap-4">
+                  <span className={`px-4 py-1.5 rounded-full text-sm font-bold flex items-center gap-2 ${userData.isOnline
+                    ? "bg-green-100 text-green-700 border-2 border-green-500"
+                    : "bg-red-100 text-red-700 border-2 border-red-500"
+                    }`}>
+                    <span className={`w-2 h-2 rounded-full ${userData.isOnline ? "bg-green-500 animate-pulse" : "bg-red-500"}`}></span>
+                    {userData.isOnline ? "Active & Online" : "Currently Offline"}
+                  </span>
+                  <button
+                    onClick={async () => {
+                      const newStatus = !userData.isOnline;
+                      await updateUserByID({ data: { isOnline: newStatus }, id: userData.id }).unwrap();
+                      setUserData(prev => ({ ...prev, isOnline: newStatus }));
+                    }}
+                    className="text-orange-500 hover:text-orange-600 text-sm font-bold underline transition-colors"
+                  >
+                    Switch to {userData.isOnline ? "Offline" : "Online"}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -110,10 +110,10 @@ const getMe = async (req, res) => {
         if (!user || !user.id) {
             return res.status(401).json({ message: "Not authenticated" });
         }
-
+        console.log("🔍 [User Service] getMe hit, resolving for user ID:", user.id);
         const userData = await prisma.user.findUnique({
             where: { id: user.id },
-            select: { id: true, name: true, email: true, role: true, profileImg: true },
+            select: { id: true, name: true, email: true, role: true, profileImg: true, isOnline: true, lat: true, lng: true },
         });
 
         if (!userData) {
@@ -130,4 +130,25 @@ const getMe = async (req, res) => {
     }
 };
 
-module.exports = { createUser, getAllUsers, updateUserById, deleteUserById, getMe, getAllCustomers };
+// driver tracking logic
+const updateDriverLocation = async (req, res) => {
+    try {
+        const { lat, lng } = req.body
+        const id = req?.user?.id
+        const updateLocation = await prisma.user.update({
+            where: {
+                id: id
+
+            },
+            data: { lat, lng }
+        })
+        return res.status(200).json({ message: "Location updated successfully", updateLocation })
+    } catch (err) {
+        console.log(err.message)
+        return res.status(500).json({ message: "Error updating location", error: err.message })
+    }
+}
+
+
+
+module.exports = { createUser, getAllUsers, updateUserById, deleteUserById, getMe, getAllCustomers, updateDriverLocation };

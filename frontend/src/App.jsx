@@ -12,6 +12,7 @@ import Orders from "./pages/Orders";
 import { AdminOrders, Analytics, Products, Customers, Users, AdminLayout } from "./admin";
 import Profile from "./components/Profile";
 import ProtectedRoutes from "./auth/ProtectedRoutes";
+import DriverStatusBanner from "./components/DriverStatusBanner";
 
 const App = () => {
   const location = useLocation()
@@ -20,6 +21,7 @@ const App = () => {
     <>
       <ToastContainer />
       {!hideComponent && <Navbar />}
+      {!hideComponent && <DriverStatusBanner />}
       <div className={`min-h-screen ${!hideComponent && "pt-16"}`}>
 
         <Routes>

@@ -17,13 +17,15 @@ const protect = (options = { required: true }) => {
 
       if (!token) {
         if (options.required) {
-          console.log("❌ No token provided to Gateway");
+          console.log(`❌ [Gateway] No token provided for: ${req.originalUrl}`);
           return res.status(401).json({ message: "Not authorized: No token found" });
         }
+        console.log(`ℹ️ [Gateway] No token, but it's okay (Public Route): ${req.originalUrl}`);
         req.user = null;
         return next();
       }
 
+      console.log(`✅ [Gateway] Found token, verifying...`);
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       

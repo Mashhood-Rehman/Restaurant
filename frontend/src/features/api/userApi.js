@@ -33,8 +33,17 @@ export const userApi = apiSlice.injectEndpoints({
       }),
     }),
     updateUserByID: builder.mutation({
-      query: ({data, id}) => ({
+      query: ({ data, id }) => ({
         url: `/users/updateuserbyid/${id}`,
+        method: "PUT",
+        body: data,
+        credentials: "include",
+      }),
+      invalidatesTags: ["User"],
+    }),
+    updateDriverLocation: builder.mutation({
+      query: (data) => ({
+        url: "/users/updateDriverLocation",
         method: "PUT",
         body: data,
         credentials: "include",
@@ -45,4 +54,4 @@ export const userApi = apiSlice.injectEndpoints({
 });
 
 export const { useGetMeQuery, useLazyGetMeQuery, useGetAllUsersQuery, useGetAllCustomersQuery, useCreateUsersMutation, useUpdateUserByIDMutation
- } = userApi;
+} = userApi;

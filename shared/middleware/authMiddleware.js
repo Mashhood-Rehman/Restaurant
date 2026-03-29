@@ -4,6 +4,18 @@ const protect = (options = { required: true }) => {
   return (req, res, next) => {
 
     try {
+      // 1. Gateway Trust: Check if the API Gateway has already validated the user
+      const gatewayUser = req.headers['x-user'];
+      if (gatewayUser) {
+        try {
+          req.user = JSON.parse(gatewayUser);
+          console.log(`✅ [Service] Identity recovered from Gateway for: ${req.user.email}`);
+          return next();
+        } catch (e) {
+          console.warn("⚠️ [Service] Failed to parse Gateway x-user header:", e.message);
+        }
+      }
+
       let token;
 
       if (req.cookies && req.cookies.token) {

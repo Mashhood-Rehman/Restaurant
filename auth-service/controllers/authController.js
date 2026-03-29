@@ -25,7 +25,8 @@ const Login = async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: "1d" }
         );
-        console.log("User logged in successfully:", checkUser.id);
+        console.log("✅ [Auth Service] Login Successful for:", checkUser.email);
+        console.log("🍪 [Auth Service] Setting cookie 'token'");
 
         // Set token in cookie
         res.cookie('token', token, {

@@ -11,15 +11,34 @@ import { toast } from "react-toastify";
 import { useLogoutMutation } from "../../features/api/AuthApi";
 import { Link, useNavigate } from "react-router-dom";
 import MobileSidebar from "./MobileSidebar";
+import { useUpdateUserByIDMutation } from "../../features/api/userApi";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 const Navbar = () => {
   const [BGColor, SetBGColor] = useState("bg-white");
   const { currentUser, isLoading } = useCurrentUser();
+  console.log("current user is", currentUser)
+
   const [open, setOpen] = useState(false);
   const [formclose, setFormClose] = useState(false);
+  const [updateUserByID, { isLoading: isUpdating }] = useUpdateUserByIDMutation();
   const [logoutUser] = useLogoutMutation();
   const navigate = useNavigate();
+
+  const handleToggleStatus = async () => {
+    if (!currentUser?.userData) return;
+    try {
+      const newStatus = !currentUser.userData.isOnline;
+      await updateUserByID({
+        id: currentUser.userData.id,
+        data: { isOnline: newStatus }
+      }).unwrap();
+      toast.success(`You are now ${newStatus ? 'Online' : 'Offline'}`);
+    } catch (error) {
+      console.error("Status update error:", error);
+      toast.error("Failed to update status");
+    }
+  };
 
   const totalAmount = useSelector((state) => state.cart.totalAmount);
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
@@ -161,6 +180,19 @@ const Navbar = () => {
             </div>
 
             <div className="flex-shrink-0 flex items-center gap-4 mr-4">
+              {!isLoading && currentUser && currentUser.userData?.role === 'rider' && (
+                <button
+                  onClick={handleToggleStatus}
+                  disabled={isUpdating}
+                  className={`px-4 py-1.5 rounded-full text-sm font-bold flex items-center gap-2 transition-all ${currentUser.userData.isOnline
+                    ? "bg-green-100 text-green-700 border-2 border-green-500 hover:bg-green-200"
+                    : "bg-red-100 text-red-700 border-2 border-red-500 hover:bg-red-200"
+                    }`}
+                >
+                  <span className={`w-2 h-2 rounded-full ${currentUser.userData.isOnline ? "bg-green-500 animate-pulse" : "bg-red-500"}`}></span>
+                  {currentUser.userData.isOnline ? "Online" : "Offline"}
+                </button>
+              )}
               {!isLoading && (
                 currentUser ? (
                   <div className="relative group">
